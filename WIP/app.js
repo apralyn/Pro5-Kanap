@@ -32,3 +32,4 @@ divOne.setAttribute('id','productOne');
 allProducts.appendChild(divOne);
 
 //need to figure out how to fetch productOne from API
+//watch ANIA KUBOW promise video
