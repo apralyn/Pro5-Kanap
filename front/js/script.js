@@ -39,52 +39,52 @@ fetch ('http://localhost:3000/api/products')
     // Create the cards
 
     // <section> is the parent element - capture as reference to where you want to place the product cards
-    //grab the parent
+    //grab parent = <section>
     const parentElement = document.getElementById ('items') // parent of productCard element.
     
     // i want to create a link in the parent.
-    //create the child element
+    //create the child element/ a
     const productCardLink = document.createElement ('a');//need the correct input
     // added id in a
     //optional add id to the child
     productCardLink.setAttribute('id','card-one');
-     //append the a in parent
+    productCardLink.classList.add('productCardOne');
+    productCardLink.setAttribute( 'href', 'item.html?id=' );
+ 
      //append child element to the parent
      items.appendChild(productCardLink);
 
-    //inside A need to create an Article
-    //grab the parent
-    const parentA = document.getElementById('card-one');
+    //grab parent(A) to create new cardContainer/article
+    const parentA = document.querySelector('.productCardOne');
     //create the child
     const productCard = document.createElement ('article');
+    productCard.setAttribute('id','card-one-container')
     //append to the parent
     parentA.appendChild(productCard);
 
+    //grab parent = (article)/parentA to create newImage/img
+    const cardOne = document.querySelector('#card-one-container');
+    //create img
+    const productImg = document.createElement('img');
+    //add options
+    productImg.setAttribute('src', products[0].imageUrl);
+    //append new element
+    cardOne.appendChild(productImg);
 
+    //parent(Article) create productName/h3
+    const productName = document.createElement('h3');
+    //add option
+    productName.setAttribute('id', 'prod-name');
+    //append new h3 element to article parent
+    cardOne.appendChild(productName).innerHTML = products[0].name;
 
-    
-    
-    // const productImg = document.createElement ('img'); //need correct input
-    // const productName = document.createElement('h3');
-    // const productDescription = document.createElement('p');
+    //parent(Article) create productDescription/p
+    const productDescription = document.createElement('p');
+    //add option
+    productDescription.setAttribute('id','prod-description');
+    //append new p element to article parent
+    cardOne.appendChild(productDescription).innerHTML = products[0].description;
 
-   
-    
-    a.appendChild(productCard);
-    a.appendChild(productImg);
-    a.appendChild(productName);
-    a.appendChild(productDescription);
-
-
-
-
-
-
-
-
-
-    // const prodName = document.getElementById('product-name');
-    // prodName.innerHTML = products[0].name;
 
 
   }) .catch((error) => {
