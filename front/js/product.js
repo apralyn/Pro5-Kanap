@@ -1,39 +1,44 @@
 // create a function displaySingleProduct(id)
 // this function will retrieve the id from url
-// and then process the rest api and update the view of single-product.html page
+// and then process the rest api and update the view//insert DOM product.html page
 
 // URLSearchParams
+let productUrl = window.location.href;
+console.log(productUrl); // current page URL
 
-let url = window.location.href;
-let newURL = new URL('http://localhost:3000/api/products');
-let id = newURL.searchParams.get('id');
-let price = newURL.searchParams.get('price');
+let newProductUrl = new URL(productUrl);
+console.log(newProductUrl);
 
-//milestone4 *references*
+let productUrlId = newProductUrl.searchParams.get('id');
+console.log(productUrlId);
+
+//fetch
+fetch("http://localhost:3000/api/products/")
+    .then ((data) => { // data is returned as json format
+      return data.json();  
+  }).then ((products) => { // products contains all the data from the API
+    console.log(products);
+
+//looping each products
+    for(let product of products) {
+      // console.log(product);
+      displaySingleProduct(product);
+  }
+  //function to display each products (DOM)  
+function displaySingleProduct(id) {
+  
+  //for product image   
+     let productImg = document.createElement('img');
+     document.querySelector('.item__img').appendChild(productImg);
+     productImg.setAttribute('src' + products.imageUrl, 'alt' + products.altTxt)
+ 
+  //for product title
+     let productTitle = document.getElementById('title').innerHTML = products.name;
+     let productPrice = document.getElementById('price').innerHTML = products.price;
+   
+   
+   }
+  
+}
 
 
-//url params video : https://www.youtube.com/watch?v=RIBiQ5GNYWo&list=PLbDntKp6_n0cPCD8onXAHpq8ACmDBHcl3&index=5
-/* to get the current page of the url(object)
-let productUrl = new URL(window.location.href); //give the url of the current page
-*/
-/* what does window.location.href do
-a property that will tell you the current URL location of the browser. 
-Changing the value of the property will redirect the page.
-*/
-
-//pseudo code for Todo #2 on mentor demo
-// create a function displaySingleProduct(id)
-//retrieve the product ID
-//create url variable
-//create an insstance of xmlHTTP?? - need to check
-//call the get api ()
-// retrieve the response if successful
-//update the HTML DOM of single-product page
-//with the response
-//remember to use JSON.parse()
-
-/*  let url = window.location.href;
-let newURL = new URL('http://localhost:3000/api/products');
-let id = newURL.searchParams.get('id');
-let price = newURL.searchParams.get('price');
-*/
