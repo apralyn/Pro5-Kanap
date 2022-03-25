@@ -35,9 +35,11 @@ function displaySingleProduct(id) {
   //for product title
      let productTitle = document.getElementById('title').innerHTML = products.name;
      let productPrice = document.getElementById('price').innerHTML = products.price;
-   
-   
+     let productDescription = document.getElementById('description').innerHTML = products.description;
+     let productColors = document.getElementById('color').innerHTML = products.colors;
+
    }
+   displaySingleProduct(id);
   
 }
 
