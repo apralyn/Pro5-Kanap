@@ -9,7 +9,7 @@ console.log(productUrl); // current page URL
 let newProductUrl = new URL(productUrl);
 console.log(newProductUrl);
 
-let productUrlId = newProductUrl.searchParams.get('id');
+let productUrlId = newProductUrl.searchParams.get('_id');
 console.log(productUrlId);
 
 //fetch
@@ -25,7 +25,7 @@ fetch("http://localhost:3000/api/products/")
       displaySingleProduct(product);
   }
   //function to display each products (DOM)  
-function displaySingleProduct(id) {
+function displaySingleProduct(_id) {
   
   //for product image   
      let productImg = document.createElement('img');
@@ -39,7 +39,7 @@ function displaySingleProduct(id) {
      let productColors = document.getElementById('color').innerHTML = products.colors;
 
    }
-   displaySingleProduct(id);
+   displaySingleProduct(_id);
   
 }
 
