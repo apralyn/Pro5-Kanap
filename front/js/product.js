@@ -1,46 +1,68 @@
+
 // create a function displaySingleProduct(id)
 // this function will retrieve the id from url
 // and then process the rest api and update the view//insert DOM product.html page
 
-// URLSearchParams
-let productUrl = window.location.href;
+// --------------------- URLSearchParams
+
+//to show the current url of the specific product stored in productUrl variable.
+const productUrl = window.location.href;
 console.log(productUrl); // current page URL
 
-let newProductUrl = new URL(productUrl);
+//what does this specificically do
+//I know that the [new URL] is an object
+// which means I can access methods inside new URL object specifically the searchparam.
+const newProductUrl = new URL(productUrl);
 console.log(newProductUrl);
 
-let productUrlId = newProductUrl.searchParams.get('_id');
+// this productUrlId variable is where I can find the specific product ID's of each item.
+const productUrlId = newProductUrl.searchParams.get('id');
 console.log(productUrlId);
 
-//fetch
-fetch("http://localhost:3000/api/products/")
-    .then ((data) => { // data is returned as json format
-      return data.json();  
-  }).then ((products) => { // products contains all the data from the API
-    console.log(products);
+// I got the rest of the product data from the API using fetch
+fetch ("http://localhost:3000/api/products/" + productUrlId)
+  .then ((data) => {
+    return data.json();
+  }).then ((product) => {
+    console.log(product);
 
-//looping each products
-    for(let product of products) {
-      // console.log(product);
-      displaySingleProduct(product);
-  }
-  //function to display each products (DOM)  
-function displaySingleProduct(_id) {
+    //populate the item details in this area from the API to show in the product page.
+  function displaySingleProduct(product) {
   
-  //for product image   
-     let productImg = document.createElement('img');
-     document.querySelector('.item__img').appendChild(productImg);
-     productImg.setAttribute('src' + products.imageUrl, 'alt' + products.altTxt)
- 
-  //for product title
-     let productTitle = document.getElementById('title').innerHTML = products.name;
-     let productPrice = document.getElementById('price').innerHTML = products.price;
-     let productDescription = document.getElementById('description').innerHTML = products.description;
-     let productColors = document.getElementById('color').innerHTML = products.colors;
+  // //for product title
+     let productTitle = document.getElementById('title').innerHTML = product.name;
+     let productPrice = document.getElementById('price').innerHTML = product.price;
+     let productDescription = document.getElementById('description').innerHTML = product.description;
+     
+     //need to figure out how to display the color selection
+     
+     //access to the color data from API
+     const productColor = document.querySelector('#colors');
+      const colorOption = document.createElement('option');
+      colorOption.setAttribute('value', product.colors[0]);
+      productColor.appendChild(colorOption);
+      colorOption.innerHTML = product.colors[0];
+
+
+    
+
+      // // i need to grab the parent element
+      const productItem = document.querySelector('.item__img');
+        // // i need to create an img element
+      const productImg = document.createElement('img');
+        // // i need to append the new element to the parent.
+      productImg.setAttribute('src', product.imageUrl);
+      productImg.setAttribute('alt', product.altTxt);
+      productItem.appendChild(productImg);
 
    }
-   displaySingleProduct(_id);
-  
-}
+   displaySingleProduct(product);
 
+   for (let item of product) {
+      displaySingleProduct(item);
+    }
+  })
 
+       // // i need to append the new element to the parent.
+  //  productColor.setAttribute('value', product.imageUrl);
+  //  productImg.setAttribute('alt', product.altTxt);
