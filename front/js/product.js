@@ -29,7 +29,7 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
     //populate the item details in this area from the API to show in the product page.
   function displaySingleProduct(product) {
   
-  // //for product title
+  // //for produc t title
      let productTitle = document.getElementById('title').innerHTML = product.name;
      let productPrice = document.getElementById('price').innerHTML = product.price;
      let productDescription = document.getElementById('description').innerHTML = product.description;
@@ -37,11 +37,15 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
      //need to figure out how to display the color selection
      
      //access to the color data from API
-     const productColor = document.querySelector('#colors');
+     //color loop
+      for (let colors of product.colors) {
+      const productColor = document.querySelector('#colors');
       const colorOption = document.createElement('option');
-      colorOption.setAttribute('value', product.colors[0]);
+      colorOption.setAttribute('value', product.colors);
       productColor.appendChild(colorOption);
-      colorOption.innerHTML = product.colors[0];
+      colorOption.innerHTML = product.colors;
+        
+      }
 
 
     
