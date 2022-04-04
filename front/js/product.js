@@ -1,4 +1,3 @@
-
 // create a function displaySingleProduct(id)
 // this function will retrieve the id from url
 // and then process the rest api and update the view//insert DOM product.html page
@@ -26,30 +25,29 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
   }).then ((product) => {
     console.log(product);
 
-    //populate the item details in this area from the API to show in the product page.
+  //populate the item details in this area from the API to show in the product page.
   function displaySingleProduct(product) {
   
-  // //for produc t title
+  //for product title
      let productTitle = document.getElementById('title').innerHTML = product.name;
      let productPrice = document.getElementById('price').innerHTML = product.price;
      let productDescription = document.getElementById('description').innerHTML = product.description;
      
-     //need to figure out how to display the color selection
-     
      //access to the color data from API
-     //color loop
-      for (let colors of product.colors) {
-      const productColor = document.querySelector('#colors');
-      const colorOption = document.createElement('option');
-      colorOption.setAttribute('value', product.colors);
-      productColor.appendChild(colorOption);
-      colorOption.innerHTML = product.colors;
-        
+
+      
+      // loop de loop the color
+      for (let i in product.colors) {
+          console.log(colors);
+          const productColor = document.querySelector('#colors');
+          const colorOption = document.createElement('option');
+          colorOption.setAttribute('value', product.colors);
+          productColor.appendChild(colorOption);
+          colorOption.innerHTML = product.colors[i];        
       }
-
-
+      // i cant get the the colors to show like a list
+      //how do i break this down
     
-
       // // i need to grab the parent element
       const productItem = document.querySelector('.item__img');
         // // i need to create an img element
@@ -67,6 +65,4 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
     }
   })
 
-       // // i need to append the new element to the parent.
-  //  productColor.setAttribute('value', product.imageUrl);
-  //  productImg.setAttribute('alt', product.altTxt);
+
