@@ -25,34 +25,33 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
   }).then ((product) => {
     console.log(product);
 
-  //populate the item details in this area from the API to show in the product page.
+    //populate the item details in this area from the API to show in the product page.
   function displaySingleProduct(product) {
   
-  //for product title
-     let productTitle = document.getElementById('title').innerHTML = product.name;
+  // //for produc t title
+     const productTitle = document.getElementById('title');
+     productTitle.innerHTML = product.name;
      let productPrice = document.getElementById('price').innerHTML = product.price;
      let productDescription = document.getElementById('description').innerHTML = product.description;
      
+     //need to figure out how to display the color selection
+     
      //access to the color data from API
-
-      
-      // loop de loop the color
-      for (let i in product.colors) {
-          console.log(colors);
-          const productColor = document.querySelector('#colors');
-          const colorOption = document.createElement('option');
-          colorOption.setAttribute('value', product.colors);
-          productColor.appendChild(colorOption);
-          colorOption.innerHTML = product.colors[i];        
+     //color loop
+      for (let colors of product.colors) {
+      const productColor = document.querySelector('#colors');
+      const colorOption = document.createElement('option');
+      colorOption.setAttribute('value', product.colors);
+      productColor.appendChild(colorOption);
+      colorOption.innerHTML = product.colors;
+        
       }
-      // i cant get the the colors to show like a list
-      //how do i break this down
-    
-      // // i need to grab the parent element
+
+      // parent element
       const productItem = document.querySelector('.item__img');
-        // // i need to create an img element
+        // create an img element
       const productImg = document.createElement('img');
-        // // i need to append the new element to the parent.
+        // append the new element to the parent.
       productImg.setAttribute('src', product.imageUrl);
       productImg.setAttribute('alt', product.altTxt);
       productItem.appendChild(productImg);
@@ -65,4 +64,69 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
     }
   })
 
+// ---- next tasks
 
+
+// user input
+  // pick a  color
+  // add qty of product
+  //'click' add to cart button
+
+
+
+// eventlister for the add to cart button.
+function clickBtn() {
+  console.log ('clicked'); 
+}
+const click = document.getElementById('addToCart');
+click.addEventListener('click', clickBtn); 
+//end  
+
+// figure out how to put the pID, pQty, pColor in a cart object
+// cart objects
+// new Object Object Constructor
+const cart = new Object(); 
+  cart.productID =  "12342346yt"; // I can create a function method to get the product ID from the API
+  cart.productQty =  1;
+  cart.productColor =  "red"; 
+
+//convert the cart object into JSON string and save it into storage
+window.localStorage.setItem("cart", JSON.stringify(cart));
+
+//retrieving the JSON string
+const jsonString = localStorage.getItem("cart");
+
+//parse the JSON string back to the JS object
+const cartObject = JSON.parse(jsonString);
+console.log(cartObject);
+console.log(cartObject.productID);
+console.log(cartObject.productQty);
+console.log(cartObject.productColor);
+
+// end of cart object
+
+
+
+
+
+
+
+
+//where to get the right data for the cart objects.
+
+// figure out how to access the data individually
+  // product ID of the item.
+  // product color
+  // quantity chosen
+
+//once I have them in an object, i need to attach them to the event listener, so once the event listener hears the click the cart function is envoke
+
+//the cart function will do something...
+
+//get the product ID (this data is coming from the api) i need to find  a way to get the data to store in local storage once invoked
+
+//product qty and product color data is also important i need to figure out how to attach it to the local storage once it is invoked.  
+
+//basically the event listener will only listen for a click and then performs a function that will gather important data from user input and from data from the api(product_id) and temporarily store this event listener data in the local storage. 
+
+//function addItemToCart(productID, productColor, productQty)
