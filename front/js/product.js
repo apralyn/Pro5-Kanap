@@ -21,7 +21,7 @@ console.log(productUrlId);
 // I got the rest of the product data from the API using fetch
 fetch ("http://localhost:3000/api/products/" + productUrlId)
   .then ((data) => {
-    return data.json();
+    return data.json(); // move .then product
   }).then ((product) => {
     console.log(product);
 
@@ -38,12 +38,13 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
      
      //access to the color data from API
      //color loop
-      for (let colors of product.colors) {
+      for (let color of product.colors) { // ["red", "yellow" ] 
+        //color == red
       const productColor = document.querySelector('#colors');
       const colorOption = document.createElement('option');
-      colorOption.setAttribute('value', product.colors);
+      colorOption.setAttribute('value', color);
       productColor.appendChild(colorOption);
-      colorOption.innerHTML = product.colors;
+      colorOption.innerHTML = color;
         
       }
 
@@ -80,11 +81,11 @@ function clickBtn() {
 }
 const click = document.getElementById('addToCart');
 click.addEventListener('click', clickBtn); 
-//end  
+//end of eventListener
 
-// figure out how to put the pID, pQty, pColor in a cart object
+
 // cart objects
-// new Object Object Constructor
+// new Object is an example of an Object Constructor
 const cart = new Object(); 
   cart.productID =  "12342346yt"; // I can create a function method to get the product ID from the API
   cart.productQty =  1;
@@ -103,7 +104,7 @@ console.log(cartObject.productID);
 console.log(cartObject.productQty);
 console.log(cartObject.productColor);
 
-// end of cart object
+end of cart object
 
 
 
