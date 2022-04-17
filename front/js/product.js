@@ -86,7 +86,7 @@ click.addEventListener('click', clickBtn);
 
 
 //event listener for choosing a color only on a drop down menu
-// let chooseColor = document.getElementById('colors');
+let chooseColor = document.getElementById('colors');
 chooseColor.addEventListener('change', () => {
   console.log('the color you picked is' + ' ' + chooseColor.value); 
 })
