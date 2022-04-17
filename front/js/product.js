@@ -6,24 +6,24 @@
 
 //to show the current url of the specific product stored in productUrl variable.
 const productUrl = window.location.href;
-console.log(productUrl); // current page URL
+// console.log(productUrl); // current page URL
 
 //what does this specificically do
 //I know that the [new URL] is an object
 // which means I can access methods inside new URL object specifically the searchparam.
 const newProductUrl = new URL(productUrl);
-console.log(newProductUrl);
+// console.log(newProductUrl);
 
 // this productUrlId variable is where I can find the specific product ID's of each item.
 const productUrlId = newProductUrl.searchParams.get('id');
-console.log(productUrlId);
+// console.log(productUrlId);
 
 // I got the rest of the product data from the API using fetch
 fetch ("http://localhost:3000/api/products/" + productUrlId)
   .then ((data) => {
     return data.json(); // move .then product
   }).then ((product) => {
-    console.log(product);
+    // console.log(product);
 
     //populate the item details in this area from the API to show in the product page.
   function displaySingleProduct(product) {
@@ -47,7 +47,6 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
       colorOption.innerHTML = color;
         
       }
-
       // parent element
       const productItem = document.querySelector('.item__img');
         // create an img element
@@ -73,15 +72,42 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
   // add qty of product
   //'click' add to cart button
 
-
-
-// eventlister for the add to cart button.
+// eventlister click only for the add to cart button. assigned to objects, listens to event 
 function clickBtn() {
   console.log ('clicked'); 
 }
 const click = document.getElementById('addToCart');
 click.addEventListener('click', clickBtn); 
+//or eventhandler 
+// click.onclick = () => {
+//   console.log('clacked');
+// }
 //end of eventListener
+
+
+//event listener for choosing a color only on a drop down menu
+// let chooseColor = document.getElementById('colors');
+chooseColor.addEventListener('change', () => {
+  console.log('the color you picked is' + ' ' + chooseColor.value); 
+})
+
+// note** 
+//How do i set a parameter if user does not pick color? 
+//user must pick.
+
+//event handler for adding qty
+//note** min max does not work 
+// how do i set a parameter for min and max
+//user limit between 1 and 100, no negative or beyond
+let addQty = document.getElementById('quantity');
+
+addQty.onchange = () => { // this is to input the value and then enter key is pressed
+  console.log(addQty.value);
+}
+addQty.addEventListener('click', () => { // user clicks on arrow keys up and down only
+  console.log ('you got ' + addQty.value);
+})
+
 
 
 // cart objects
@@ -99,35 +125,17 @@ const jsonString = localStorage.getItem("cart");
 
 //parse the JSON string back to the JS object
 const cartObject = JSON.parse(jsonString);
-console.log(cartObject);
-console.log(cartObject.productID);
-console.log(cartObject.productQty);
-console.log(cartObject.productColor);
+// console.log(cartObject);
+// console.log(cartObject.productID);
+// console.log(cartObject.productQty);
+// console.log(cartObject.productColor);
 
-end of cart object
-
-
+//end of cart object
 
 
 
 
 
 
-//where to get the right data for the cart objects.
 
-// figure out how to access the data individually
-  // product ID of the item.
-  // product color
-  // quantity chosen
 
-//once I have them in an object, i need to attach them to the event listener, so once the event listener hears the click the cart function is envoke
-
-//the cart function will do something...
-
-//get the product ID (this data is coming from the api) i need to find  a way to get the data to store in local storage once invoked
-
-//product qty and product color data is also important i need to figure out how to attach it to the local storage once it is invoked.  
-
-//basically the event listener will only listen for a click and then performs a function that will gather important data from user input and from data from the api(product_id) and temporarily store this event listener data in the local storage. 
-
-//function addItemToCart(productID, productColor, productQty)
