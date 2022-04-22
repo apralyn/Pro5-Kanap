@@ -1,45 +1,28 @@
-// create a function displaySingleProduct(id)
-// this function will retrieve the id from url
-// and then process the rest api and update the view//insert DOM product.html page
 
-// --------------------- URLSearchParams
-
-//to show the current url of the specific product stored in productUrl variable.
 const productUrl = window.location.href;
-// console.log(productUrl); // current page URL
 
-//what does this specificically do
-//I know that the [new URL] is an object
-// which means I can access methods inside new URL object specifically the searchparam.
 const newProductUrl = new URL(productUrl);
-// console.log(newProductUrl);
 
-// this productUrlId variable is where I can find the specific product ID's of each item.
 const productUrlId = newProductUrl.searchParams.get('id');
-// console.log(productUrlId);
+
 
 // I got the rest of the product data from the API using fetch
 fetch ("http://localhost:3000/api/products/" + productUrlId)
   .then ((data) => {
     return data.json(); // move .then product
   }).then ((product) => {
-    // console.log(product);
+    console.log(product);
 
     //populate the item details in this area from the API to show in the product page.
   function displaySingleProduct(product) {
   
-  // //for produc t title
      const productTitle = document.getElementById('title');
      productTitle.innerHTML = product.name;
      let productPrice = document.getElementById('price').innerHTML = product.price;
      let productDescription = document.getElementById('description').innerHTML = product.description;
-     
-     //need to figure out how to display the color selection
-     
-     //access to the color data from API
-     //color loop
+
       for (let color of product.colors) { // ["red", "yellow" ] 
-        //color == red
+
       const productColor = document.querySelector('#colors');
       const colorOption = document.createElement('option');
       colorOption.setAttribute('value', color);
@@ -49,9 +32,7 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
       }
       // parent element
       const productItem = document.querySelector('.item__img');
-        // create an img element
       const productImg = document.createElement('img');
-        // append the new element to the parent.
       productImg.setAttribute('src', product.imageUrl);
       productImg.setAttribute('alt', product.altTxt);
       productItem.appendChild(productImg);
@@ -64,10 +45,9 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
     }
   })
 
-// ---- next tasks
+// ---- next tasks  ------
 
-
-// user input
+// user input/ events
   // pick a  color
   // add qty of product
   //'click' add to cart button
@@ -78,27 +58,13 @@ function clickBtn() {
 }
 const click = document.getElementById('addToCart');
 click.addEventListener('click', clickBtn); 
-//or eventhandler 
+//or example using an eventhandler on add to cart button
 // click.onclick = () => {
 //   console.log('clacked');
 // }
 //end of eventListener
 
-
-//event listener for choosing a color only on a drop down menu
-let chooseColor = document.getElementById('colors');
-chooseColor.addEventListener('change', () => {
-  console.log('the color you picked is' + ' ' + chooseColor.value); 
-})
-
-// note** 
-//How do i set a parameter if user does not pick color? 
-//user must pick.
-
-//event handler for adding qty
-//note** min max does not work 
-// how do i set a parameter for min and max
-//user limit between 1 and 100, no negative or beyond
+//event listener for item quantity  
 let addQty = document.getElementById('quantity');
 
 addQty.onchange = () => { // this is to input the value and then enter key is pressed
@@ -109,29 +75,91 @@ addQty.addEventListener('click', () => { // user clicks on arrow keys up and dow
 })
 
 
+//event listener for choosing a color only on a drop down menu
+let chooseColor = document.getElementById('colors');
+chooseColor.addEventListener('change', () => {
+  
+  window.localStorage.setItem("color", JSON.stringify(chooseColor.value));
+  console.log('the color you picked is' + ' ' + chooseColor.value); 
+})
 
-// cart objects
-// new Object is an example of an Object Constructor
-const cart = new Object(); 
-  cart.productID =  "12342346yt"; // I can create a function method to get the product ID from the API
-  cart.productQty =  1;
-  cart.productColor =  "red"; 
+/* step by step
+user will pick a color from the drop down menu
 
-//convert the cart object into JSON string and save it into storage
-window.localStorage.setItem("cart", JSON.stringify(cart));
+*/
 
-//retrieving the JSON string
-const jsonString = localStorage.getItem("cart");
 
-//parse the JSON string back to the JS object
-const cartObject = JSON.parse(jsonString);
-// console.log(cartObject);
+
+// // example of cart made as an object 
+// // the product information is a hard code
+// //need to figure out the actual user input to replace the hard code
+// // new Object is an example of an Object Constructor
+// const cart = new Object(); 
+//   cart.productID =  product._id; // I can create a function method to get the product ID from the API
+//   cart.productQty =  1;
+//   cart.productColor =  "red"; 
+
+// //convert the cart object into JSON string and save it into storage
+// window.localStorage.setItem("shoppingCart", JSON.stringify(cart));
+
+// //retrieving the JSON string
+// const jsonString = localStorage.getItem("shoppingCart");
+// console.log(jsonString);
+
+// //parse the JSON string back to the JS object
+// const cartObject = JSON.parse(jsonString);
+// // console.log(cartObject);
 // console.log(cartObject.productID);
-// console.log(cartObject.productQty);
-// console.log(cartObject.productColor);
+// // console.log(cartObject.productQty);
+// // console.log(cartObject.productColor);
 
-//end of cart object
+// //end of cart object
 
+// parameter for when a new item is added in the cart, I have to make sure that 
+// first part
+  //if existing cart exist
+   //use existing cart
+   //else create new cart
+//second part
+  // does item exist in cart?
+  // info i need to make sure.. product is not double
+    // prodcuct ID + product Color add to qty not create new item. // break it down to more steps
+// make sure all logic correctly other wise data's will get lost and won't save in the localStorage
+// last step - if all logic works
+//cart data will be saved in the localStorage.
+
+
+
+
+
+/* figured out the events and user input
+i got the events basic working when user picks a color console log the color
+when user picks a qty console log the actual qty picked
+when user clicks add to button console log clicked
+*/
+
+//setting a parameter if user does not pick color? 
+//use conditional execution
+//user must pick.
+  // if user does not pick 
+  //show alert box [must pick color]
+
+//event handler for adding qty
+// set a parameter for min and max qty
+//user limit between 1 and 100, no negative or beyond
+  //if user 'accidentally' input negative value or over 100
+  //show alert box [qty not allowed, pick between 1-100 only]
+
+// one or the other
+// if user picked color but not qty and hit addToCart btn
+//alert [must add qty]
+// if user pick qty and did not pick color
+//alert [must pick color].
+
+//addToCart must have both values input from user before it can be stored in local storage.
+
+// FOCUS on...
+// user input color to localStorage.
 
 
 
