@@ -84,7 +84,7 @@ chooseColor.addEventListener('change', () => {
 })
 
 /* step by step
-user will pick a color from the drop down menu
+user will pick item + color from the drop down menu
 
 */
 
@@ -115,14 +115,29 @@ user will pick a color from the drop down menu
 
 // //end of cart object
 
-// parameter for when a new item is added in the cart, I have to make sure that 
-// first part
-  //if existing cart exist
-   //use existing cart
-   //else create new cart
-//second part
-  // does item exist in cart?
-  // info i need to make sure.. product is not double
+// parameters for when a NEW item is added to the cart
+// P01 - const Cart = []; //is in global. // the const Cart Array is always trigged by addToCart eventListener.
+  //if //line code purpose: i want computer to check if cart does not exist when triggered make new, if cart exist use that existing cart, before moving on to P02 cart must exist.
+    // const cart ==  cart // use existing cart
+  //else cart !== cart
+    // new cart = []; // create new cart. 
+// P02 - param1: cart[] must exist before P02 is executed.
+  // P02 params2.1 = the cart will then get populated by these data cart = [product._id, prdQty, prdColor]; // non negotiable, must exist on P02
+  // P02 params2.2 = function checkItemsInCartforDouble(){};
+    /* 2.2.1 if item in cart == product._id == [correct data] + prdQty == [corrrect data] + prdColor  == correct [data] move on to the next code = P03
+    if not move on to 2.2.2
+    2.2.2 if item in cart == parameters
+      2.2.2[params] product.id == > 1 add to prdQty count.
+      2.2.3[params] product.id == [correct data], 
+                    prdQty == 0; //alert message
+                    prdColor == 0; //alert message;
+    */
+    //function of the P02 is to make sure when user ADD same product._id =+ on prdQtyt, // not create new item. //make sure product._id is not double.
+//P03 - new item is only == to new item if:
+  /* paramP03.1 new item will only exist if product._id does not exit in cart Array.
+      paramP03.2 new item must have unique only 1 product._id + prdColor [add data] + prdQty [add data]      
+  */
+//P04 -     
     // prodcuct ID + product Color add to qty not create new item. // break it down to more steps
 // make sure all logic correctly other wise data's will get lost and won't save in the localStorage
 // last step - if all logic works
