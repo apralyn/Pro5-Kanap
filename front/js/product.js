@@ -83,13 +83,7 @@ chooseColor.addEventListener('change', () => {
   console.log('the color you picked is' + ' ' + chooseColor.value); 
 })
 
-/* step by step
-user will pick item + color from the drop down menu
-
-*/
-
-
-
+// ----- cart Object example only ------------
 // // example of cart made as an object 
 // // the product information is a hard code
 // //need to figure out the actual user input to replace the hard code
@@ -113,10 +107,40 @@ user will pick item + color from the drop down menu
 // // console.log(cartObject.productQty);
 // // console.log(cartObject.productColor);
 
-// //end of cart object
+// --------- end of cart Object example ------------
+
+// ---------- cart logic -------------
+/* cart = [];
+cart Array is global;
+triggered by eventListener on addTocart button + (){}; // (){}; == function.
+*/
+
+/* addTocart(){};
+if (cart == cart)(){};
+  //do this:
+    // code will check if cart has correct data before moving on
+    // if cart == product._id + prdQty + prdColor
+      // do this function addToLocalStorage.
+    //if not == item cannot be added to the cart
+      //alert must have all 3 datas.
+      //please add prdcolor or please add prdQty.
+else (cart != cart)(){};
+  // add new cart. 
+MUST: use loop so the code can keep checking for new product._id == new item.
+*/
+/* cart == cart do function cartItems();
+cartItem(); will container for user input products choice.
+  if user adds specific product._id push to cartItem.
+  if user add product._id == product._id == add to prdQty [some sort of counter logic]
+  if user add prodcut._id == different == product._id == push product._id to cartItem.
+*/
+/* addToLocalStorage(){};
+*/
+
+
 
 // parameters for when a NEW item is added to the cart
-// P01 - const Cart = []; //is in global. // the const Cart Array is always trigged by addToCart eventListener.
+
   //if //line code purpose: i want computer to check if cart does not exist when triggered make new, if cart exist use that existing cart, before moving on to P02 cart must exist.
     // const cart ==  cart // use existing cart
   //else cart !== cart
@@ -134,10 +158,13 @@ user will pick item + color from the drop down menu
     */
     //function of the P02 is to make sure when user ADD same product._id =+ on prdQtyt, // not create new item. //make sure product._id is not double.
 //P03 - new item is only == to new item if:
-  /* paramP03.1 new item will only exist if product._id does not exit in cart Array.
-      paramP03.2 new item must have unique only 1 product._id + prdColor [add data] + prdQty [add data]      
+  /* paramP03.1  - new item will only exist if product._id does not exit in cart Array.
+      paramP03.2 - new item must have unique only 1 product._id + prdColor [add data] + prdQty [add data]      
   */
-//P04 -     
+//P04 - if cart == all correct data:
+  // paramP04.1 - data in cart == call cartInLocalStorage(){};
+/* cartInLocalStorage(){};
+*/
     // prodcuct ID + product Color add to qty not create new item. // break it down to more steps
 // make sure all logic correctly other wise data's will get lost and won't save in the localStorage
 // last step - if all logic works
