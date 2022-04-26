@@ -1,17 +1,20 @@
-
+//product url
 const productUrl = window.location.href;
-
+//URL object to access search params
 const newProductUrl = new URL(productUrl);
+//product ID
+const productId = newProductUrl.searchParams.get('id');
+console.log(productId);
 
-const productUrlId = newProductUrl.searchParams.get('id');
 
 
 // I got the rest of the product data from the API using fetch
-fetch ("http://localhost:3000/api/products/" + productUrlId)
+fetch ("http://localhost:3000/api/products/" + productId)
   .then ((data) => {
     return data.json(); // move .then product
   }).then ((product) => {
     console.log(product);
+    
 
     //populate the item details in this area from the API to show in the product page.
   function displaySingleProduct(product) {
@@ -57,32 +60,52 @@ fetch ("http://localhost:3000/api/products/" + productUrlId)
 -- create object named Item, inside this object Item will have these properties{product._id, prdColor, prodQty}.
 */
 
-const cart = [];
-const Item = function(prodID, prodColor, prodQty) {
+const cart = []; // an array to hold the cart items
+// console.log(cart); //array exist
+
+const Item = function(prodID, prodColor, prodQty) { // an object to represent the items in the cart.
   this.prodID = prodID;
   this.prodColor = prodColor;
   this.prodQty = prodQty;
 };
 
-/* Step 02 Functions 
--- create a function checkCartLogic()
-  -- cart will only exist if user input data is correct must have [prodID, prodColor, prodQty].
-    -- then cart exist.
-  if data is missing
-    --alert pops up [please pick right data]
-  if cart already exist
-    -- figure out parameters so that you don't get double carts or that logic and code will not create new cart. 
-    -- in basic perspective. only create new cart if cart don't exist. if cart don't exist yet then create new cart.
-  --use loop to check for non-existent and existing cart.
--- create addToCart()
-  -- given that cart Array is working properly. addToCart() should be triggered to store user input product choices. 
-  -- everytime the user adds new product store it in this function.
-  -- make sure that user can only add the product with correct user input data.
-    --if user did not add correct data alert will pop up [please pick...]
--- create storeCartInLocaStorage()
-  -- this function will happen whenever addToCart() is triggered and has correct data.
-  -- this function will store the addToCart data in the local storage.
+
+/* assuming that cart always exists... 
+-- there's no trigger for the cart array
+-- the addToCart button function is for 
+    -- adding Item to the cart only.
+-- I have to think of the logic in adding the product into the cart array.
+ addToCart() function
+i need 3 user input + prodID before I can push product item into array.
+1. prodColor
+2. prodQty
+3. click eventListener addtoCart button.
 */
+
+function addToCart() {}
+if (user input all correct data(prodID, prodColor. prodQty) {
+  cart.push = Item; // this will add item to the cart array
+} 
+else if (if user input is missing  [prodQty] || [prodColor] and user clicked on addToCart button) {
+  alert ('missing [prodQty] || [prodColor]') //|| is an or operator
+} 
+else (check if item == item) {
+   item quantity will increment, not create new item.
+} 
+}
+
+// how do i logicall work the local storage.
+function cartToLocalStorage()
+
+
+
+
+
+
+
+
+
+
 
 
 
