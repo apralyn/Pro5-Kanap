@@ -16,6 +16,8 @@ fetch ("http://localhost:3000/api/products/" + productId)
     return data.json(); // move .then product
   }).then ((product) => {
     console.log(product);
+    const prodName = product.name;
+    console.log(prodName);
     // this has the product ID that I need
     
 
@@ -51,7 +53,9 @@ fetch ("http://localhost:3000/api/products/" + productId)
     }
   })
 
-// ---- next task: cart ------
+/* ---- next task: user input data will be added to addToCart()  ------
+----------------- localStorage() --------------
+*/
 
 // I have the cart
   const cart = []; // an array to hold the cart items
@@ -68,32 +72,34 @@ fetch ("http://localhost:3000/api/products/" + productId)
   addQty.addEventListener('click', userInputEvents);
 
 function userInputEvents () {
-  const color = chooseColor.value;
-  const quantity = addQty.value;
-  // console.log(chooseColor.value + addQty.value)};
+  console.log(chooseColor.value + addQty.value);
+  return;
+}
  
 // access addToCart Button.
 const addToCartButton = document.getElementById('addToCart');
 addToCartButton.addEventListener('click', addToCart); // the addtoCart button event listener will trigger the addToCart function.
 
-/* Goal for the next hour */
+/* Goal for the next hour - done */
 /* I need to figure out how i can move the data into a function */
 
 function addToCart() {
 console.log('Youre cart has ' + productId + ' the color you chose is ' + chooseColor.value + ' and you got ' + addQty.value + ' of em.');
-
 }
-
 addToCart();
 
 
-
-
-
-
-
-
-
-
-
-
+/* next goal */
+/* toLocalStorage function and parameters 
+-- this function will...
+  -- 01 check the localStorage using get if there's items present
+  -- 02 if there's no item use set to store item into the localStorage
+-- parameters to be aware of...
+  -- localStorage only accepts key value pair which means that i need to put the data in an object.
+*/
+const cartItem = { 
+  cartItemID: productId,
+  cartItemColor: chooseColor,
+  cartItemQty: addQty
+}
+console.log(cartItem); //checking if this actually works
