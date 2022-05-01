@@ -1,3 +1,4 @@
+//URLSearch Params to get the product ID
 //product url
 const productUrl = window.location.href;
 //URL object to access search params
@@ -5,6 +6,7 @@ const newProductUrl = new URL(productUrl);
 //product ID
 const productId = newProductUrl.searchParams.get('id');
 console.log(productId);
+// this also has the product ID that I need
 
 
 
@@ -14,6 +16,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
     return data.json(); // move .then product
   }).then ((product) => {
     console.log(product);
+    // this has the product ID that I need
     
 
     //populate the item details in this area from the API to show in the product page.
@@ -50,59 +53,38 @@ fetch ("http://localhost:3000/api/products/" + productId)
 
 // ---- next task: cart ------
 
-// user input/ events
-  // pick color
-  // add qty of product
-  //'click' add to cart button
+// I have the cart
+  const cart = []; // an array to hold the cart items
+//I just want to add one item to the cart. 
 
-/* Step 01 Global Declarations
--- create a cart Array
--- create object named Item, inside this object Item will have these properties{product._id, prdColor, prodQty}.
-*/
+// I have the product ID
+  console.log(productId);
+// I have the color choice
+  let chooseColor = document.getElementById('colors');
+  chooseColor.addEventListener('change', userInputEvents);
+ 
+//qty choice
+  let addQty = document.getElementById('quantity');
+  addQty.addEventListener('click', userInputEvents);
 
-const cart = []; // an array to hold the cart items
-// console.log(cart); //array exist
+function userInputEvents () {
+  const color = chooseColor.value;
+  const quantity = addQty.value;
+  // console.log(chooseColor.value + addQty.value)};
+ 
+// access addToCart Button.
+const addToCartButton = document.getElementById('addToCart');
+addToCartButton.addEventListener('click', addToCart); // the addtoCart button event listener will trigger the addToCart function.
 
-const Item = function(prodID, prodColor, prodQty) { // an object to represent the items in the cart.
-  this.prodID = prodID;
-  this.prodColor = prodColor;
-  this.prodQty = prodQty;
-};
+/* Goal for the next hour */
+/* I need to figure out how i can move the data into a function */
 
+function addToCart() {
+console.log('Youre cart has ' + productId + ' the color you chose is ' + chooseColor.value + ' and you got ' + addQty.value + ' of em.');
 
-/* assuming that cart always exists... 
--- there's no trigger for the cart array
--- the addToCart button function is for 
-    -- adding Item to the cart only.
--- I have to think of the logic in adding the product into the cart array.
- addToCart() function
-i need 3 user input + prodID before I can push product item into array.
-1. prodColor
-2. prodQty
-3. click eventListener addtoCart button.
-*/
-
-function addToCart() {}
-if (user input all correct data(prodID, prodColor. prodQty) {
-  cart.push = Item; // this will add item to the cart array
-} 
-else if (if user input is missing  [prodQty] || [prodColor] and user clicked on addToCart button) {
-  alert ('missing [prodQty] || [prodColor]') //|| is an or operator
-} 
-else (check if item == item) {
-   item quantity will increment, not create new item.
-} 
 }
 
-// how do i logicall work the local storage.
-function cartToLocalStorage()
-
-
-
-
-
-
-
+addToCart();
 
 
 
