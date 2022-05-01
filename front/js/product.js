@@ -7,18 +7,41 @@
 // Step 03 - function that will display the product information
 
 // Step 04 - use eventlisteners to GET the user input data
-
-// Step 05 - addToCart() will check if... 
+  // user choose color
+  // user choose qty
+  // user will click addToCart Button
+// Step 4.1 what do you want the button to do? 
+      // i want the data [productId + chooseColor + addQty = userItemPick(object)] to go to the cart.
+        //where is the cart?
+          //the cart is in the localStorage
+        //how do you check if the data is correct or not?
+          // i can use loop plus nested if
+            // loop to check the cart 
+        //how does the code check if there's a cart?
+          // maybe create a function for this
+          //if yes there's a cart use existing cart, use getItem on localStorage
+          //if no setItem and create a new cart then push to localStorage?
+        
+// Step 05 - If TheCart exist 
+  //use loop to check if items in cart 
+    // if item is duplicate
+      //trigger an update on duplicate ITEM, increase the qty + update the storage
+    //if no
+      // add the item to the cart + update the storage
 
 // Step 06 - create an object cartItem that will hold the actual and correct user input data to use as a key value pair for localStorage
+  // productId
+  // user selected color = chooseColor.value
+  // user selected quantity = addQty.value
 
-// Step 07 - check localStorage using getItem to see if there's an item there, if not set the Item in the localStorage. 
+  // Step 07 - check localStorage using getItem to see if there's an item there, if not set the Item in the localStorage. 
     // do i create a function for this? 
+    // theLocalStorage() 
 
 // Step 08 - end goal
-    //  successfuly add item in cart, 
+    // successfuly add item in cart, 
     // store the item in the localStorage, 
-    // update the item values in the local storage when new items are added.
+    // update the item values in the local storage when new items are added || qty count is changed.
 
 
 // STEP01 - URLSearch Params to get the product ID
