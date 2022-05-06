@@ -98,34 +98,54 @@ fetch ("http://localhost:3000/api/products/" + productId)
   })
 //--------------------------------------- Milestone 7
 
-//STEP04 - eventListener
-// I have the product ID
-  // console.log(productId);
+//The product ID
+console.log(productId);
 
-// inputs
-// //color choice
-//    let chooseColor = document.getElementById('colors');
-//   chooseColor.addEventListener('change', addToCartBtnClick);
- 
-// //qty choice
-//   let addQty = document.getElementById('quantity');
-//   addQty.addEventListener('click', addToCartBtnClick);
+//defined user input - whatever color and quantity the user picked.
+let colorChoice = document.getElementById('colors');
+let qtyChoice = document.getElementById('quantity');
 
-//actual add to cart button
+//add to cart button - the actual add to cart button
 const addToCartButton = document.getElementById('addToCart');
-addToCartButton.addEventListener('click', addToCart); // the addtoCart button event listener will trigger the addToCart function.
+addToCartButton.addEventListener('click', addToCart); 
+/* the button will trigger the following actions inside the function. //reference used: webdev simplified logic
+1. creates a variable that holds the value of the user input[color and qty].
+2. if the input is wrong it will trigger an alert so that user will input right amount.
+3. else - if correct data is inputed by the user the function will place the data inside an object called item. 
+4. when the item is created it will be stored in the localstorage.
+*/
 
-  //reference used: webdev simplified
+  // when the user input values on color and qty and then actually clicks on the button -function
 function addToCart () {
   // let button = event.target;
-  let userColorChoice = document.getElementById('colors').value; //since this element is an input, the input value is the data I need. 
-  let userQtyChoice = document.getElementById('quantity').value;
-  console.log(userColorChoice, userQtyChoice);// instead of console.log call out a function that will execute the localstorage
-
+  let userPickColor = colorChoice.value; //since this element is an input, the input value is the data I need. 
+  let userPickQty = qtyChoice.value;
+  
+  if (userPickQty < 0) {
+    alert('not allowed, must pick between 1-100');
+    return;
+  } else { // if the other statement is not true do the following... 
+    //create the item object with the right data.
+    let item = { 
+      itemProductId: productId,
+      itemColor: userPickColor,
+      itemQty: userPickQty,  
+    }
+    // create the cart array
+    let cart = []; 
+    //set the cart array in the local storage
+    let setItemToStorage = window.localStorage.setItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
+    //create something that will check if there's a cart in the storage
+    if (cart === cart) {
+      let thereIsCartInStorage = localStorage.getItem("cart");
+    } else {
+      console.log ('uhmm hoe where is the cart');
+    }
+    
+    
+  }
 }
 addToCart();
-
-
 
 // Step 4.1 what do you want the button to do? 
       // i want the data [productId + chooseColor + addQty = userItemPick(object)] to go to the cart.
