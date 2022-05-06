@@ -134,14 +134,25 @@ function addToCart () {
     // create the cart array
     let cart = []; 
     //set the cart array in the local storage
-    let setItemToStorage = window.localStorage.setItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
+    window.localStorage.setItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
     //check if there's a cart in the storage
     if (cart === cart) {
       let thereIsCartInStorage = localStorage.getItem("cart");
       console.log('yas there is cart ' + thereIsCartInStorage + ' in the storage');
-      // cart exist push item into the cart and set the cart or update the cart
-      let addItemToCart = cart.push(item);
-      console.log(addItemToCart);
+      // cart yes exist push the item into the cart and set it to the cart 
+      cart.push(item);
+      window.localStorage.setItem("cart", JSON.stringify(cart));
+      //use loop to check logic inside the cart if item exist update, if item does not add item
+      for (let cartItems of cart) {
+          if (item === item) {
+            userPickQty ++;
+          }else {
+            cart.push(item);
+            window.localStorage.setItem("cart", JSON.stringify(cart));
+          }
+
+      }
+      //checking if item exist update the qty of the cart otherwise set the item into the cart
     } else {
       console.log ('uhmm where is the cart');
     }
