@@ -135,11 +135,15 @@ function addToCart () {
     let cart = []; 
     //set the cart array in the local storage
     let setItemToStorage = window.localStorage.setItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
-    //create something that will check if there's a cart in the storage
+    //check if there's a cart in the storage
     if (cart === cart) {
       let thereIsCartInStorage = localStorage.getItem("cart");
+      console.log('yas there is cart ' + thereIsCartInStorage + ' in the storage');
+      // cart exist push item into the cart and set the cart or update the cart
+      let addItemToCart = cart.push(item);
+      console.log(addItemToCart);
     } else {
-      console.log ('uhmm hoe where is the cart');
+      console.log ('uhmm where is the cart');
     }
     
     
