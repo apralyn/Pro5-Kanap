@@ -160,15 +160,17 @@ function addToCart () {
           - push the new item in the cart array
           - set the item in the cart to save in the local storage
       */
+      console.log(item.itemProductId);
       for (let i in item) { // using for in since item is an object
-          if (item[i].itemProductId == itemProductId) {
-            item[i].itemQty ++;
-            return; //breaks the loop
-          } else {
-          cart.push(item);
-          window.localStorage.setItem("cart", JSON.stringify(cart));
-          }
-      }
+            if (item.itemProductId == itemProductId) {
+              item.itemQty ++;
+              return; //breaks the loop
+            } else {
+            cart.push(item);
+            window.localStorage.setItem("cart", JSON.stringify(cart));
+            console.log('this ' + item + ' is in your ' + cart);
+            }
+        }
     } else { //meaning no cart in storage.
       console.log ('uhmm where is the cart');
       alert('no cart');
