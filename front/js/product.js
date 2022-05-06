@@ -152,13 +152,22 @@ function addToCart () {
       window.localStorage.setItem("cart", JSON.stringify(cart));
       
       //then use a loop to check the item inside the cart if item exist update, if not add em
-      for (let i in item) {
+      /*what do I want this to do
+      the loop with check each item in the cart
+      if - the said item product id === similar product id
+          - increase the qty of that item
+      else 
+          - push the new item in the cart array
+          - set the item in the cart to save in the local storage
+      */
+      for (let i in item) { // using for in since item is an object
           if (item[i].itemProductId == itemProductId) {
             item[i].itemQty ++;
             return; //breaks the loop
-          }
+          } else {
           cart.push(item);
           window.localStorage.setItem("cart", JSON.stringify(cart));
+          }
       }
     } else { //meaning no cart in storage.
       console.log ('uhmm where is the cart');
