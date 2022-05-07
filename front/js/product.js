@@ -131,7 +131,7 @@ function addToCart () {
   } 
   else { // if the other statement is not true do these... 
         //create the item object with the right user input and productId.
-      let item = { 
+      let itemToAdd = { 
         itemProductId: productId,
         itemColor: userPickColor,
         itemQty: userPickQty,  
@@ -139,16 +139,16 @@ function addToCart () {
         // create the cart array
       let cart = [];    
         //then set the cart in the local storage
-      window.localStorage.setItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
+      window.localStorage.getItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
         
         //then check using if if there's a cart in the storage
-      if (cart === cart) { //yes cart exist do these...
+      if (cart != cart) { //yes cart exist do these...
           //get the cart
           let cartInStorage = localStorage.getItem("cart");
           console.log('yas there is cart ' + cartInStorage + ' in the storage');
           
           // push(add) the item to cart  
-          cart.push(item);
+          cart.push(itemToAdd);
           //set that item to cart in storage
           window.localStorage.setItem("cart", JSON.stringify(cart));
           // console.log(item.itemProductId);// checking why the console error saying itemProductId is not
@@ -164,17 +164,18 @@ function addToCart () {
                 -- issue---
                   --- if user adds a new product does not get added in the array, it just replaces with a different item.
                 */
-          for (let i in item) { // using for in since item is an object
-                if (item.itemProductId === item.itemProductId) { 
-                    if(item.itemColor === item.itemColor) {
-                      item.itemQty ++;
+          for (let cartItem of cart) { // using for in since item is an object
+            console.log('looping through cart on item', cartItem);
+                if (itemToAdd.itemProductId === cartItem.itemProductId) { 
+                    if(itemToAdd.itemColor === cartItem.itemColor) {
+                      itemToAdd.itemQty ++;
                       return;
                     } //breaks the loop
                 } 
-                else if (item.itemProductId === item.itemProductId) { // if the itemProductId === itemProductId + itemColor != itemColor, then do this add new item into the array + setItem cart in localStorage
-                    if (item.itemColor != itemColor) {
-                      cart.push(new item);
-                      window.localStorage.setItem("cart", JSON.stringify(cart));
+                else if (itemToAdd.itemProductId === itemToAdd.itemProductId) { // if the itemProductId === itemProductId + itemColor != itemColor, then do this add new item into the array + setItem cart in localStorage
+                    if (itemToAdd.itemColor != itemColor) {
+                      cart.push(new itemToAdd);
+                      window.localStorage.setItem("cart", JSON.stringify(cart)); //replace 
                     } 
                 }
           }
