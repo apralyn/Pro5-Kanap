@@ -54,6 +54,7 @@ const newProductUrl = new URL(productUrl);
 const productId = newProductUrl.searchParams.get('id');
 
 
+
 //STEP02 Fetch API + productId
 // I got the rest of the product data from the API using fetch
 fetch ("http://localhost:3000/api/products/" + productId)
@@ -124,23 +125,23 @@ addToCartButton.addEventListener('click', addToCart);
 function addToCart () {
   let userPickColor = colorChoice.value; //since this element is an input, the input value is the uder input data I needed. 
   let userPickQty = qtyChoice.value;
+  // create the cart array
+  let cart = [];    
+  //then set the cart in the local storage
+  window.localStorage.getItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
   
-  if (userPickQty < 0) {
-    alert('not allowed, must pick between 1-100');
+  if (userPickColor = " ") {
+      if (userPickQty < 0) { // need to fix this
+
     return;
-  } 
-  else { // if the other statement is not true do these... 
+    }
+  } else { // if the other statement is not true do these... 
         //create the item object with the right user input and productId.
       let itemToAdd = { 
         itemProductId: productId,
         itemColor: userPickColor,
         itemQty: userPickQty,  
-      }
-        // create the cart array
-      let cart = [];    
-        //then set the cart in the local storage
-      window.localStorage.getItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
-        
+      }        
         //then check using if if there's a cart in the storage
       if (cart != cart) { //yes cart exist do these...
           //get the cart
@@ -182,7 +183,7 @@ function addToCart () {
       } 
       else {
       console.log ('uhmm where is the cart');
-      alert('no cart');    
+      // alert('no cart');    
       }
   }
 }
