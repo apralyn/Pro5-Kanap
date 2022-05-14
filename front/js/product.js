@@ -54,14 +54,14 @@ const newProductUrl = new URL(productUrl);
 const productId = newProductUrl.searchParams.get('id');
 
 
-
-//STEP02 Fetch API + productId
+//can i put the fetch in a function and call it somewhere?
+//STEP02 Fetch API + productId 
 // I got the rest of the product data from the API using fetch
 fetch ("http://localhost:3000/api/products/" + productId)
   .then ((data) => {
     return data.json();
   }).then ((product) => {
-    
+    console.log(product);
     //STEP03 - displaySingleProduct()
     //populate the item details in this area from the API to show in the product page.
     function displaySingleProduct(product) {
@@ -92,7 +92,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
         }
     }
     displaySingleProduct(product);
-    //this loop is for?
+    //why is there an error in this loop? i need to store the value of the product in a variable, figure out how to.
     for (let item of product) {
         displaySingleProduct(item);
       }
@@ -104,87 +104,95 @@ fetch ("http://localhost:3000/api/products/" + productId)
 --- store the cart in the localStorage ---
 --- update/add new item into the cart ---
 */
-
-    //The product ID
-// console.log(productId);
-
-    //defined user input - whatever color and quantity the user picked.
+// global variables
+    // The product ID
+console.log(productId);
+    //defined user input - whatever color and quantity the user picked.global access
 let colorChoice = document.getElementById('colors');
 let qtyChoice = document.getElementById('quantity');
-
     //add to cart button - the actual add to cart button
 const addToCartButton = document.getElementById('addToCart');
 addToCartButton.addEventListener('click', addToCart); 
-    /* the button will trigger the following actions inside the function. //reference used: webdev simplified logic
-    1. creates a variable that holds the value of the user input[color and qty].
-    2. if the input is wrong it will trigger an alert so that user will input right amount.
-    3. else - if correct data is inputed by the user the function will place the data inside an object called item. 
-    4. when the item is created it will be stored in the localstorage.
-    */
-  
+        /* the button will trigger the following actions inside the function. //reference used: webdev simplified logic
+        1. creates a variable that holds the value of the user input[color and qty].
+        2. if the input is wrong it will trigger an alert so that user will input right amount.
+        3. else - if correct data is inputed by the user the function will place the data inside an object called item. 
+        4. when the item is created it will be stored in the localstorage.
+        */
+      
 function addToCart () {
-  let userPickColor = colorChoice.value; //since this element is an input, the input value is the uder input data I needed. 
-  let userPickQty = qtyChoice.value;
-  // create the cart array
-  let cart = [];    
-  //then set the cart in the local storage
-  window.localStorage.getItem("cart", JSON.stringify(cart)); //the cart is set in the localStorage [/]
-  
-  if (userPickColor = " ") {
-      if (userPickQty < 0) { // need to fix this
+      let userPickColor = colorChoice.value; //since this element is an input, the input value is the uder input data I needed. 
+      let userPickQty = qtyChoice.value;
+      // create the cart array
+      let cart = [];
 
-    return;
-    }
-  } else { // if the other statement is not true do these... 
-        //create the item object with the right user input and productId.
-      let itemToAdd = { 
-        itemProductId: productId,
-        itemColor: userPickColor,
-        itemQty: userPickQty,  
-      }        
-        //then check using if if there's a cart in the storage
-      if (cart != cart) { //yes cart exist do these...
-          //get the cart
-          let cartInStorage = localStorage.getItem("cart");
-          console.log('yas there is cart ' + cartInStorage + ' in the storage');
-          
-          // push(add) the item to cart  
+      
+      //check if cart is in local storage. 
+      let isThereCart = localStorage.getItem('cart');
+      // console.log(isThereCart); //in the initial console.log if there is no cart the value of the variable isThereCart is null, therefore
+      if (isThereCart == null) { // this will create the cart the moment any product is loaded
+        window.localStorage.setItem('cart',JSON.stringify(cart)); 
+      } else { // if the cart already exit then use that cart
+        window.localStorage.getItem('cart');
+        console.log(isThereCart);
+        addItems();
+      }
+      
+
+      function addItems() {
+        if (userPickColor.length == 0) {
+          console.log('user did not pick any color');
+        } else { 
+          console.log('the color you picked is ' + userPickColor);
+        }
+        
+        if(userPickQty.value <= 0) {
+          console.log('user must pick quatity'); // how do i block the code from moving on if this is empty
+        }else {
+          console.log('you got ', userPickQty + ' of this ', productId );        
+        
+
+        // the values of the user choice is stored in an object
+        // the objrct itemToAdd has user input value which varies.    
+        let itemToAdd = { 
+            itemProductId: productId,
+            itemColor: userPickColor,
+            itemQty: userPickQty,  
+          }
+        
+
+        // this will add an item to the array
           cart.push(itemToAdd);
-          //set that item to cart in storage
-          window.localStorage.setItem("cart", JSON.stringify(cart));
-          // console.log(item.itemProductId);// checking why the console error saying itemProductId is not
+          // console.log ('your cart has', cart + 'stuff in it.');
+        // set the the object inside the array that is stored in the local storage
+          window.localStorage.setItem("cart", JSON.stringify(cart)); 
           
-          //then this loop will check the item in the cart inside the storage for...  
-            // if item exist update, if not add the item
-                /*
-                the loop with check each the object item in the cart
-                  if - the item productId ===  productId and itemColor === itemColor
-                      - increase the qty of that item
-                  else 
-                      - push(add) the item in the cart array re-setItem in localStorage(updated).
-                -- issue---
-                  --- if user adds a new product does not get added in the array, it just replaces with a different item.
-                */
-          for (let cartItem of cart) { // using for in since item is an object
-            console.log('looping through cart on item', cartItem);
-                if (itemToAdd.itemProductId === cartItem.itemProductId) { 
-                    if(itemToAdd.itemColor === cartItem.itemColor) {
+          let cartInfo = JSON.parse(isThereCart);
+          console.log ('your cart has', cartInfo + 'stuff in it.');
+          // i can't figure out how to add different obj in the array.
+
+          for (let cartItem of cart) { // using for of since cart is an array
+            console.log('looping through item', cartItem);
+            if (itemToAdd.itemProductId != cartItem.itemProductId) { 
+                cart.push(2);
+                    if(itemToAdd.itemColor == cartItem.itemColor) {
                       itemToAdd.itemQty ++;
-                      return;
+                      break;
                     } //breaks the loop
                 } 
-                else if (itemToAdd.itemProductId === itemToAdd.itemProductId) { // if the itemProductId === itemProductId + itemColor != itemColor, then do this add new item into the array + setItem cart in localStorage
+                else  
+                if (itemToAdd.itemProductId == itemToAdd.itemProductId) { // if the itemProductId === itemProductId + itemColor != itemColor, then do this add new item into the array + setItem cart in localStorage
                     if (itemToAdd.itemColor != itemColor) {
-                      cart.push(new itemToAdd);
+                      // this should add the same product in the cart but with a different color
+                      cart.push(itemToAdd);
+                      //then i want to update the cart in the local storage with a new added item.
                       window.localStorage.setItem("cart", JSON.stringify(cart)); //replace 
                     } 
                 }
-          }
-      } 
-      else {
-      console.log ('uhmm where is the cart');
-      // alert('no cart');    
+        }
       }
-  }
+      
+    }
 }
 addToCart();
+
