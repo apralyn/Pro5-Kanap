@@ -5,6 +5,7 @@ Displaying a recap table of purchases on the cart page
     The cart page will display the user added items/products choice. --
  |Step-by-Step|
     -- use getItem to pull the cart from localStorage
+      what if there's nothing on the cart/ or there's no cart how do i structure this logic
     -- use the data from JSON.parse(jsonString) to...
         --create and insert the elements on the cart page
     -- figure out how the cart page is suppose to look.
@@ -15,6 +16,15 @@ Displaying a recap table of purchases on the cart page
     create a function displayCart()
      - this function will retrieve the product list stored in local storage and update the cart.html
 */
+let getCart = window.localStorage.getItem('cart');
+console.log(getCart);
+console.log(cart.length);
+
+
+
+
+
+
 
 //Milestone 9
 /*
