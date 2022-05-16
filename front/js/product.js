@@ -195,4 +195,91 @@ function addToCart () {
     }
 }
 addToCart();
+// 05-15
+//-------Milestone 7-----------
+/*
+--- use eventlistener to 
+  --- add the items to the cart ---
+--- store the cart in the localStorage ---
+--- update/add new item into the cart ---
+*/
 
+// this function will automatically run -is there a cart in local storage- logic
+//before an item can be added there needs to be a cart in the storage
+  // items cannot be stored anywhere if there is no cart in the storage.
+  //global scopes
+      // The product ID
+      console.log(productId);
+      //defined user input - whatever color and quantity the user picked.global access
+      let colorChoice = document.getElementById('colors');
+      let qtyChoice = document.getElementById('quantity');
+      //add to cart button - the actual add to cart button
+      const addToCartButton = document.getElementById('addToCart');
+      addToCartButton.addEventListener('click', () => {
+        isThereCartInLocalStorage();
+        addToCart();
+      }); 
+          /* the button will trigger the following actions inside the function. //reference used: webdev simplified logic
+          1. creates a variable that holds the value of the user input[color and qty].
+          2. if the input is wrong it will trigger an alert so that user will input right amount.
+          3. else - if correct data is inputed by the user the function will place the data inside an object called item. 
+          4. when the item is created it will be stored in the localstorage.
+          */
+      let cart = [];
+      //-- end of global scopes
+      
+      // -- functions -- 
+      
+      //cart check
+      // I just want this as an inital cart set up
+      function isThereCartInLocalStorage(){
+        let isThereCart = localStorage.getItem('cart');
+        // console.log(isThereCart); //in the initial console.log if there is no cart the value of the variable isThereCart is null, therefore
+        if (isThereCart == null) { // this will create the cart the moment any product is loaded
+         window.localStorage.setItem('cart',JSON.stringify(cart));//set item will create a NEW Cart.
+         console.log('null here') 
+        } else { // the cart will exist
+          cart = window.localStorage.getItem('cart');
+          console.log(cart);
+        }
+      }
+      isThereCartInLocalStorage();
+      
+      
+      //add to cart only      
+      function addToCart() {
+        //needs data
+        // logic of the item to be added
+        // either add directly to the cart
+        //or call updateCart();
+      
+        // this is the data for me to add to the cart
+        let userPickColor = colorChoice.value; //since this element is an input, the input value is the uder input data I needed. 
+        let userPickQty = qtyChoice.value;
+        let itemToAdd = { 
+          itemProductId: productId,
+          itemColor: userPickColor,
+          itemQty: userPickQty,  
+        }
+        
+        console.log(itemToAdd);
+      
+        // logic behind user missing inputs.
+        if (userPickColor == 0 || userPickQty == 0)  {
+          alert('you forgot something')
+        } 
+        else {
+          // then just add user input to the cart 
+          cart.push(itemToAdd);
+          console.log('the color you picked is ' + userPickColor + '  and you got ', userPickQty, ' of this item ', productId); 
+        }
+        let updateCart = function (){
+        console.log(cart);
+        }
+      }
+      addToCart();
+      
+        //if i want to make a function about cart update that I can reuse it needs to be structured...
+       // first getItem ('cart') because i know there is a cart
+          //push the newItemt to the cart array
+          //the only time this will set that Item.
