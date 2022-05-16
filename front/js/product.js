@@ -133,7 +133,7 @@ function addToCart () {
       if (isThereCart == null) { // this will create the cart the moment any product is loaded
         window.localStorage.setItem('cart',JSON.stringify(cart)); 
       } else { // if the cart already exit then use that cart
-        window.localStorage.getItem('cart');
+        cart = window.localStorage.getItem('cart');
         console.log(isThereCart);
         addItems();
       }
