@@ -61,7 +61,6 @@ fetch ("http://localhost:3000/api/products/" + productId)
   const addToCartButton = document.getElementById('addToCart');
   addToCartButton.addEventListener('click', () => {
      addToCart();
-     
   }); 
     /* the button will trigger the following actions inside the function. //reference used: webdev simplified logic
        1. creates a variable that holds the value of the user input[color and qty].
@@ -74,6 +73,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
   function addToCart() {
+
     //user input data
     let userPickColor = colorChoice.value; //since this element is an input, the input value is the uder input data I needed. 
     let userPickQty = qtyChoice.value;
@@ -88,17 +88,52 @@ fetch ("http://localhost:3000/api/products/" + productId)
     if (!itemToAdd.itemColor || !itemToAdd.itemQty )  {
       alert('you forgot something')
     } else {
-      console.log(itemToAdd);
-      cart.push(itemToAdd); // this adds any of the item i picked in particular product id into the cart
-      console.log(cart);
-    }
-    for (let itemInCart of cart) {
-      if (itemInCart.itemProductId == itemToAdd.itemProductId && itemInCart.itemColor == itemToAdd.itemColor) {
-        itemInCart.itemQty ++;
-        break;
-      } else {
-        console.log(itemToAdd);
-      }
-    }   
+      // console.log(itemToAdd);
+      cart.push(itemToAdd);
+      cartStatus();
+    }; // this adds any of the item i picked in particular product id into the cart
+    // console.log(cart);
+    // console.log(cart[2].itemColor);
+    // console.log(cart[1].itemQty);
+    // console.log(cart[0].itemProductId);
+    // console.log(cart.length);
+    
+    cartStatus = () => {
+      if (cart != 0 ) {
+        for (let eachItem of cart) {
+          // console.log(itemInCart);
+          if (eachItem.itemProductId == itemToAdd.itemProductId   &&  eachItem.itemColor == itemToAdd.itemColor) {
+            eachItem.itemQty ++; //i know this works because i can see the qty counter go up. 
+            break;
+          } else {
+            console.log('your logic is not working');
+            console.log(cart);
+          }
+        }
+        // console.log('cart is not e to zero', ' and you got ', cart.length, ' in your cart.');
+      } 
+      // return;
+      // else {
+      //   console.log('cart is equal to zero');
+      // }
+    } 
+    cartStatus();
+
   }
   addToCart();
+
+  // const saveToCart =  window.localStorage.setItem('cart', JSON.stringify(cart));
+  
+    //  {
+    //   if (itemInCart.itemProductId == itemToAdd.itemProductId && itemInCart.itemColor == itemToAdd.itemColor) {
+    //     itemInCart.itemQty ++;
+    //     console.log('loopyyyy');
+    //     break;
+    //   } else {
+    //     console.log(itemToAdd);
+    //   }
+    // }
+
+  
+
+    
