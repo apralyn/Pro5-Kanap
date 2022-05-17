@@ -89,16 +89,16 @@ fetch ("http://localhost:3000/api/products/" + productId)
       alert('you forgot something')
     } else {
       console.log(itemToAdd);
-      cart.push(itemToAdd);
+      cart.push(itemToAdd); // this adds any of the item i picked in particular product id into the cart
       console.log(cart);
-      // console.log('the color you picked is ' + userPickColor + '  and you got ', userPickQty, ' of this item ', productId);
-      // cart.push(itemToAdd);
     }
-    
-    // then just add user input to the cart 
-    
+    for (let itemInCart of cart) {
+      if (itemInCart.itemProductId == itemToAdd.itemProductId && itemInCart.itemColor == itemToAdd.itemColor) {
+        itemInCart.itemQty ++;
+        break;
+      } else {
+        console.log(itemToAdd);
+      }
+    }   
   }
   addToCart();
-
-  
-  // console.log(cart);
