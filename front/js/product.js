@@ -41,9 +41,9 @@ fetch ("http://localhost:3000/api/products/" + productId)
     displaySingleProduct(product);
     
     //why is there an error in this loop? i need to store the value of the product in a variable, figure out how to.
-    for (let item of product) {
-        displaySingleProduct(item);
-      }
+    // for (let item of product) {
+    //     displaySingleProduct(item);
+    //   }
   })
 //------------end of fetch
     //STEP03 - displaySingleProduct()
@@ -54,86 +54,55 @@ fetch ("http://localhost:3000/api/products/" + productId)
   console.log(productId);
    
     //user input - whatever color and quantity the user picked.global access
+  
+
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  
+
+    //add to cart button click event
+  const addToCartButton = document.getElementById('addToCart');
+  addToCartButton.addEventListener('click', function() {   
+  
   let colorChoice = document.getElementById('colors');
   let qtyChoice = document.getElementById('quantity');
+  let colorValue = colorChoice.value;
+  let qtyValue = qtyChoice.value;
 
-    //add to cart button - the actual add to cart button
-  const addToCartButton = document.getElementById('addToCart');
-  addToCartButton.addEventListener('click', () => {
-     addToCart();
-  }); 
-    /* the button will trigger the following actions inside the function. //reference used: webdev simplified logic
-       1. creates a variable that holds the value of the user input[color and qty].
-       2. if the input is wrong it will trigger an alert so that user will input right amount.
-       3. else - if correct data is inputed by the user the function will place the data inside an object called item. 
-       4. when the item is created it will be stored in the localstorage.
-       */
+  const itemToAdd = {
+      id: productId,
+      color: colorValue,
+      qty: qtyValue,
+    }
+    console.log(itemToAdd);
   
-    // the issue that i'm having is that the cart array does not get re-used it keeps creating a new array.
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-  function addToCart() {
-
-    //user input data
-    let userPickColor = colorChoice.value; //since this element is an input, the input value is the uder input data I needed. 
-    let userPickQty = qtyChoice.value;
     
-    let itemToAdd = { 
-      itemProductId: productId,
-      itemColor: userPickColor,
-      itemQty: userPickQty,  
+  let isCartEmpty = cart == 0;
+  if (isCartEmpty) {
+    //add to cart 
+      cart.push(itemToAdd); 
+    //save to cart
+      window.localStorage.setItem('cart',JSON.stringify(cart));
+      console.log(cart);
+    } // if cart is not empty update the item qty in cart 
+  else {
+    let foundExactItem = false; // boolean flad
+    for (let i = 0; i < cart.length; i++) {
+      const sameExactItem = cart[i].id === itemToAdd.id && cart[i].color === itemToAdd.color;
+      if (sameExactItem){ 
+        foundExactItem = true;
+        cart[i].qty++;// update and add from user input qty.
+        window.localStorage.setItem('cart',JSON.stringify(cart));
+      } 
+    }
+    //if i didnt find the same exact item
+    //push item to add to cart
+    if(!foundExactItem) {
+      cart.push(itemToAdd);
+      window.localStorage.setItem('cart',JSON.stringify(cart));
     }
     
-    // logic behind user missing inputs.
-    if (!itemToAdd.itemColor || !itemToAdd.itemQty )  {
-      alert('you forgot something')
-    } else {
-      // console.log(itemToAdd);
-      cart.push(itemToAdd);
-      cartStatus();
-    }; // this adds any of the item i picked in particular product id into the cart
-    // console.log(cart);
-    // console.log(cart[2].itemColor);
-    // console.log(cart[1].itemQty);
-    // console.log(cart[0].itemProductId);
-    // console.log(cart.length);
-    
-    cartStatus = () => {
-      if (cart != 0 ) {
-        for (let eachItem of cart) {
-          // console.log(itemInCart);
-          if (eachItem.itemProductId == itemToAdd.itemProductId   &&  eachItem.itemColor == itemToAdd.itemColor) {
-            eachItem.itemQty ++; //i know this works because i can see the qty counter go up. 
-            break;
-          } else {
-            console.log('your logic is not working');
-            console.log(cart);
-          }
-        }
-        // console.log('cart is not e to zero', ' and you got ', cart.length, ' in your cart.');
-      } 
-      // return;
-      // else {
-      //   console.log('cart is equal to zero');
-      // }
-    } 
-    cartStatus();
-
   }
-  addToCart();
-
-  // const saveToCart =  window.localStorage.setItem('cart', JSON.stringify(cart));
   
-    //  {
-    //   if (itemInCart.itemProductId == itemToAdd.itemProductId && itemInCart.itemColor == itemToAdd.itemColor) {
-    //     itemInCart.itemQty ++;
-    //     console.log('loopyyyy');
-    //     break;
-    //   } else {
-    //     console.log(itemToAdd);
-    //   }
-    // }
-
+  }); 
   
-
-    
