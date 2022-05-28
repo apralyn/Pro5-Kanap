@@ -16,9 +16,34 @@ Displaying a recap table of purchases on the cart page
     create a function displayCart()
      - this function will retrieve the product list stored in local storage and update the cart.html
 */
-let getCart = window.localStorage.getItem('cart');
-console.log(getCart);
-console.log(cart.length);
+let getCart = JSON.parse(localStorage.getItem('cart'));
+
+let displayItems = document.querySelector('#cart__item');
+const productUrl = window.location.href;
+//URL object to access search params
+const newProductUrl = new URL(productUrl);
+//product ID
+const productId = newProductUrl.searchParams.get('id');
+fetch("http://localhost:3000/api/products/" + productId)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        //if the cart is empty (
+let emptyCart = true;
+if (getCart == 0) {
+   emptyCart = false;
+   alert ('cart is empty');
+} 
+else { //cart is not empty
+   for (i = 0; i < getCart.length; i++) {
+      let items = getCart[i];
+   }
+   console.log(getCart);
+}
+      })
+
+
+//emptyCart = true diplay the cart
 
 
 

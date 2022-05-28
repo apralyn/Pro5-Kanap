@@ -86,7 +86,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
       console.log(cart);
     } // if cart is not empty update the item qty in cart 
   else {
-    let foundExactItem = false; // boolean flad
+    let foundExactItem = false; // boolean flag
     for (let i = 0; i < cart.length; i++) {
       const sameExactItem = cart[i].id === itemToAdd.id && cart[i].color === itemToAdd.color;
       if (sameExactItem){ 
@@ -100,8 +100,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
     if(!foundExactItem) {
       cart.push(itemToAdd);
       window.localStorage.setItem('cart',JSON.stringify(cart));
-    }
-    
+    }  
   }
   
   }); 
