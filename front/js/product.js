@@ -1,6 +1,7 @@
 const productUrl = window.location.href;
 //URL object to access search params
 const newProductUrl = new URL(productUrl);
+console.log(newProductUrl);
 //product ID
 const productId = newProductUrl.searchParams.get('id');
 
@@ -10,7 +11,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
   .then ((data) => {
     return data.json();
   }).then ((product) => {
-    // console.log(product);
+    console.log(product);
     function displaySingleProduct(product) {
     
       let productTitle = document.getElementById('title');
@@ -73,10 +74,10 @@ fetch ("http://localhost:3000/api/products/" + productId)
       id: productId,
       color: colorValue,
       qty: qtyValue,
+      price: product.price,
     }
-    console.log(itemToAdd);
+    // console.log(itemToAdd);
   
-    
   let isCartEmpty = cart == 0;
   if (isCartEmpty) {
     //add to cart 
@@ -102,6 +103,6 @@ fetch ("http://localhost:3000/api/products/" + productId)
       window.localStorage.setItem('cart',JSON.stringify(cart));
     }  
   }
-  
+
   }); 
   
