@@ -26,13 +26,13 @@ apiProductsInfo = {
 
 
 const allDataInObj = {};
-allDataInObj.id = localStorageItems.id;
-allDataInObj.color = localStorageItems.color;
-allDataInObj.qty =  localStorageItems.qty;
-allDataInObj.img = apiProductsInfo.img;
-allDataInObj.alt = apiProductsInfo.alt;
-allDataInObj.name =  apiProductsInfo.name;
-allDataInObj.price = apiProductsInfo.price;
+allDataInObj.id = '0987';
+allDataInObj.color = 'Red';
+allDataInObj.qty =  100;
+allDataInObj.img = 'apple.img';
+allDataInObj.alt = 'Photo of an apple';
+allDataInObj.name =  'APPLE';
+allDataInObj.price = 999;
 console.log(allDataInObj);
 
 
