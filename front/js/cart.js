@@ -1,26 +1,13 @@
-/*
-Displaying a recap table of purchases on the cart page
- |Goal| 
-    The cart page will display the user added items/products choice. --
- |Step-by-Step|
-    -- use getItem to pull the cart from localStorage
-      what if there's nothing on the cart/ or there's no cart how do i structure this logic
-    -- use the data from JSON.parse(jsonString) to...
-        --create and insert the elements on the cart page
-    -- figure out how the cart page is suppose to look.
-    -- check your parameters/conditions
-        - don’t create any duplicates of the various elements in the recap table (the cart).
-        - If there are several identical products (same ID + same colour) they should be listed on the same row in the table.
- |Extra|
-    create a function displayCart()
-     - this function will retrieve the product list stored in local storage and update the cart.html
-*/
 
+// 
 let getCart = JSON.parse(localStorage.getItem('cart'));
 console.log(getCart);
 
 fetch("http://localhost:3000/api/products/")
-//------_Start_-----
+
+
+function createItemCard() {
+   //------_Start_-----
 /*
 <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
 */
@@ -78,9 +65,9 @@ cartItemContent.appendChild(cartItemDescription);
 let cartItemName = document.createElement('h2');
 let cartItemColor = document.createElement('p');
 let cartItemPrice = document.createElement('p');
-cartItemDescription.appendChild(cartItemName).innerHTML = 'Chair';
-cartItemDescription.appendChild(cartItemColor).innerHTML = 'Blue';
-cartItemDescription.appendChild(cartItemPrice).innerHTML = '$2.99';
+cartItemDescription.appendChild(cartItemName).innerHTML = 'Name of the product';
+cartItemDescription.appendChild(cartItemColor).innerHTML = 'Green';
+cartItemDescription.appendChild(cartItemPrice).innerHTML = '&#836442.00';
 
 console.log('name color and price of item in', cartItemDescription);
 //-------description end--------
@@ -111,9 +98,14 @@ cartItemContentSettings.appendChild(cartItemContentSettingsQty);
 //<input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
 let itemQty = document.createElement('p');
 let inputItemQty = document.createElement('input');
-inputItemQty.classList.add('itemQuantity');
-cartItemContentSettingsQty.appendChild(itemQty).innerHTML = 'Qte: 20';
-cartItemContentSettingsQty.appendChild(inputItemQty).innerHTML = '2';
+inputItemQty.setAttribute("type", "number");
+inputItemQty.classList.add('itemQuantity'); 
+inputItemQty.setAttribute("name", "itemQuantity");
+inputItemQty.setAttribute("min", 1);
+inputItemQty.setAttribute("max", 100);
+inputItemQty.setAttribute("value", 42);
+cartItemContentSettingsQty.appendChild(itemQty).innerHTML = 'Qt&#233; : ';
+cartItemContentSettingsQty.appendChild(inputItemQty).innerHTML = '';
 
 //<div class="cart__item__content__settings__delete">
 let cartItemContentSettingsDelete = document.createElement('div');
@@ -126,5 +118,7 @@ deleteItem.classList.add('deleteItem');
 cartItemContentSettingsDelete.appendChild(deleteItem).innerHTML = 'Delete';
 //------ setting end-----------
 //-------_End_ div(2)----------
-console.log(cartItemHolder);
+console.log(cartItemHolder.outerHTML);
 
+}
+createItemCard();

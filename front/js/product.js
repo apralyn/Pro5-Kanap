@@ -74,7 +74,6 @@ fetch ("http://localhost:3000/api/products/" + productId)
       id: productId,
       color: colorValue,
       qty: qtyValue,
-      price: product.price,
     }
     // console.log(itemToAdd);
   
