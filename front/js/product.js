@@ -10,27 +10,27 @@ const productId = newProductUrl.searchParams.get('id');
 fetch ("http://localhost:3000/api/products/" + productId)
   .then ((data) => {
     return data.json();
-  }).then ((product) => {
-    console.log(product);
-    function displaySingleProduct(product) {
+  }).then ((products) => {
+    console.log(products);
+    function displaySingleProduct(products) {
     
       let productTitle = document.getElementById('title');
-      productTitle.innerHTML = product.name;
+      productTitle.innerHTML = products.name;
       
       let productPrice = document.getElementById('price');
-      productPrice.innerHTML = product.price;
+      productPrice.innerHTML = products.price;
       
       let productDescription = document.getElementById('description');
-      productDescription.innerHTML = product.description;
+      productDescription.innerHTML = products.description;
       
       let productItem = document.querySelector('.item__img');
       let productImg = document.createElement('img');
-      productImg.setAttribute('src', product.imageUrl);
-      productImg.setAttribute('alt', product.altTxt);
+      productImg.setAttribute('src', products.imageUrl);
+      productImg.setAttribute('alt', products.altTxt);
       productItem.appendChild(productImg); 
   
       //loop for the color options
-      for (let color of product.colors) {  
+      for (let color of products.colors) {  
         const productColor = document.querySelector('#colors');
         const colorOption = document.createElement('option');
         colorOption.setAttribute('value', color);
@@ -39,7 +39,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
           
         }
     }
-    displaySingleProduct(product);
+    displaySingleProduct(products);
     
     //why is there an error in this loop? i need to store the value of the product in a variable, figure out how to.
     // for (let item of product) {
@@ -52,7 +52,7 @@ fetch ("http://localhost:3000/api/products/" + productId)
   
   //milestore7 death of me
    // The product ID
-  console.log(productId);
+  console.log("the id of the current item is ", productId);
    
     //user input - whatever color and quantity the user picked.global access
   
