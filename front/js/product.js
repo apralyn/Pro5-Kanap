@@ -1,17 +1,15 @@
-const productUrl = window.location.href;
-//URL object to access search params
+const productUrl = window.location.href; //URL object to access search params
 const newProductUrl = new URL(productUrl);
 console.log(newProductUrl);
 //product ID
 const productId = newProductUrl.searchParams.get('id');
 
-//STEP02 Fetch API + productId 
-// I got the rest of the product data from the API using fetch
+//Fetch API + productId 
 fetch ("http://localhost:3000/api/products/" + productId)
   .then ((data) => {
     return data.json();
   }).then ((products) => {
-    console.log(products);
+    console.log(products); // all products data is store on "products"
     function displaySingleProduct(products) {
     
       let productTitle = document.getElementById('title');
@@ -35,9 +33,8 @@ fetch ("http://localhost:3000/api/products/" + productId)
         const colorOption = document.createElement('option');
         colorOption.setAttribute('value', color);
         productColor.appendChild(colorOption);
-        colorOption.innerHTML = color;
-          
-        }
+        colorOption.innerHTML = color; 
+      }
     }
     displaySingleProduct(products);
     

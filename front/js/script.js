@@ -1,8 +1,8 @@
-// Request data from API
+// Request/get data from API
 fetch ('http://localhost:3000/api/products')
-  .then ((data) => { // data is returned as json format
-    return data.json();  
-  }) .then ((products) => { // products contains all the data from the API
+  .then ((data) => { 
+    return data.json(); // all products data is returned as json format 
+  }) .then ((products) => { // "products" contains all the products data from the API
     console.log(products);
   
     for(let product of products) {

@@ -1,73 +1,34 @@
-// >>>>>>>> @PRODUCTS <<<<<<<<<<
-// all products ready and available to fill data on cart items
-// side not, figure out how to isolate the fetch but can still use the elements/data globally.
-   // maybe ask tyler how to do it. otherwise I have to write all the codes inside the fetch function.
+// >>>>>>>> CART <<<<<<<<<<
+   const cart = JSON.parse(localStorage.getItem('cart'));
+      console.log("items in your cart ", cart);
+   // for (const items of cart) {
+   //    console.log("all cart item IDs ", items.id);//all the ids from the items in the cart
+   // }
+   
+   
+// will check if isCartEmpty or NOT.
+   let isCartEmpty = cart === null; // always "null" when localStorage is empty/emptied.
+   if (isCartEmpty) {
+      console.log("the CART inside the local storage is currently empty.");
+      // alert("The cart is empty!");
+   } else {
+      console.log("you have ", cart.length, " items in your cart");
+      // try and match the cart id to the product id and console log it.
+   }
+
+// >>>>>>>> PRODUCTS <<<<<<<<<<
 fetch("http://localhost:3000/api/products/")
-   .then ((data) => {
-      return data.json();
-   }).then ((products) => {
-      console.log("fetched products", products);
-      
-      // >>>>>> FOR OF works with picking certain data from the array of products <<<<
+      .then (data => data.json())
+      .then (products => allProductsData(products)) 
+
+// all products data is stored outside of fetch (global)
+let allProductsData = (products) => {
+         // >>>>>> FOR OF works with picking certain element from the array of products <<<<
       for (const product of products) {
          // console.log("all @products IDs ", product._id);
-       }
-
-      // >>>>>>>> @CART <<<<<<<<<<
-         //cart items from local storage
-      const cart = JSON.parse(localStorage.getItem('cart'));
-      console.log("items in cart ", cart);
-      for (const item of cart) {
-         // console.log("all @cart IDs ", item.id); //pulled all the ids from the items in the cart
-      } 
-
-         // this loop will check if isCartEmpty or NOT.
-      let isCartEmpty = cart === null; // always "null" when localStorage is initial/or empty (use as ELSE)
-      if (isCartEmpty) {
-         console.log("the CART inside the local storage is currently empty.");
-         alert("The cart is empty!");
-      } else {
-         console.log("you have ", cart.length, " items in your cart");
-         // try and match the cart id to the product id and console log it. 
       }
-
-      // i need a loop that will check IDs in each items inside the cart that will match the @products IDS
-   })
-
-
-
-/*  >>>>> loop sample <<<<< 
-   display text 5 times
-const n = 5;
---looping i from 1 to 5----
-for (let i = 1; i <= n; i++) {
-   console.log('Hi Javascript!');
 }
-// Hi Javascript
-// Hi Javascript
-// Hi Javascript
-// Hi Javascript
-// Hi Javascript
-*/
-
-/* Thursday Work */
-
-
-
-// the specific data for the items in the cart must have all these
-const allDataInObj = {};
-allDataInObj._id = '0987';
-allDataInObj.color = 'Red';
-allDataInObj.qty =  100;
-allDataInObj.img = 'apple.img';
-allDataInObj.alt = 'Photo of an apple';
-allDataInObj.name =  'APPLE';
-allDataInObj.price = 999;
-console.log("data stored in an Obj", allDataInObj);
-
-
-
-
+/* My TO DO (9.24-9.30)
 // ... all data in obj is above
 // get full object from cart for each item in local storage
 
@@ -75,6 +36,19 @@ console.log("data stored in an Obj", allDataInObj);
 
 // loop through those newly created objects  
 // call the createItemCard
+*/
+
+// the specific data needed for the items in the cart
+   // const allDataInObj = {};
+   // allDataInObj._id = '0987';
+   // allDataInObj.color = 'Red';
+   // allDataInObj.qty =  100;
+   // allDataInObj.img = 'apple.img';
+   // allDataInObj.alt = 'Photo of an apple';
+   // allDataInObj.name =  'APPLE';
+   // allDataInObj.price = 999;
+   // console.log("data stored in an Obj", allDataInObj);
+
 
 function createItemCard(allDataInObj) {
    //------_Start_-----
