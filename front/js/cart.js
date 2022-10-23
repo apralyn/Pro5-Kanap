@@ -20,16 +20,15 @@ fetch("http://localhost:3000/api/products/")
   .then((products) => {
     // "allProductsData" contains all the products data from the API
     allProductsData = products;
-    createEachItemCard();
+    allProductsData._id;
+    createEachItemCard(allProductsData);
   });
 
-function createEachItemCard() {
-  // TODO insert cards that was added in the cart
-  //    TODO loop things added to the cart which is an array from the local storage - done
-  //    TODO while there are items in the cart the loop will go through each of the items and will insert cart items in the page. I need product information for each cart item from the products variable - see line 2 on TODO. (use innerHTML with back ticks)
+function createEachItemCard(allProductsData) {
   for (let cartItem of cart) {
-    // console.log(cartItem);
-
+    let cartItemProdInfo = allProductsData.find(
+      (product) => cartItem.id === product._id
+    );
     //parent Article
     const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
     const itemArticle = document.createElement("article");
@@ -46,8 +45,8 @@ function createEachItemCard() {
     //img tag
     const img = document.createElement("img");
     cartItemImg.appendChild(img);
-    img.setAttribute("src", `${allProductsData.imageUrl}`);
-    img.setAttribute("alt", `${allProductsData.altTxt}`);
+    img.setAttribute("src", `${cartItemProdInfo.imageUrl}`);
+    img.setAttribute("alt", `${cartItemProdInfo.altTxt}`);
 
     // Article child no.2 div for cart item content
     const cartItemContent = document.createElement("div");
@@ -59,17 +58,14 @@ function createEachItemCard() {
     const cartItemProdColor = document.createElement("p");
     const cartItemProdPrice = document.createElement("p");
     cartItemContent.appendChild(cartItemDescription);
-    cartItemDescription.appendChild(
-      cartItemProdName
-    ).innerHTML = `${allProductsData.name}`;
-    cartItemDescription.appendChild(
-      cartItemProdColor
-    ).innerHTML = `${cartItem.color}`;
+    cartItemDescription.appendChild(cartItemProdName).innerText =
+      cartItemProdInfo.name;
+    cartItemDescription.appendChild(cartItemProdColor).innerText =
+      cartItem.color;
     cartItemDescription.appendChild(
       cartItemProdPrice
-    ).innerHTML = `${allProductsData.price}`;
+    ).innerText = `€${cartItemProdInfo.price}`;
 
-    //
     const cartContentSettings = document.createElement("div");
     cartContentSettings.classList.add("cart__item__content__settings");
     cartItemContent.appendChild(cartContentSettings);
@@ -78,22 +74,31 @@ function createEachItemCard() {
     cartContentQty.classList.add("cart__item__content__settings__quantity");
     cartContentSettings.appendChild(cartContentQty);
 
-    const cartItemQty = document.createElement("p");
-    const cartQtyInput = document.createElement("input");
-    cartQtyInput.setAttribute("type", "number");
-    cartQtyInput.classList.add("itemQuantity");
-    cartQtyInput.setAttribute("name", "itemQuantity");
-    cartQtyInput.setAttribute("min", "1");
-    cartQtyInput.setAttribute("max", "100");
-    cartQtyInput.setAttribute("value", "42");
-    cartContentQty.appendChild(cartItemQty);
-    cartContentQty.appendChild(cartQtyInput);
-
-    const cartItemDeleteBtn = document.createElement("div");
-    cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
-    cartContentSettings.appendChild(cartItemDeleteBtn);
-    const deleteItem = document.createElement("p");
-    deleteItem.classList.add("deleteItem");
-    cartItemDeleteBtn.appendChild(deleteItem).innerHTML = "Delete";
+    insertItemQty(cartItem, cartContentQty);
+    insertDeleteBtn(cartContentSettings);
   }
+  //TODO insert into the page the total quantity inside the cart
+  //TODO insert into the page the total amount of all the the cart items
+  //     - amount is the total price of all sofas
+}
+function insertItemQty(cartItem, cartContentQty) {
+  const cartItemQty = document.createElement("p");
+  const cartQtyInput = document.createElement("input");
+  cartQtyInput.setAttribute("type", "number");
+  cartQtyInput.classList.add("itemQuantity");
+  cartQtyInput.setAttribute("name", "itemQuantity");
+  cartQtyInput.setAttribute("min", "1");
+  cartQtyInput.setAttribute("max", "100");
+  cartQtyInput.setAttribute("value", cartItem.qty);
+  cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
+  cartContentQty.appendChild(cartQtyInput);
+}
+
+function insertDeleteBtn(cartContentSettings) {
+  const cartItemDeleteBtn = document.createElement("div");
+  cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
+  cartContentSettings.appendChild(cartItemDeleteBtn);
+  const deleteItem = document.createElement("p");
+  deleteItem.classList.add("deleteItem");
+  cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
 }
