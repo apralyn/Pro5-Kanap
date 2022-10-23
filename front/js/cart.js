@@ -31,26 +31,69 @@ function createEachItemCard() {
     // console.log(cartItem);
 
     //parent Article
-    let cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
-    let itemArticle = document.createElement("article");
+    const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
+    const itemArticle = document.createElement("article");
     itemArticle.classList.add("cart__item");
     itemArticle.setAttribute("data-id", `${cartItem.id}`);
     itemArticle.setAttribute("data-color", `${cartItem.color}`);
     cartItems.appendChild(itemArticle);
-    
 
     // Article child no.1 div for cart item img
-    let cartItemImg = document.createElement("div");
+    const cartItemImg = document.createElement("div");
     cartItemImg.classList.add("cart__item__img");
     itemArticle.appendChild(cartItemImg);
-    let img = document.createElement("img");
+
+    //img tag
+    const img = document.createElement("img");
     cartItemImg.appendChild(img);
     img.setAttribute("src", `${allProductsData.imageUrl}`);
+    img.setAttribute("alt", `${allProductsData.altTxt}`);
 
     // Article child no.2 div for cart item content
-    let cartItemContent = document.createElement("div");
+    const cartItemContent = document.createElement("div");
     cartItemContent.classList.add("cart__item__content");
-
     itemArticle.appendChild(cartItemContent);
+
+    const cartItemDescription = document.createElement("div");
+    const cartItemProdName = document.createElement("h2");
+    const cartItemProdColor = document.createElement("p");
+    const cartItemProdPrice = document.createElement("p");
+    cartItemContent.appendChild(cartItemDescription);
+    cartItemDescription.appendChild(
+      cartItemProdName
+    ).innerHTML = `${allProductsData.name}`;
+    cartItemDescription.appendChild(
+      cartItemProdColor
+    ).innerHTML = `${cartItem.color}`;
+    cartItemDescription.appendChild(
+      cartItemProdPrice
+    ).innerHTML = `${allProductsData.price}`;
+
+    //
+    const cartContentSettings = document.createElement("div");
+    cartContentSettings.classList.add("cart__item__content__settings");
+    cartItemContent.appendChild(cartContentSettings);
+
+    const cartContentQty = document.createElement("div");
+    cartContentQty.classList.add("cart__item__content__settings__quantity");
+    cartContentSettings.appendChild(cartContentQty);
+
+    const cartItemQty = document.createElement("p");
+    const cartQtyInput = document.createElement("input");
+    cartQtyInput.setAttribute("type", "number");
+    cartQtyInput.classList.add("itemQuantity");
+    cartQtyInput.setAttribute("name", "itemQuantity");
+    cartQtyInput.setAttribute("min", "1");
+    cartQtyInput.setAttribute("max", "100");
+    cartQtyInput.setAttribute("value", "42");
+    cartContentQty.appendChild(cartItemQty);
+    cartContentQty.appendChild(cartQtyInput);
+
+    const cartItemDeleteBtn = document.createElement("div");
+    cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
+    cartContentSettings.appendChild(cartItemDeleteBtn);
+    const deleteItem = document.createElement("p");
+    deleteItem.classList.add("deleteItem");
+    cartItemDeleteBtn.appendChild(deleteItem).innerHTML = "Delete";
   }
 }
