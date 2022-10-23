@@ -1,7 +1,3 @@
-// TODO get cart items from local storage - done
-// TODO get all products information from fetch api and save it somewhere like in a variable. - done
-// TODO take care of the quantity string from the product.js (parse from string to number)
-
 // >>>>>>>> CART <<<<<<<<<<
 const cart = JSON.parse(localStorage.getItem("cart"));
 let allProductsData = [];
@@ -25,6 +21,9 @@ fetch("http://localhost:3000/api/products/")
   });
 
 function createEachItemCard(allProductsData) {
+  // TODO clean-up and simplify templated strings to simple strings if possible. - done
+  // TODO extract blocks of code into helper functions using VSCode extract.
+  //      keep in mind to use meaningful names on helper functions.
   for (let cartItem of cart) {
     let cartItemProdInfo = allProductsData.find(
       (product) => cartItem.id === product._id
@@ -45,8 +44,8 @@ function createEachItemCard(allProductsData) {
     //img tag
     const img = document.createElement("img");
     cartItemImg.appendChild(img);
-    img.setAttribute("src", `${cartItemProdInfo.imageUrl}`);
-    img.setAttribute("alt", `${cartItemProdInfo.altTxt}`);
+    img.setAttribute("src", cartItemProdInfo.imageUrl);
+    img.setAttribute("alt", cartItemProdInfo.altTxt);
 
     // Article child no.2 div for cart item content
     const cartItemContent = document.createElement("div");
@@ -74,31 +73,47 @@ function createEachItemCard(allProductsData) {
     cartContentQty.classList.add("cart__item__content__settings__quantity");
     cartContentSettings.appendChild(cartContentQty);
 
-    insertItemQty(cartItem, cartContentQty);
-    insertDeleteBtn(cartContentSettings);
+    const cartItemQty = document.createElement("p");
+    const cartQtyInput = document.createElement("input");
+    cartQtyInput.setAttribute("type", "number");
+    cartQtyInput.classList.add("itemQuantity");
+    cartQtyInput.setAttribute("name", "itemQuantity");
+    cartQtyInput.setAttribute("min", "1");
+    cartQtyInput.setAttribute("max", "100");
+    cartQtyInput.setAttribute("value", cartItem.qty);
+    cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
+    cartContentQty.appendChild(cartQtyInput);
+
+    const cartItemDeleteBtn = document.createElement("div");
+    cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
+    cartContentSettings.appendChild(cartItemDeleteBtn);
+    const deleteItem = document.createElement("p");
+    deleteItem.classList.add("deleteItem");
+    cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
   }
-  //TODO insert into the page the total quantity inside the cart
-  //TODO insert into the page the total amount of all the the cart items
-  //     - amount is the total price of all sofas
 }
+//Milestone 8
+//TODO insert the total iotem quantity into the cart page
+//TODO insert the total amount of all the the cart items into the cart page
+//     - amount is the total price of all sofas
+const totalQty = document.getElementById("totalQuantity");
+totalQty.innerText = 2;
+
+const totalPrice = document.getElementById("totalPrice");
+totalPrice.innerText = 84;
+
 function insertItemQty(cartItem, cartContentQty) {
-  const cartItemQty = document.createElement("p");
-  const cartQtyInput = document.createElement("input");
-  cartQtyInput.setAttribute("type", "number");
-  cartQtyInput.classList.add("itemQuantity");
-  cartQtyInput.setAttribute("name", "itemQuantity");
-  cartQtyInput.setAttribute("min", "1");
-  cartQtyInput.setAttribute("max", "100");
-  cartQtyInput.setAttribute("value", cartItem.qty);
-  cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
-  cartContentQty.appendChild(cartQtyInput);
+  //Milestone 9
+  //TODO I have to a way to change the quantity when the user changed their mind.
+  //    TODO this is where you will call the event listener (input).
 }
+//TODO create new function to handle the changing of item quantities
+//    TODO I have to make sure that when quantity from the cart page is changed, the quantity
+//         of the item from the local storage is also change and match the cart page.
+//    TODO refresh the totals
 
 function insertDeleteBtn(cartContentSettings) {
-  const cartItemDeleteBtn = document.createElement("div");
-  cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
-  cartContentSettings.appendChild(cartItemDeleteBtn);
-  const deleteItem = document.createElement("p");
-  deleteItem.classList.add("deleteItem");
-  cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
+  //Milestone 9
+  //TODO if the user click on the delete it will delete the whole item card from the cart page
+  //      and also from the local storage.
 }
