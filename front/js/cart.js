@@ -14,7 +14,6 @@ fetch("http://localhost:3000/api/products/")
     return data.json(); // all products data is returned as json format
   })
   .then((products) => {
-    // "allProductsData" contains all the products data from the API
     allProductsData = products;
     allProductsData._id;
     createEachItemCard(allProductsData);
@@ -93,14 +92,34 @@ function createEachItemCard(allProductsData) {
   }
 }
 //Milestone 8
-//TODO insert the total iotem quantity into the cart page
-//TODO insert the total amount of all the the cart items into the cart page
-//     - amount is the total price of all sofas
-const totalQty = document.getElementById("totalQuantity");
-totalQty.innerText = 2;
+//TODO insert the total item quantity(qty is from the cart) into the cart page - done
 
+const totalQty = document.getElementById("totalQuantity");
+totalQty.innerText = cart.map(item => item.qty).reduce((x,y)=>x+y,0);
+console.log(totalQty);
+
+// im trying to figure out how to add all the quantities in each item in the cart
+/*
+
+from https://www.youtube.com/watch?v=cT_ZYrS3tKc&t=5639s
+console.log(cart.map(item => item.qty).reduce((x,y)=>x+y,0));
+forEach()
+https://www.youtube.com/watch?v=J6N2XKzTsa0
+sum an array
+https://www.youtube.com/watch?v=Fw4BwCcPu54
+
+*/
+
+
+//TODO insert the total price (price is from fetch) of all the the cart items into the cart page
+//     - amount is the total price of all sofas
 const totalPrice = document.getElementById("totalPrice");
 totalPrice.innerText = 84;
+
+
+//TODO total price * quantity
+// price.innerText quantity.value(this is where i get the data and then store them in a variable)
+
 
 function insertItemQty(cartItem, cartContentQty) {
   //Milestone 9
