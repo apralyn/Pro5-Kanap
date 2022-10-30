@@ -5,7 +5,9 @@ let allProductsData = [];
 // will check if isCartEmpty or NOT.
 let isCartEmpty = cart === null; // always "null" when localStorage is empty/emptied.
 if (isCartEmpty) {
-  //   console.log("the CART inside the local storage is currently empty.");
+   alert("Your CART is currently empty.");
+} else {
+  itemQuantity();
 }
 
 // >>>>>>>>  All PRODUCTS data  <<<<<<<<<<
@@ -17,6 +19,7 @@ fetch("http://localhost:3000/api/products/")
     allProductsData = products;
     allProductsData._id;
     createEachItemCard(allProductsData);
+    cartTotal();
   });
 
 function createEachItemCard(allProductsData) {
@@ -93,33 +96,31 @@ function createEachItemCard(allProductsData) {
 }
 //Milestone 8
 //TODO insert the total item quantity(qty is from the cart) into the cart page - done
+function itemQuantity () {
+  const totalQty = document.getElementById("totalQuantity");
+  totalQty.innerText = cart.map(item => item.qty).reduce((x,y)=>x+y,0);
+  console.log(totalQty);
+}
 
-const totalQty = document.getElementById("totalQuantity");
-totalQty.innerText = cart.map(item => item.qty).reduce((x,y)=>x+y,0);
-console.log(totalQty);
-
-// im trying to figure out how to add all the quantities in each item in the cart
-/*
-
-from https://www.youtube.com/watch?v=cT_ZYrS3tKc&t=5639s
-console.log(cart.map(item => item.qty).reduce((x,y)=>x+y,0));
-forEach()
-https://www.youtube.com/watch?v=J6N2XKzTsa0
-sum an array
-https://www.youtube.com/watch?v=Fw4BwCcPu54
-
-*/
-
-
+function cartTotal () {
 //TODO insert the total price (price is from fetch) of all the the cart items into the cart page
 //     - amount is the total price of all sofas
-const totalPrice = document.getElementById("totalPrice");
-totalPrice.innerText = 84;
-
-
 //TODO total price * quantity
 // price.innerText quantity.value(this is where i get the data and then store them in a variable)
 
+for (let cartItem of cart) {
+  let cartItemProdInfo = allProductsData.find(
+    (product) => cartItem.id === product._id
+  );
+  let price = cartItemProdInfo.price;
+  let quantity = cartItem.qty;
+  let total = (price * quantity);
+  
+  const totalPrice = document.getElementById("totalPrice");
+  totalPrice.innerText = total;
+}
+
+}
 
 function insertItemQty(cartItem, cartContentQty) {
   //Milestone 9
