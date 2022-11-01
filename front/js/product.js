@@ -58,6 +58,10 @@ addToCartButton.addEventListener("click", function () {
     color: colorValue,
     qty: qtyValue,
   };
+<<<<<<< HEAD
+=======
+  console.log(itemToAdd);
+>>>>>>> b46b2dd (wip on m8)
 
   let isCartEmpty = cart == 0;  
   if (isCartEmpty) {

@@ -31,12 +31,7 @@ function createEachItemCard(allProductsData) {
       (product) => cartItem.id === product._id
     );
     //parent Article
-    const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
-    const itemArticle = document.createElement("article");
-    itemArticle.classList.add("cart__item");
-    itemArticle.setAttribute("data-id", `${cartItem.id}`);
-    itemArticle.setAttribute("data-color", `${cartItem.color}`);
-    cartItems.appendChild(itemArticle);
+    const itemArticle = parentArticle(cartItem);
 
     // Article child no.1 div for cart item img
     const cartItemImg = document.createElement("div");
@@ -54,18 +49,7 @@ function createEachItemCard(allProductsData) {
     cartItemContent.classList.add("cart__item__content");
     itemArticle.appendChild(cartItemContent);
 
-    const cartItemDescription = document.createElement("div");
-    const cartItemProdName = document.createElement("h2");
-    const cartItemProdColor = document.createElement("p");
-    const cartItemProdPrice = document.createElement("p");
-    cartItemContent.appendChild(cartItemDescription);
-    cartItemDescription.appendChild(cartItemProdName).innerText =
-      cartItemProdInfo.name;
-    cartItemDescription.appendChild(cartItemProdColor).innerText =
-      cartItem.color;
-    cartItemDescription.appendChild(
-      cartItemProdPrice
-    ).innerText = `€${cartItemProdInfo.price}`;
+    cartItemInfo(cartItemContent, cartItemProdInfo, cartItem);
 
     const cartContentSettings = document.createElement("div");
     cartContentSettings.classList.add("cart__item__content__settings");
@@ -75,25 +59,57 @@ function createEachItemCard(allProductsData) {
     cartContentQty.classList.add("cart__item__content__settings__quantity");
     cartContentSettings.appendChild(cartContentQty);
 
-    const cartItemQty = document.createElement("p");
-    const cartQtyInput = document.createElement("input");
-    cartQtyInput.setAttribute("type", "number");
-    cartQtyInput.classList.add("itemQuantity");
-    cartQtyInput.setAttribute("name", "itemQuantity");
-    cartQtyInput.setAttribute("min", "1");
-    cartQtyInput.setAttribute("max", "100");
-    cartQtyInput.setAttribute("value", cartItem.qty);
-    cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
-    cartContentQty.appendChild(cartQtyInput);
-
-    const cartItemDeleteBtn = document.createElement("div");
-    cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
-    cartContentSettings.appendChild(cartItemDeleteBtn);
-    const deleteItem = document.createElement("p");
-    deleteItem.classList.add("deleteItem");
-    cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
+    itemQty(cartItem, cartContentQty);
+    deleteBtn(cartContentSettings);
   }
 }
+function cartItemInfo(cartItemContent, cartItemProdInfo, cartItem) {
+  const cartItemDescription = document.createElement("div");
+  const cartItemProdName = document.createElement("h2");
+  const cartItemProdColor = document.createElement("p");
+  const cartItemProdPrice = document.createElement("p");
+  cartItemContent.appendChild(cartItemDescription);
+  cartItemDescription.appendChild(cartItemProdName).innerText =
+    cartItemProdInfo.name;
+  cartItemDescription.appendChild(cartItemProdColor).innerText =
+    cartItem.color;
+  cartItemDescription.appendChild(
+    cartItemProdPrice
+  ).innerText = `€${cartItemProdInfo.price}`;
+}
+
+function itemQty(cartItem, cartContentQty) {
+  const cartItemQty = document.createElement("p");
+  const cartQtyInput = document.createElement("input");
+  cartQtyInput.setAttribute("type", "number");
+  cartQtyInput.classList.add("itemQuantity");
+  cartQtyInput.setAttribute("name", "itemQuantity");
+  cartQtyInput.setAttribute("min", "1");
+  cartQtyInput.setAttribute("max", "100");
+  cartQtyInput.setAttribute("value", cartItem.qty);
+  cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
+  cartContentQty.appendChild(cartQtyInput);
+}
+
+function deleteBtn(cartContentSettings) {
+  const cartItemDeleteBtn = document.createElement("div");
+  cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
+  cartContentSettings.appendChild(cartItemDeleteBtn);
+  const deleteItem = document.createElement("p");
+  deleteItem.classList.add("deleteItem");
+  cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
+}
+
+function parentArticle(cartItem) {
+  const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
+  const itemArticle = document.createElement("article");
+  itemArticle.classList.add("cart__item");
+  itemArticle.setAttribute("data-id", `${cartItem.id}`);
+  itemArticle.setAttribute("data-color", `${cartItem.color}`);
+  cartItems.appendChild(itemArticle);
+  return itemArticle;
+}
+
 //Milestone 8
 //TODO insert the total item quantity(qty is from the cart) into the cart page - done
 function itemQuantity () {
