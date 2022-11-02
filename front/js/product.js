@@ -12,7 +12,7 @@ fetch("http://localhost:3000/api/products/" + productId)
   })
   .then((products) => {
     console.log(products); // all products data is stored in "products"
-    
+
     function displaySingleProduct(products) {
       let productTitle = document.getElementById("title");
       productTitle.innerHTML = products.name;
@@ -41,7 +41,6 @@ fetch("http://localhost:3000/api/products/" + productId)
     displaySingleProduct(products);
   });
 
-
 //cart is from localStorage
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -51,23 +50,20 @@ addToCartButton.addEventListener("click", function () {
   let colorChoice = document.getElementById("colors");
   let qtyChoice = document.getElementById("quantity");
   let colorValue = colorChoice.value;
-  let qtyValue = qtyChoice.value;
+  let qtyValue = parseInt(qtyChoice.value);
 
   const itemToAdd = {
     id: productId,
     color: colorValue,
     qty: qtyValue,
   };
-<<<<<<< HEAD
-=======
-  console.log(itemToAdd);
->>>>>>> b46b2dd (wip on m8)
 
-  let isCartEmpty = cart == 0;  
+  let isCartEmpty = cart == 0;
   if (isCartEmpty) {
-    cart.push(itemToAdd);//add to cart
-    window.localStorage.setItem("cart", JSON.stringify(cart));//save to cart
-  } else { // if cart is not empty update the item qty in cart
+    cart.push(itemToAdd); //add to cart
+    window.localStorage.setItem("cart", JSON.stringify(cart)); //save to cart
+  } else {
+    // if cart is not empty update the item qty in cart
     let foundExactItem = false; // boolean flag
     for (let i = 0; i < cart.length; i++) {
       const sameExactItem =
@@ -84,7 +80,5 @@ addToCartButton.addEventListener("click", function () {
       cart.push(itemToAdd);
       window.localStorage.setItem("cart", JSON.stringify(cart));
     }
-    
   }
 });
-

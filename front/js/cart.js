@@ -5,9 +5,9 @@ let allProductsData = [];
 // will check if isCartEmpty or NOT.
 let isCartEmpty = cart === null; // always "null" when localStorage is empty/emptied.
 if (isCartEmpty) {
-   alert("Your CART is currently empty.");
+  alert("Your CART is currently empty.");
 } else {
-  itemQuantity();
+  displayQtyTotal();
 }
 
 // >>>>>>>>  All PRODUCTS data  <<<<<<<<<<
@@ -71,8 +71,7 @@ function cartItemInfo(cartItemContent, cartItemProdInfo, cartItem) {
   cartItemContent.appendChild(cartItemDescription);
   cartItemDescription.appendChild(cartItemProdName).innerText =
     cartItemProdInfo.name;
-  cartItemDescription.appendChild(cartItemProdColor).innerText =
-    cartItem.color;
+  cartItemDescription.appendChild(cartItemProdColor).innerText = cartItem.color;
   cartItemDescription.appendChild(
     cartItemProdPrice
   ).innerText = `€${cartItemProdInfo.price}`;
@@ -111,45 +110,37 @@ function parentArticle(cartItem) {
 }
 
 //Milestone 8
-//TODO insert the total item quantity(qty is from the cart) into the cart page - done
-function itemQuantity () {
+function displayQtyTotal() {
   const totalQty = document.getElementById("totalQuantity");
-  totalQty.innerText = cart.map(item => item.qty).reduce((x,y)=>x+y,0);
+  const quantities = cart.map((item) => item.qty);
+  const newQtyTotal = quantities.reduce((x, y) => x + y, 0);
+  totalQty.innerText = newQtyTotal;
   console.log(totalQty);
 }
 
-function cartTotal () {
-//TODO insert the total price (price is from fetch) of all the the cart items into the cart page
-//     - amount is the total price of all sofas
-//TODO total price * quantity
-// price.innerText quantity.value(this is where i get the data and then store them in a variable)
-
-for (let cartItem of cart) {
-  let cartItemProdInfo = allProductsData.find(
-    (product) => cartItem.id === product._id
-  );
-  let price = cartItemProdInfo.price;
-  let quantity = cartItem.qty;
-  let total = (price * quantity);
-  
+function cartTotal() {
+  let total = 0;
+  for (let cartItem of cart) {
+    let cartItemProdInfo = allProductsData.find(
+      (product) => cartItem.id === product._id
+    );
+    let price = cartItemProdInfo.price;
+    let quantity = cartItem.qty;
+    total += price * quantity;
+  }
   const totalPrice = document.getElementById("totalPrice");
   totalPrice.innerText = total;
 }
 
-}
+//Milestone 9
+// TODO add event listeners for quantity input field and delete link.
 
-function insertItemQty(cartItem, cartContentQty) {
-  //Milestone 9
-  //TODO I have to a way to change the quantity when the user changed their mind.
+function changeItemQty() {
+  //TODO I have find to a way to change the quantity when the user changed their mind.
   //    TODO this is where you will call the event listener (input).
 }
-//TODO create new function to handle the changing of item quantities
-//    TODO I have to make sure that when quantity from the cart page is changed, the quantity
-//         of the item from the local storage is also change and match the cart page.
-//    TODO refresh the totals
 
-function insertDeleteBtn(cartContentSettings) {
-  //Milestone 9
+function deleteItem() {
   //TODO if the user click on the delete it will delete the whole item card from the cart page
   //      and also from the local storage.
 }
