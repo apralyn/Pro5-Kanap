@@ -20,6 +20,8 @@ fetch("http://localhost:3000/api/products/")
     allProductsData._id;
     createEachItemCard(allProductsData);
     cartTotal();
+    changeItemQty();
+    deleteItem();
   });
 
 function createEachItemCard(allProductsData) {
@@ -109,7 +111,6 @@ function parentArticle(cartItem) {
   return itemArticle;
 }
 
-//Milestone 8
 function displayQtyTotal() {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
@@ -134,13 +135,46 @@ function cartTotal() {
 
 //Milestone 9
 // TODO add event listeners for quantity input field and delete link.
+/* event listener */
+// let itemQtyInput = document.getElementsByClassName("itemQuantity");
+// itemQtyInput.addEventListener("click", () => {
+//   console.log("click");
+// });
 
 function changeItemQty() {
-  //TODO I have find to a way to change the quantity when the user changed their mind.
-  //    TODO this is where you will call the event listener (input).
+  let qtyItemChange = document.getElementsByClassName("itemQuantity");
+  for (let c of qtyItemChange) {
+    let btn = c;
+    btn.addEventListener("change", () => {
+      console.log("change");
+    });
+  }
 }
 
+//TODO I have find to a way to change the quantity when the user changed their mind.
+//    TODO this is where you will call the event listener (input).
+/*
+   * TODO: Ask the right questions. What does this function do? 
+   * and what information/data do i need.
+   * 
+   * this function works when the user changes the quantity of an item from the cart using an eventListener.
+   * when does this function activate? or when does it work?
+   * condition: there has to be something in the cart in order for this function to activate.
+   * when the user decide to change the quantity of an item, this function will:
+   * automatically, recalculate the total number of articles in the cart and the total amount of the cart.
+   * make sure that when the user is changing the value that it doesn't go below zero to negative. function must be stopped at 1.
+   * also make sure that when the user changes the value in the cart, it is also updated in the localStorage.
+   
+  */
+
 function deleteItem() {
+  let deleteItemBtn = document.getElementsByClassName("deleteItem");
+  for (let e of deleteItemBtn) {
+    let btn = e;
+    btn.addEventListener("click", () => {
+      console.log("delete");
+    });
+  }
   //TODO if the user click on the delete it will delete the whole item card from the cart page
   //      and also from the local storage.
 }
