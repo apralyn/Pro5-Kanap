@@ -171,8 +171,9 @@ function deleteItem() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let e of deleteItemBtn) {
     let btn = e;
-    btn.addEventListener("click", () => {
-      console.log("delete");
+    btn.addEventListener("click", (eve) => {
+      let delBtnClicked = eve.target;
+      delBtnClicked.parentElement.parentElement.parentElement.parentElement.remove();
     });
   }
   //TODO if the user click on the delete it will delete the whole item card from the cart page
