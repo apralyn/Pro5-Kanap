@@ -25,8 +25,6 @@ fetch("http://localhost:3000/api/products/")
   });
 
 function createEachItemCard(allProductsData) {
-  // TODO clean-up and simplify templated strings to simple strings if possible. - done
-  // TODO extract blocks of code into helper functions using VSCode extract.
   //      keep in mind to use meaningful names on helper functions.
   for (let cartItem of cart) {
     let cartItemProdInfo = allProductsData.find(
@@ -133,49 +131,34 @@ function cartTotal() {
   totalPrice.innerText = total;
 }
 
-//Milestone 9
-// TODO add event listeners for quantity input field and delete link.
-/* event listener */
-// let itemQtyInput = document.getElementsByClassName("itemQuantity");
-// itemQtyInput.addEventListener("click", () => {
-//   console.log("click");
-// });
-
+// TODO add event listeners for quantity input field. -done
+/*
+* Reference: https://www.youtube.com/watch?v=cT_ZYrS3tKc&t=4237s (Joy)
+* TODO:
+*    when the user changes the quantity of an item from the cart using an eventListener. -done
+*    automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
+*    localStorage must be updated with the changes. 
+*/
 function changeItemQty() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
-  for (let c of qtyItemChange) {
-    let btn = c;
-    btn.addEventListener("change", () => {
+  for (let change of qtyItemChange) {
+    change.addEventListener("change", () => {
       console.log("change");
     });
   }
 }
 
-//TODO I have find to a way to change the quantity when the user changed their mind.
-//    TODO this is where you will call the event listener (input).
+//TODO if the user click on the delete it will delete the whole item card from the cart page -done
 /*
-   * TODO: Ask the right questions. What does this function do? 
-   * and what information/data do i need.
-   * 
-   * this function works when the user changes the quantity of an item from the cart using an eventListener.
-   * when does this function activate? or when does it work?
-   * condition: there has to be something in the cart in order for this function to activate.
-   * when the user decide to change the quantity of an item, this function will:
-   * automatically, recalculate the total number of articles in the cart and the total amount of the cart.
-   * make sure that when the user is changing the value that it doesn't go below zero to negative. function must be stopped at 1.
-   * also make sure that when the user changes the value in the cart, it is also updated in the localStorage.
-   
-  */
-
+* Reference: https://www.youtube.com/watch?v=YeFzkC2awTM&t=507s (parentElement)
+*/
 function deleteItem() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
-  for (let e of deleteItemBtn) {
-    let btn = e;
-    btn.addEventListener("click", (eve) => {
-      let delBtnClicked = eve.target;
+  for (let deleteBtn of deleteItemBtn) {
+    deleteBtn.addEventListener("click", (event) => {
+      let delBtnClicked = event.target;
       delBtnClicked.parentElement.parentElement.parentElement.parentElement.remove();
+      console.log("deleted");
     });
   }
-  //TODO if the user click on the delete it will delete the whole item card from the cart page
-  //      and also from the local storage.
 }
