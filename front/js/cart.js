@@ -19,9 +19,9 @@ fetch("http://localhost:3000/api/products/")
     allProductsData = products;
     allProductsData._id;
     createEachItemCard(allProductsData);
-    cartTotal();
-    changeItemQty();
-    deleteItem();
+    cartTotal(cart);
+    addChangeItemQtyListeners();
+    addDeleteItemListeners();
   });
 
 function createEachItemCard(allProductsData) {
@@ -109,6 +109,7 @@ function parentArticle(cartItem) {
   return itemArticle;
 }
 
+//TODO pass in cart(could be new or old cart)
 function displayQtyTotal() {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
@@ -117,7 +118,7 @@ function displayQtyTotal() {
   console.log(totalQty);
 }
 
-function cartTotal() {
+function cartTotal(cart) {
   let total = 0;
   for (let cartItem of cart) {
     let cartItemProdInfo = allProductsData.find(
@@ -131,28 +132,42 @@ function cartTotal() {
   totalPrice.innerText = total;
 }
 
-// TODO add event listeners for quantity input field. -done
 /*
-* Reference: https://www.youtube.com/watch?v=cT_ZYrS3tKc&t=4237s (Joy)
-* TODO:
-*    when the user changes the quantity of an item from the cart using an eventListener. -done
-*    automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
-*    localStorage must be updated with the changes. 
-*/
-function changeItemQty() {
+ * Reference: https://www.youtube.com/watch?v=cT_ZYrS3tKc&t=4237s (Joy)
+ */
+function addChangeItemQtyListeners() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
   for (let change of qtyItemChange) {
-    change.addEventListener("change", () => {
-      console.log("change");
-    });
+    change.addEventListener("change", changeItemQty);
   }
 }
-
-//TODO if the user click on the delete it will delete the whole item card from the cart page -done
 /*
-* Reference: https://www.youtube.com/watch?v=YeFzkC2awTM&t=507s (parentElement)
-*/
-function deleteItem() {
+ * TODO:
+ *    when the user changes the quantity of an item from the cart using an eventListener. -done
+ *    automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
+ *    localStorage must be updated with the changes.
+ */
+function changeItemQty(event) {
+  //TODO get cart from localStorage.
+  //TODO find cart item for the item that user is changing the quantity
+  //note** const cartItemElement = event.target.closest("article");
+  //I need data-id and data-color to find the cart item who's quantity should be increased. 
+  //TODO increase the item quantity with the value the user selected.
+  //note** remember to parse strings with numbers.
+  cartTotal(cart);
+  //TODO put the updated cart back into the local storage.
+  console.log("change");
+}
+
+/*
+ * Reference: https://www.youtube.com/watch?v=YeFzkC2awTM&t=507s (parentElement)
+ *TODO:
+ *   if the user click on the delete it will delete the whole item card from the cart page -done
+ *   automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
+ *   localStorage must be updated with the changes.
+ */
+//TODO refer to function changeItemQty TODOS same with delete.
+function addDeleteItemListeners() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let deleteBtn of deleteItemBtn) {
     deleteBtn.addEventListener("click", (event) => {
