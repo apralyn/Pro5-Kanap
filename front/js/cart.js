@@ -25,7 +25,6 @@ fetch("http://localhost:3000/api/products/")
   });
 
 function createEachItemCard(allProductsData) {
-  //      keep in mind to use meaningful names on helper functions.
   for (let cartItem of cart) {
     let cartItemProdInfo = allProductsData.find(
       (product) => cartItem.id === product._id
@@ -132,9 +131,6 @@ function cartTotal(cart) {
   totalPrice.innerText = total;
 }
 
-/*
- * Reference: https://www.youtube.com/watch?v=cT_ZYrS3tKc&t=4237s (Joy)
- */
 function addChangeItemQtyListeners() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
   for (let change of qtyItemChange) {
@@ -143,21 +139,35 @@ function addChangeItemQtyListeners() {
 }
 /*
  * TODO:
- *    when the user changes the quantity of an item from the cart using an eventListener. -done
  *    automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
- *    localStorage must be updated with the changes.
+ *    localStorage must be updated with the changes as well.
+ *  TODO find cart item for the item that user is changing the quantity
+ *     note** const cartItemElement = event.target.closest("article");
+ *     I need data-id and data-color to find the cart item who's quantity should be increased.
+ *  TODO increase the item quantity with the value the user selected.
+ *    note** remember to parse strings with numbers.
+ *  TODO put the updated cart back into the local storage
  */
+
 function changeItemQty(event) {
-  //TODO get cart from localStorage.
-  //TODO find cart item for the item that user is changing the quantity
-  //note** const cartItemElement = event.target.closest("article");
-  //I need data-id and data-color to find the cart item who's quantity should be increased. 
-  //TODO increase the item quantity with the value the user selected.
-  //note** remember to parse strings with numbers.
-  cartTotal(cart);
-  //TODO put the updated cart back into the local storage.
-  console.log("change");
-}
+  if(cart.length == 0) {
+    console.log ('cart is empty');
+  } else {
+    // i need to figure out how to target the specific value of the product that the user quantity changed. 
+    let el = document.querySelector("#cart__items");
+    console.log(el);
+    for (let item of el){
+      console.log('id' in item.dataset);
+    } 
+    // for (let eachItem of cart) {
+    //  console.log(eachItem);
+    // }
+    console.log('you have', cart.length, ' items in your cart');
+    cartTotal(cart);
+  }
+  
+  }
+
 
 /*
  * Reference: https://www.youtube.com/watch?v=YeFzkC2awTM&t=507s (parentElement)
