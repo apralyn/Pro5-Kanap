@@ -142,32 +142,22 @@ function addChangeItemQtyListeners() {
  *    automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
  *    localStorage must be updated with the changes as well.
  *  TODO find cart item for the item that user is changing the quantity
- *     note** const cartItemElement = event.target.closest("article");
- *     I need data-id and data-color to find the cart item who's quantity should be increased.
  *  TODO increase the item quantity with the value the user selected.
  *    note** remember to parse strings with numbers.
  *  TODO put the updated cart back into the local storage
  */
 
 function changeItemQty(event) {
-  if(cart.length == 0) {
-    console.log ('cart is empty');
-  } else {
-    // i need to figure out how to target the specific value of the product that the user quantity changed. 
-    let el = document.querySelector("#cart__items");
-    console.log(el);
-    for (let item of el){
-      console.log('id' in item.dataset);
-    } 
-    // for (let eachItem of cart) {
-    //  console.log(eachItem);
-    // }
-    console.log('you have', cart.length, ' items in your cart');
-    cartTotal(cart);
-  }
-  
-  }
-
+  // i need to figure out how to target the specific value of the product that the user quantity changed.
+  const articleElement = event.target.closest('article');
+  const id = articleElement.dataset.id;
+  const color = articleElement.dataset.color;
+  const quantity = event.target.value;
+  console.log("you have", cart.length, " items in your cart");
+// 11-21 TODO update quantity in local storage when the user change the quantity value of an item.
+// TODO update the number of articles and the total amount when the user change the quantity value of an item.
+  cartTotal(cart);
+}
 
 /*
  * Reference: https://www.youtube.com/watch?v=YeFzkC2awTM&t=507s (parentElement)
@@ -181,9 +171,26 @@ function addDeleteItemListeners() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let deleteBtn of deleteItemBtn) {
     deleteBtn.addEventListener("click", (event) => {
-      let delBtnClicked = event.target;
-      delBtnClicked.parentElement.parentElement.parentElement.parentElement.remove();
-      console.log("deleted");
+      const articleElement = event.target.closest('article');
+      articleElement.remove();
+// 11-21 TODO update the local storage  when the user deletes an item from the cart.
+// TODO update the number of articles and the total amount when the user change the quantity value of an item.
     });
   }
 }
+
+// Milestone 10 
+// First and Last name  can have letters
+// address
+//email must have @sign and .
+ 
+//TODO add a change eventListener to the email field that tests the value with a regex email expression.
+// if test fails put a message in the email id="emailErrorMsg". use innerText
+//TODO add a click eventListener to the order button "commander!"
+// check to see if all the fields has a value (no fields should be left empty) and check one last time that the email field has the correct value.
+// use function to check the email field.
+
+//Milestone 11
+//TODO after verifying all correct user input, use fetch API to POST the order to the backend server. 
+//TODO redirect to confirmation page with order ID (refer to the product.js for search params)
+//TODO use location.assign("(it will be confirmation html)") (refer to line 20 on script)
