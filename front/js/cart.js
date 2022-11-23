@@ -112,9 +112,9 @@ function parentArticle(cartItem) {
 function displayQtyTotal() {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
-  const newQtyTotal = quantities.reduce((x, y) => x + y, 0);
+  const newQtyTotal = quantities.reduce((oldQtyValue, newQtyValue ) => oldQtyValue + newQtyValue, 0 );
   totalQty.innerText = newQtyTotal;
-  console.log(totalQty);
+  console.log(newQtyTotal);
 }
 
 function cartTotal(cart) {
@@ -137,26 +137,16 @@ function addChangeItemQtyListeners() {
     change.addEventListener("change", changeItemQty);
   }
 }
-/*
- * TODO:
- *    automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
- *    localStorage must be updated with the changes as well.
- *  TODO find cart item for the item that user is changing the quantity
- *  TODO increase the item quantity with the value the user selected.
- *    note** remember to parse strings with numbers.
- *  TODO put the updated cart back into the local storage
- */
 
 function changeItemQty(event) {
-  // i need to figure out how to target the specific value of the product that the user quantity changed.
   const articleElement = event.target.closest('article');
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
   const quantity = event.target.value;
-  console.log("you have", cart.length, " items in your cart");
-// 11-21 TODO update quantity in local storage when the user change the quantity value of an item.
+  
 // TODO update the number of articles and the total amount when the user change the quantity value of an item.
   cartTotal(cart);
+  displayQtyTotal()
 }
 
 /*
