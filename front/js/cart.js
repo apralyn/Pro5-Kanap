@@ -109,13 +109,19 @@ function parentArticle(cartItem) {
 }
 
 //TODO pass in cart(could be new or old cart)
+// this shows the # of articles in the cart page. what if the user deletes an item in the cart, the article # will change.
 function displayQtyTotal() {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
-  const newQtyTotal = quantities.reduce((oldQtyValue, newQtyValue ) => oldQtyValue + newQtyValue, 0 );
+  const newQtyTotal = quantities.reduce(
+    (oldQtyValue, newQtyValue) => oldQtyValue + newQtyValue,
+    0
+  );
   totalQty.innerText = newQtyTotal;
-  console.log(newQtyTotal);
 }
+
+//this function will calculate the total amount of all items in the current cart
+// can this just be an initial cart total.
 
 function cartTotal(cart) {
   let total = 0;
@@ -131,6 +137,7 @@ function cartTotal(cart) {
   totalPrice.innerText = total;
 }
 
+// this function triggers the event listener for item quantity change in the cart.
 function addChangeItemQtyListeners() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
   for (let change of qtyItemChange) {
@@ -138,21 +145,28 @@ function addChangeItemQtyListeners() {
   }
 }
 
+//this function targets the id, color, and quantity of a specific item in the cart
 function changeItemQty(event) {
-  const articleElement = event.target.closest('article');
+  const totalPrice = parseInt(document.getElementById("totalPrice").innerText); //to get the current total of the cart
+  const articleElement = event.target.closest("article");
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
   const quantity = event.target.value;
+  console.log(id, color, quantity, totalPrice);
   
-// TODO update the number of articles and the total amount when the user change the quantity value of an item.
-  cartTotal(cart);
-  displayQtyTotal()
+  for (let cartItem of cart) {
+    let cartItemProdInfo = allProductsData.find(
+      (product) => cartItem.id === product._id
+    );
+    let price = cartItemProdInfo.price; // this will pull all of the price inside the cart.
+  }
+// 11-29 Trying to figure out how to update the totalCartAmount when there's a quantity update.
+
+  
 }
 
 /*
- * Reference: https://www.youtube.com/watch?v=YeFzkC2awTM&t=507s (parentElement)
  *TODO:
- *   if the user click on the delete it will delete the whole item card from the cart page -done
  *   automatically recalculate the total number of articles(#) in the cart and the total amount($) of the cart.
  *   localStorage must be updated with the changes.
  */
@@ -161,19 +175,19 @@ function addDeleteItemListeners() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let deleteBtn of deleteItemBtn) {
     deleteBtn.addEventListener("click", (event) => {
-      const articleElement = event.target.closest('article');
+      const articleElement = event.target.closest("article");
       articleElement.remove();
-// 11-21 TODO update the local storage  when the user deletes an item from the cart.
-// TODO update the number of articles and the total amount when the user change the quantity value of an item.
+      // 11-21 TODO update the local storage  when the user deletes an item from the cart.
+      // TODO update the number of articles and the total amount when the user change the quantity value of an item.
     });
   }
 }
 
-// Milestone 10 
+// Milestone 10
 // First and Last name  can have letters
 // address
 //email must have @sign and .
- 
+
 //TODO add a change eventListener to the email field that tests the value with a regex email expression.
 // if test fails put a message in the email id="emailErrorMsg". use innerText
 //TODO add a click eventListener to the order button "commander!"
@@ -181,6 +195,6 @@ function addDeleteItemListeners() {
 // use function to check the email field.
 
 //Milestone 11
-//TODO after verifying all correct user input, use fetch API to POST the order to the backend server. 
+//TODO after verifying all correct user input, use fetch API to POST the order to the backend server.
 //TODO redirect to confirmation page with order ID (refer to the product.js for search params)
 //TODO use location.assign("(it will be confirmation html)") (refer to line 20 on script)
