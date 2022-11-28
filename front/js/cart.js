@@ -120,9 +120,6 @@ function displayQtyTotal() {
   totalQty.innerText = newQtyTotal;
 }
 
-//this function will calculate the total amount of all items in the current cart
-// can this just be an initial cart total.
-
 function cartTotal(cart) {
   let total = 0;
   for (let cartItem of cart) {
@@ -137,33 +134,48 @@ function cartTotal(cart) {
   totalPrice.innerText = total;
 }
 
-// this function triggers the event listener for item quantity change in the cart.
+// triggers the event listener for the item quantity change in the cart.
 function addChangeItemQtyListeners() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
   for (let change of qtyItemChange) {
-    change.addEventListener("change", changeItemQty);
+    change.addEventListener("change", changeItemQtyIncrease);
   }
 }
 
 //this function targets the id, color, and quantity of a specific item in the cart
-function changeItemQty(event) {
+function changeItemQtyIncrease(event) {
   const totalPrice = parseInt(document.getElementById("totalPrice").innerText); //to get the current total of the cart
   const articleElement = event.target.closest("article");
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
-  const quantity = event.target.value;
-  console.log(id, color, quantity, totalPrice);
-  
-  for (let cartItem of cart) {
-    let cartItemProdInfo = allProductsData.find(
-      (product) => cartItem.id === product._id
-    );
-    let price = cartItemProdInfo.price; // this will pull all of the price inside the cart.
-  }
-// 11-29 Trying to figure out how to update the totalCartAmount when there's a quantity update.
+  let quantity = event.target.value;
+  console.log(quantity);
+  //console.log(id, color, quantity, totalPrice);
+
+  let totalQtyIncrease = 0;
+  allProductsData.forEach(itemData => {
+    let itemDataPrice = itemData.price;
+    if (id === itemData._id) {
+      totalQtyIncrease += itemDataPrice + totalPrice;
+
+      //set to local storage
+      //
+      //console.log(totalQtyIncrease);
+    }
+  });
+  // Reference for splice ---> https://bobbyhadz.com/blog/javascript-replace-element-in-array
+  // trying to figure out how to replace a spefic element in the array (quantity);
+  console.log(cart);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  let newTotalAmt = document.getElementById("totalPrice").innerHTML = totalQtyIncrease;
 
   
+  //what about the quantity changes by decreasing calculation update in real time
+  //what about when the user deletes an item. the calculation to the total amount update in real time
+  //what about the local storage update in real time.
+  
 }
+
 
 /*
  *TODO:
@@ -183,10 +195,32 @@ function addDeleteItemListeners() {
   }
 }
 
+/* ----------------------------------------- form validation */
 // Milestone 10
 // First and Last name  can have letters
 // address
 //email must have @sign and .
+
+//first/last name: a-z, A-Z
+const nameRegex = 
+ new RegExp(/^[a-zA-Z]+ [a-zA-Z]+$/);
+ const isNameValid = nameRegex.test("apralyn eribal");
+ console.log(isNameValid);
+
+//adress: a-z, A-Z, 0-9
+const addressRegex = 
+ new RegExp(/^[ \w]{3,}([A-Za-z]\.)?([ \w]*\#\d+)?(\r\n| )[ \w]{3,},\x20[A-Za-z]{2}\x20\d{5}(-\d{4})?$/);
+ const isAddressValid = addressRegex.test("5358 Java St. Las Vegas, Nevada 89148");
+ console.log(isAddressValid);
+
+//email: a-z, A-Z, 0-9, characters(@, ., -, _, ) 
+const emailRegex = 
+ new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
+ const isValidEmail = emailRegex.test("email_address@domain.com");
+ console.log(isValidEmail);
+
+
+
 
 //TODO add a change eventListener to the email field that tests the value with a regex email expression.
 // if test fails put a message in the email id="emailErrorMsg". use innerText
