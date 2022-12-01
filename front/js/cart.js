@@ -145,40 +145,41 @@ function addChangeItemQtyListeners() {
 //this function targets the id, color, and quantity of a specific item in the cart
 //quantity is also an input
 function changeItemQty(event) {
-  const totalPrice = parseInt(document.getElementById("totalPrice").innerText); //to get the current total of the cart
   const articleElement = event.target.closest("article");
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
   let quantity = event.target.value;
 
-  let totalQtyIncrease = 0;
+  //TODO update total cart quantity and the total number or articles
+  //FIXME use quantity to update the quantity of the items in the localStorage.
+  let totalPrice = 0;
   allProductsData.forEach((itemData) => {
     let itemDataPrice = itemData.price;
     if (id === itemData._id) {
-      totalQtyIncrease += itemDataPrice + totalPrice;
+      //FIXME multiply quantity * price for each line item, add it to the running total(totalPrice)
+      totalPrice += itemDataPrice + totalPrice;
     }
   });
   let newTotalAmt = (document.getElementById("totalPrice").innerHTML =
-    totalQtyIncrease);
-  //this does not update the local storage in real time.
+    totalPrice);
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 //quantity changes by decreasing calculation update in real time
 //when the user deletes an item. the calculation to the total amount update in real time
 //set the quantity change in the localStorage update in real time.
 
-
 //TODO refer to function changeItemQty TODOS same with delete.
 function addDeleteItemListeners() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let deleteBtn of deleteItemBtn) {
-    deleteBtn.addEventListener("click", (event) => {
-      const articleElement = event.target.closest("article");
-      articleElement.remove();
-      // 11-21 TODO update the local storage  when the user deletes an item from the cart.
-      // TODO update the number of articles and the total amount when the user change the quantity value of an item.
-    });
+    deleteBtn.addEventListener("click", deleteCartItem);
   }
+}
+
+function deleteCartItem(event) {
+  const articleElement = event.target.closest("article");
+  articleElement.remove();
+//TODO remove item from localStorage
 }
 
 /* ---input form validation--- */
@@ -188,13 +189,18 @@ function addDeleteItemListeners() {
 //email must have @sign and .
 
 //first/last name: a-z, A-Z
+//TODO addEventListener change to check for numbers on the name.
 const nameRegex = new RegExp(/^[a-zA-Z]+ [a-zA-Z]+$/);
 const isNameValid = nameRegex.test("apralyn eribal");
 console.log(isNameValid);
 
 //adress: a-z, A-Z, 0-9
-const addressRegex = new RegExp(/^[ \w]{3,}([A-Za-z]\.)?([ \w]*\#\d+)?(\r\n| )[ \w]{3,},\x20[A-Za-z]{2}\x20\d{5}(-\d{4})?$/);
-const isAddressValid = addressRegex.test("5358 Java St. Las Vegas, Nevada 89148");
+const addressRegex = new RegExp(
+  /^[ \w]{3,}([A-Za-z]\.)?([ \w]*\#\d+)?(\r\n| )[ \w]{3,},\x20[A-Za-z]{2}\x20\d{5}(-\d{4})?$/
+);
+const isAddressValid = addressRegex.test(
+  "5358 Java St. Las Vegas, Nevada 89148"
+);
 console.log(isAddressValid);
 
 //email: a-z, A-Z, 0-9, characters(@, ., -, _, )
@@ -205,10 +211,15 @@ console.log(isAddressValid);
 const emailEl = document.getElementById("email");
 emailEl.addEventListener("change", isEmailValid);
 
-function isEmailValid() {
-  const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,"gm");
-  const checkEmail = emailRegex.test("email_address@domain.com");
+function isEmailValid(event) {
+  const emailRegex = new RegExp(
+    /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
+    "gm"
+  );
+  const checkEmail = emailRegex.test(event.target.value);
   console.log(checkEmail);
+  //TODO if checkEmail is false add error message in the email id="emailErrorMsg". use innerText
+  //TODO if empty they have to add information
 }
 
 //TODO add a click eventListener to the order button "commander!"
