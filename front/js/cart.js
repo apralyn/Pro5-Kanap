@@ -166,16 +166,17 @@ function changeItemQty(event) {
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
   let quantity = event.target.value; //value can be changed dynamically.
+  console.log(quantity);
 
   //TODO update total cart quantity and the total number or articles
   //this calculates the total amount for each item change.
   //then each item total amount will be added and stored in the totalPrice.
-  let totalPriceForEachItemChange = 0;
+  let totalPriceChange = 0;
   allProductsData.forEach((itemData) => {
     let itemDataPrice = itemData.price;
     if (id === itemData._id) {
       //FIXME multiply quantity * price for each line item, add it to the running total(totalPrice) - done
-      totalPriceForEachItemChange = totalPriceForEachItemChange + (itemDataPrice * quantity);
+      totalPriceChange = totalPriceChange + (itemDataPrice * quantity);
     }
   });
   
@@ -191,7 +192,8 @@ function changeItemQty(event) {
 function itemIncQtyChange(id) {
   let selectedItem = id;
   const search = cart.find((item) => item.id === selectedItem);
-  search.qty += 1;
+  console.log(search);
+  //search.qty += 1;
   console.log(cart);
 }
 
