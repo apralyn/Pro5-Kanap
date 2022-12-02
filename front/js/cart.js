@@ -23,7 +23,7 @@ fetch("http://localhost:3000/api/products/")
     addChangeItemQtyListeners();
     addDeleteItemListeners();
   });
-
+/* Item card Start here */
 function createEachItemCard(allProductsData) {
   for (let cartItem of cart) {
     let cartItemProdInfo = allProductsData.find(
@@ -107,9 +107,18 @@ function parentArticle(cartItem) {
   cartItems.appendChild(itemArticle);
   return itemArticle;
 }
+/* End of item cards */
 
-//TODO pass in cart(could be new or old cart)
-// this shows the # of articles in the cart page. what if the user deletes an item in the cart, the article # will change.
+
+/*--------------------------------------------------------*/
+// this function is for the # of articles in the cart
+// it counts the correct quantities of the items added in the cart + dynamically changes when the
+// user decides to update the quantity from the cart page.
+// the function should:
+// 1. initial total number of article for when the user adds an item from the product page. - done
+// 2. recalculates automatically when the user decides to change the item quantity from the cart page.
+// 3. recalculates automatically when the user decides to delete an item from the cart page.
+
 function displayQtyTotal() {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
@@ -120,6 +129,13 @@ function displayQtyTotal() {
   totalQty.innerText = newQtyTotal;
 }
 
+// this function displays the correct total amount in the cart page. 
+// this function will also need to dynamically calculate the total amount whenever the user updates 
+// the quantity from the cart page or when the user deletes an item from the cart page. 
+// the function should have:
+// 1. initial cartTotal for when the user adds an item from the product page.
+// 2. recalculates automatically when the user decides to change the item quantity from the cart page.
+// 3. recalculates automatically when the user decides to delete an item from the cart page.  
 function cartTotal(cart) {
   let total = 0;
   for (let cartItem of cart) {
@@ -131,10 +147,10 @@ function cartTotal(cart) {
     total += price * quantity;
   }
   const totalPrice = document.getElementById("totalPrice");
-  totalPrice.innerText = total;
+  totalPrice.innerText = total; 
 }
 
-// triggers the event listener for the item quantity change in the cart.
+// triggers the event listener for each change in the item/items quantity in the cart page.
 function addChangeItemQtyListeners() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
   for (let change of qtyItemChange) {
@@ -142,28 +158,45 @@ function addChangeItemQtyListeners() {
   }
 }
 
+
 //this function targets the id, color, and quantity of a specific item in the cart
 //quantity is also an input
 function changeItemQty(event) {
+  // variable grabs the specific data(ID, Color, Quantity) from each item in the CART 
   const articleElement = event.target.closest("article");
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
-  let quantity = event.target.value;
-
+  let quantity = event.target.value; //value can be changed dynamically.
+console.log(id);
   //TODO update total cart quantity and the total number or articles
-  //FIXME use quantity to update the quantity of the items in the localStorage.
-  let totalPrice = 0;
+  //this calculates the total amount for each item change.
+  //then each item total amount will be added and stored in the totalPrice.
+  let totalPriceForEachItemChange = 0;
   allProductsData.forEach((itemData) => {
     let itemDataPrice = itemData.price;
     if (id === itemData._id) {
       //FIXME multiply quantity * price for each line item, add it to the running total(totalPrice)
-      totalPrice += itemDataPrice + totalPrice;
+      totalPriceForEachItemChange = totalPriceForEachItemChange + (itemDataPrice * quantity);
+    console.log(totalPriceForEachItemChange, quantity);
     }
   });
-  let newTotalAmt = (document.getElementById("totalPrice").innerHTML =
-    totalPrice);
-  localStorage.setItem("cart", JSON.stringify(cart));
+  // cart item qty is finally increasing
+  let selectedItem = id;
+  const search = cart.find((item) => item.id === selectedItem);
+  search.qty += 1;
+  console.log(selectedItem, search);
+  //console.log(cart.map((item) => item.qty + item.color));// old qty
+
+  
+  
+  // i need newTotalPrice = i need to add the dynamic total of each item in the cart
+  //let newTotalPrice = document.getElementById("totalPrice").innerHTML = 'hello';
+  
+  //FIXME use quantity to update the quantity of the items in the localStorage.
+  //localStorage.setItem("cart", JSON.stringify(cart));
 }
+
+
 //quantity changes by decreasing calculation update in real time
 //when the user deletes an item. the calculation to the total amount update in real time
 //set the quantity change in the localStorage update in real time.
@@ -181,6 +214,7 @@ function deleteCartItem(event) {
   articleElement.remove();
 //TODO remove item from localStorage
 }
+
 
 /* ---input form validation--- */
 // Milestone 10
