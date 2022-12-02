@@ -158,7 +158,6 @@ function addChangeItemQtyListeners() {
   }
 }
 
-
 //this function targets the id, color, and quantity of a specific item in the cart
 //quantity is also an input
 function changeItemQty(event) {
@@ -167,7 +166,7 @@ function changeItemQty(event) {
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
   let quantity = event.target.value; //value can be changed dynamically.
-console.log(id);
+
   //TODO update total cart quantity and the total number or articles
   //this calculates the total amount for each item change.
   //then each item total amount will be added and stored in the totalPrice.
@@ -175,27 +174,26 @@ console.log(id);
   allProductsData.forEach((itemData) => {
     let itemDataPrice = itemData.price;
     if (id === itemData._id) {
-      //FIXME multiply quantity * price for each line item, add it to the running total(totalPrice)
+      //FIXME multiply quantity * price for each line item, add it to the running total(totalPrice) - done
       totalPriceForEachItemChange = totalPriceForEachItemChange + (itemDataPrice * quantity);
-    console.log(totalPriceForEachItemChange, quantity);
     }
   });
-  // cart item qty is finally increasing
-  let selectedItem = id;
-  const search = cart.find((item) => item.id === selectedItem);
-  search.qty += 1;
-  console.log(selectedItem, search);
-  //console.log(cart.map((item) => item.qty + item.color));// old qty
-
   
-  
-  // i need newTotalPrice = i need to add the dynamic total of each item in the cart
-  //let newTotalPrice = document.getElementById("totalPrice").innerHTML = 'hello';
+  // only increasing values, no decrease yet.
+  itemIncQtyChange(id);
+  displayQtyTotal();
+  cartTotal(cart);
+  localStorage.setItem("cart", JSON.stringify(cart));
   
   //FIXME use quantity to update the quantity of the items in the localStorage.
   //localStorage.setItem("cart", JSON.stringify(cart));
 }
-
+function itemIncQtyChange(id) {
+  let selectedItem = id;
+  const search = cart.find((item) => item.id === selectedItem);
+  search.qty += 1;
+  console.log(cart);
+}
 
 //quantity changes by decreasing calculation update in real time
 //when the user deletes an item. the calculation to the total amount update in real time
