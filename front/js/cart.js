@@ -1,6 +1,7 @@
 // >>>>>>>> CART <<<<<<<<<<
 const cart = JSON.parse(localStorage.getItem("cart"));
 let allProductsData = [];
+console.log(cart);
 
 // will check if isCartEmpty or NOT.
 let isCartEmpty = cart === null; // always "null" when localStorage is empty/emptied.
@@ -109,7 +110,6 @@ function parentArticle(cartItem) {
 }
 /* End of item cards */
 
-
 /*--------------------------------------------------------*/
 // this function is for the # of articles in the cart
 // it counts the correct quantities of the items added in the cart + dynamically changes when the
@@ -129,13 +129,13 @@ function displayQtyTotal() {
   totalQty.innerText = newQtyTotal;
 }
 
-// this function displays the correct total amount in the cart page. 
-// this function will also need to dynamically calculate the total amount whenever the user updates 
-// the quantity from the cart page or when the user deletes an item from the cart page. 
+// this function displays the correct total amount in the cart page.
+// this function will also need to dynamically calculate the total amount whenever the user updates
+// the quantity from the cart page or when the user deletes an item from the cart page.
 // the function should have:
 // 1. initial cartTotal for when the user adds an item from the product page.
 // 2. recalculates automatically when the user decides to change the item quantity from the cart page.
-// 3. recalculates automatically when the user decides to delete an item from the cart page.  
+// 3. recalculates automatically when the user decides to delete an item from the cart page.
 function cartTotal(cart) {
   let total = 0;
   for (let cartItem of cart) {
@@ -147,7 +147,7 @@ function cartTotal(cart) {
     total += price * quantity;
   }
   const totalPrice = document.getElementById("totalPrice");
-  totalPrice.innerText = total; 
+  totalPrice.innerText = total;
 }
 
 // triggers the event listener for each change in the item/items quantity in the cart page.
@@ -161,12 +161,11 @@ function addChangeItemQtyListeners() {
 //this function targets the id, color, and quantity of a specific item in the cart
 //quantity is also an input
 function changeItemQty(event) {
-  // variable grabs the specific data(ID, Color, Quantity) from each item in the CART 
+  // variable grabs the specific data(ID, Color, Quantity) from each item in the CART
   const articleElement = event.target.closest("article");
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
   let quantity = event.target.value; //value can be changed dynamically.
-  console.log(quantity);
 
   //TODO update total cart quantity and the total number or articles
   //this calculates the total amount for each item change.
@@ -175,31 +174,30 @@ function changeItemQty(event) {
   allProductsData.forEach((itemData) => {
     let itemDataPrice = itemData.price;
     if (id === itemData._id) {
-      //FIXME multiply quantity * price for each line item, add it to the running total(totalPrice) - done
-      totalPriceChange = totalPriceChange + (itemDataPrice * quantity);
+      totalPriceChange = totalPriceChange + itemDataPrice * quantity;
     }
   });
+
+  const selectedItem = id;
+  const selectedColor = color;
+
+  const search = cart.find((item) => item.id === selectedItem && item.color === selectedColor);
+  if (search.qty < quantity) {
+    search.qty += 1;
+  } else if (quantity < search.qty) {
+    search.qty --;
+  }
   
-  // only increasing values, no decrease yet.
-  itemIncQtyChange(id);
   displayQtyTotal();
   cartTotal(cart);
   localStorage.setItem("cart", JSON.stringify(cart));
-  
-  //FIXME use quantity to update the quantity of the items in the localStorage.
-  //localStorage.setItem("cart", JSON.stringify(cart));
-}
-function itemIncQtyChange(id) {
-  let selectedItem = id;
-  const search = cart.find((item) => item.id === selectedItem);
-  console.log(search);
-  //search.qty += 1;
   console.log(cart);
 }
 
-//quantity changes by decreasing calculation update in real time
+
+
 //when the user deletes an item. the calculation to the total amount update in real time
-//set the quantity change in the localStorage update in real time.
+
 
 //TODO refer to function changeItemQty TODOS same with delete.
 function addDeleteItemListeners() {
@@ -212,9 +210,8 @@ function addDeleteItemListeners() {
 function deleteCartItem(event) {
   const articleElement = event.target.closest("article");
   articleElement.remove();
-//TODO remove item from localStorage
+  //TODO remove item from localStorage
 }
-
 
 /* ---input form validation--- */
 // Milestone 10
