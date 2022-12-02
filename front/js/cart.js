@@ -110,14 +110,9 @@ function parentArticle(cartItem) {
 }
 /* End of item cards */
 
-/*--------------------------------------------------------*/
-// this function is for the # of articles in the cart
-// it counts the correct quantities of the items added in the cart + dynamically changes when the
-// user decides to update the quantity from the cart page.
-// the function should:
-// 1. initial total number of article for when the user adds an item from the product page. - done
-// 2. recalculates automatically when the user decides to change the item quantity from the cart page.
-// 3. recalculates automatically when the user decides to delete an item from the cart page.
+/*----updating the quantity from the cart page
+------when the user changes the quantity of an item
+----------------------------------------------------*/
 
 function displayQtyTotal() {
   const totalQty = document.getElementById("totalQuantity");
@@ -129,13 +124,6 @@ function displayQtyTotal() {
   totalQty.innerText = newQtyTotal;
 }
 
-// this function displays the correct total amount in the cart page.
-// this function will also need to dynamically calculate the total amount whenever the user updates
-// the quantity from the cart page or when the user deletes an item from the cart page.
-// the function should have:
-// 1. initial cartTotal for when the user adds an item from the product page.
-// 2. recalculates automatically when the user decides to change the item quantity from the cart page.
-// 3. recalculates automatically when the user decides to delete an item from the cart page.
 function cartTotal(cart) {
   let total = 0;
   for (let cartItem of cart) {
@@ -150,7 +138,6 @@ function cartTotal(cart) {
   totalPrice.innerText = total;
 }
 
-// triggers the event listener for each change in the item/items quantity in the cart page.
 function addChangeItemQtyListeners() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
   for (let change of qtyItemChange) {
@@ -158,18 +145,13 @@ function addChangeItemQtyListeners() {
   }
 }
 
-//this function targets the id, color, and quantity of a specific item in the cart
-//quantity is also an input
 function changeItemQty(event) {
-  // variable grabs the specific data(ID, Color, Quantity) from each item in the CART
   const articleElement = event.target.closest("article");
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
-  let quantity = event.target.value; //value can be changed dynamically.
+  let quantity = event.target.value;
 
-  //TODO update total cart quantity and the total number or articles
-  //this calculates the total amount for each item change.
-  //then each item total amount will be added and stored in the totalPrice.
+  //recalculation when user change item qty from cart page.
   let totalPriceChange = 0;
   allProductsData.forEach((itemData) => {
     let itemDataPrice = itemData.price;
@@ -178,9 +160,9 @@ function changeItemQty(event) {
     }
   });
 
+  //targets the specific item using id & color when user changes the item qty.
   const selectedItem = id;
   const selectedColor = color;
-
   const search = cart.find((item) => item.id === selectedItem && item.color === selectedColor);
   if (search.qty < quantity) {
     search.qty += 1;
@@ -194,23 +176,32 @@ function changeItemQty(event) {
   console.log(cart);
 }
 
-
-
-//when the user deletes an item. the calculation to the total amount update in real time
-
-
-//TODO refer to function changeItemQty TODOS same with delete.
+/* when user deletes an item from the cart page */
 function addDeleteItemListeners() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let deleteBtn of deleteItemBtn) {
     deleteBtn.addEventListener("click", deleteCartItem);
   }
 }
-
+// removes the card from the cart page
 function deleteCartItem(event) {
   const articleElement = event.target.closest("article");
+  console.log(articleElement);
+  //articleElement.remove();
+  
+  const id = articleElement.dataset.id;
+  const color = articleElement.dataset.color;
+  const selectedItem = id;
+  const selectedColor = color;
+  console.log(selectedItem, selectedColor);
+
+  //loop through the cart and figure out which one is removed then set it to the local storage.
+  cart.filter((item) => item.id !== selectedItem && item.color === selectedColor);
+  localStorage.setItem("cart", JSON.stringify(cart));
   articleElement.remove();
-  //TODO remove item from localStorage
+  console.log(cart);
+
+  
 }
 
 /* ---input form validation--- */
