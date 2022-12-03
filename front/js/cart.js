@@ -20,6 +20,7 @@ fetch("http://localhost:3000/api/products/")
     allProductsData = products;
     allProductsData._id;
     createEachItemCard(allProductsData);
+    displayQtyTotal(cart);
     cartTotal(cart);
     addChangeItemQtyListeners();
     addDeleteItemListeners();
@@ -103,18 +104,15 @@ function parentArticle(cartItem) {
   const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
   const itemArticle = document.createElement("article");
   itemArticle.classList.add("cart__item");
-  itemArticle.setAttribute("data-id", `${cartItem.id}`);
-  itemArticle.setAttribute("data-color", `${cartItem.color}`);
+  itemArticle.dataset.id = cartItem.id;
+  itemArticle.dataset.color = cartItem.color;
   cartItems.appendChild(itemArticle);
   return itemArticle;
 }
 /* End of item cards */
 
-/*----updating the quantity from the cart page
-------when the user changes the quantity of an item
-----------------------------------------------------*/
 
-function displayQtyTotal() {
+function displayQtyTotal(cart = []) {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
   const newQtyTotal = quantities.reduce(
@@ -146,6 +144,7 @@ function addChangeItemQtyListeners() {
 }
 
 function changeItemQty(event) {
+  const cart = JSON.parse(localStorage.getItem("cart"));
   const articleElement = event.target.closest("article");
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
@@ -163,17 +162,19 @@ function changeItemQty(event) {
   //targets the specific item using id & color when user changes the item qty.
   const selectedItem = id;
   const selectedColor = color;
-  const search = cart.find((item) => item.id === selectedItem && item.color === selectedColor);
+  const search = cart.find(
+    (item) => item.id === selectedItem && item.color === selectedColor
+  );
   if (search.qty < quantity) {
-    search.qty += 1;
+    search.qty++;
   } else if (quantity < search.qty) {
-    search.qty --;
+    search.qty--;
   }
-  
-  displayQtyTotal();
+
+  displayQtyTotal(cart);
   cartTotal(cart);
   localStorage.setItem("cart", JSON.stringify(cart));
-  console.log(cart);
+  //console.log(cart);
 }
 
 /* when user deletes an item from the cart page */
@@ -185,25 +186,41 @@ function addDeleteItemListeners() {
 }
 // removes the card from the cart page
 function deleteCartItem(event) {
+  const cart = JSON.parse(localStorage.getItem("cart"));
   const articleElement = event.target.closest("article");
-  console.log(articleElement);
-  //articleElement.remove();
-  
   const id = articleElement.dataset.id;
   const color = articleElement.dataset.color;
   const selectedItem = id;
   const selectedColor = color;
-  console.log(selectedItem, selectedColor);
-
-  //loop through the cart and figure out which one is removed then set it to the local storage.
-  cart.filter((item) => item.id !== selectedItem && item.color === selectedColor);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  articleElement.remove();
-  console.log(cart);
-
   
+  const quantity = parseInt(
+    articleElement.querySelector(".itemQuantity").value
+  );
+  const filteredCart = cart.filter(
+    (item) => !(item.id === selectedItem && item.color === selectedColor)
+  );
+  articleElement.remove();
+  localStorage.setItem("cart", JSON.stringify(filteredCart));
+  updateTotalQty(quantity);
+  updateTotalPrice(quantity);
 }
-
+/**
+ * Update the total quantity on the cart page.
+ *
+ * @param {number} quantity - Cart item quantity.
+ */
+function updateTotalQty(quantity) {
+  const totalQtyEl = document.getElementById("totalQuantity");
+  const totalQty = parseInt(totalQtyEl.innerText);
+  totalQtyEl.innerText = totalQty - quantity;
+  location.reload();
+}
+function updateTotalPrice(quantity) {
+  const totalPriceEl = document.getElementById("totalPrice");
+  const totalPrice = parseInt(totalPriceEl.innerText);
+  totalPriceEl.innerText = totalPrice - quantity;
+  location.reload();
+}
 /* ---input form validation--- */
 // Milestone 10
 // First and Last name  can have letters
@@ -226,8 +243,8 @@ const isAddressValid = addressRegex.test(
 console.log(isAddressValid);
 
 //email: a-z, A-Z, 0-9, characters(@, ., -, _, )
-//TODO add a change eventListener to the email field that tests the value with a regex email expression.
-// if test fails put a message in the email id="emailErrorMsg". use innerText
+//TODO add a change eventListener to the email field that tests the.
+// if test fails put a message in the email id="emailErrorMsg". use innerText value with a regex email expression
 // email is an input element which has value.
 
 const emailEl = document.getElementById("email");
@@ -241,7 +258,6 @@ function isEmailValid(event) {
   const checkEmail = emailRegex.test(event.target.value);
   console.log(checkEmail);
   //TODO if checkEmail is false add error message in the email id="emailErrorMsg". use innerText
-  //TODO if empty they have to add information
 }
 
 //TODO add a click eventListener to the order button "commander!"
