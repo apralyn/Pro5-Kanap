@@ -220,7 +220,7 @@ function updateTotalPrice(quantity) {
   const totalPrice = parseInt(totalPriceEl.innerText);
   totalPriceEl.innerText = totalPrice - quantity;
   location.reload();
-}
+}. 
 /* ---input form validation--- */
 // Milestone 10
 // First and Last name  can have letters
