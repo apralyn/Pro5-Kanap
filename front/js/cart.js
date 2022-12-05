@@ -236,6 +236,9 @@ function validateFirstName(event) {
   if (checkFirstName == false) {
     document.getElementById("firstNameErrorMsg").innerText =
       "First name is not valid";
+  } else {
+    // TODO clear out error message field.
+    document.getElementById("firstNameErrorMsg").innerText = "";
   }
 }
 
@@ -250,6 +253,10 @@ function validateLastName(event) {
   if (checkLastName == false) {
     document.getElementById("lastNameErrorMsg").innerText =
       "Last name is not valid";
+  } else {
+    // TODO clear out error message field.
+    document.getElementById("lastNameErrorMsg").innerText ="";
+    
   }
 }
 
@@ -266,12 +273,14 @@ function validateAddress(event) {
   if (checkAddress == false) {
     document.getElementById("addressErrorMsg").innerText =
       "Address is not valid";
+  } else {
+    document.getElementById("addressErrorMsg").innerText = "";
   }
 }
 
 // city
-const cityEl = document.getElementById("city");
-cityEl.addEventListener("change", validateCity);
+const cityElement = document.getElementById("city");
+cityElement.addEventListener("change", validateCity);
 
 function validateCity(event) {
   const cityRegex = new RegExp(/^[a-zA-Z]+ [a-zA-Z]+$/);
@@ -279,12 +288,14 @@ function validateCity(event) {
   console.log(checkCity);
   if (checkCity == false) {
     document.getElementById("cityErrorMsg").innerText = "City is not valid";
+  } else {
+    document.getElementById("cityErrorMsg").innerText ="";
   }
 }
 
 // email
-const emailEl = document.getElementById("email");
-emailEl.addEventListener("change", validateEmail);
+const emailElement = document.getElementById("email");
+emailElement.addEventListener("change", validateEmail);
 const form = document.getElementsByClassName("cart__order__form__question");
 console.log(form);
 
@@ -293,8 +304,11 @@ function validateEmail(event) {
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
   );
   const checkEmail = emailRegex.test(event.target.value);
-  if (checkEmail == false) {
+  if (!checkEmail) {
     document.getElementById("emailErrorMsg").innerText = "Incorrect Email";
+  } else {
+    // TODO clear out error message field.
+    document.getElementById("emailErrorMsg").innerText ="";
   }
 }
 
@@ -303,14 +317,42 @@ function validateEmail(event) {
 const orderEl = document.getElementById("order");
 orderEl.addEventListener("click", validateOrderForm);
 
-function validateOrderForm() {
-  // TODO check if all fields has a value (no fields should be left empty)
-  // TODO check email field is valid
+function validateOrderForm(event) {
+  event.preventDefault();
+  const cart = JSON.parse(localStorage.getItem("cart"));
+  const products = cart.map((item) => item.id);
+  console.log(products);
+  //POST API
+  const order = {
+    contact: {
+      // TODO replace hard coded values with user input value from the order form
+      firstName: "Jane",
+      lastName: "Doe",
+      address: "123 Java St",
+      city: "Las Vegas,",
+      email: "janeDoe@gmail.com",
+    },
+    // TODO get the id's from the cart inside the localStorage
+    products,
+  };
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(order),
+  };
+
+  fetch("http://localhost:3000/api/products/order", options)
+    .then((data) => {
+      return data.json();
+    })
+    .then((confirmation) => {
+      //TODO after verifying all correct user input, use fetch API to POST the order to the backend server.
+      //TODO redirect to confirmation page with order ID (refer to the product.js for search params)
+      //TODO Clear out the local storage
+      //TODO use location.assign("(it will be confirmation html)") (refer to line 20 on script)
+      console.log(confirmation.orderId);
+    });
 }
-
-//POST API
-
-//Milestone 11
-//TODO after verifying all correct user input, use fetch API to POST the order to the backend server.
-//TODO redirect to confirmation page with order ID (refer to the product.js for search params)
-//TODO use location.assign("(it will be confirmation html)") (refer to line 20 on script)
