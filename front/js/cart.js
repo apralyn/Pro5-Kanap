@@ -220,50 +220,95 @@ function updateTotalPrice(quantity) {
   totalPriceEl.innerText = totalPrice - quantity;
   location.reload();
 }
+
 /**
  * form validation
  */
-// email
-const emailEl = document.getElementById("email");
-emailEl.addEventListener("change", isEmailValid);
 
-// name
-const firstEl = document.getElementById("firstName");
-const lastEl = document.getElementById("lastName");
-firstEl.addEventListener("change", isNameValid);
-lastEl.addEventListener("change", isNameValid);
+// first name
+const firstNameEl = document.getElementById("firstName");
+firstNameEl.addEventListener("change", validateFirstName);
 
-/* ---input form validation--- */
-// Milestone 10
-// First and Last name  can have letters
-// address
-//email must have @sign and .
-
-//first/last name: a-z, A-Z
-//TODO addEventListener change to check for numbers on the name.
-const nameRegex = new RegExp(/^[a-zA-Z]+ [a-zA-Z]+$/);
-const isNameValid = nameRegex.test();
-
-//adress: a-z, A-Z, 0-9
-const addressRegex = new RegExp(
-  /^[ \w]{3,}([A-Za-z]\.)?([ \w]*\#\d+)?(\r\n| )[ \w]{3,},\x20[A-Za-z]{2}\x20\d{5}(-\d{4})?$/
-);
-const isAddressValid = addressRegex.test();
-
-function isEmailValid(event) {
-  const emailRegex = new RegExp(
-    /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
-    "gm"
-  );
-  const checkEmail = emailRegex.test(event.target.value);
-  console.log(checkEmail);
-
-  //TODO if checkEmail is false add error message in the email id="emailErrorMsg". use innerText
+function validateFirstName(event) {
+  const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
+  const checkFirstName = nameRegex.test(event.target.value);
+  console.log(checkFirstName);
+  if (checkFirstName == false) {
+    document.getElementById("firstNameErrorMsg").innerText =
+      "First name is not valid";
+  }
 }
 
-//TODO add a click eventListener to the order button "commander!"
-// check to see if all the fields has a value (no fields should be left empty) and check one last time that the email field has the correct value.
-// use function to check the email field.
+// last name
+const lastNameEl = document.getElementById("lastName");
+lastNameEl.addEventListener("change", validateLastName);
+
+function validateLastName(event) {
+  const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
+  const checkLastName = nameRegex.test(event.target.value);
+  console.log(checkLastName);
+  if (checkLastName == false) {
+    document.getElementById("lastNameErrorMsg").innerText =
+      "Last name is not valid";
+  }
+}
+
+// address
+const addressEl = document.getElementById("address");
+addressEl.addEventListener("change", validateAddress);
+
+function validateAddress(event) {
+  const addressRegex = new RegExp(
+    /([A-Z][a-z]+\s?)+,\s[A-Z]{2}\s\d{5}-?\d{4}?/
+  );
+  const checkAddress = addressRegex.test(event.target.value);
+  console.log(checkAddress);
+  if (checkAddress == false) {
+    document.getElementById("addressErrorMsg").innerText =
+      "Address is not valid";
+  }
+}
+
+// city
+const cityEl = document.getElementById("city");
+cityEl.addEventListener("change", validateCity);
+
+function validateCity(event) {
+  const cityRegex = new RegExp(/^[a-zA-Z]+ [a-zA-Z]+$/);
+  const checkCity = cityRegex.test(event.target.value);
+  console.log(checkCity);
+  if (checkCity == false) {
+    document.getElementById("cityErrorMsg").innerText = "City is not valid";
+  }
+}
+
+// email
+const emailEl = document.getElementById("email");
+emailEl.addEventListener("change", validateEmail);
+const form = document.getElementsByClassName("cart__order__form__question");
+console.log(form);
+
+function validateEmail(event) {
+  const emailRegex = new RegExp(
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  );
+  const checkEmail = emailRegex.test(event.target.value);
+  if (checkEmail == false) {
+    document.getElementById("emailErrorMsg").innerText = "Incorrect Email";
+  }
+}
+
+// order button
+// TODO add a click event to the order button
+const orderEl = document.getElementById("order");
+orderEl.addEventListener("click", validateOrderForm);
+
+function validateOrderForm() {
+  // TODO check if all fields has a value (no fields should be left empty)
+  // TODO check email field is valid
+}
+
+//POST API
 
 //Milestone 11
 //TODO after verifying all correct user input, use fetch API to POST the order to the backend server.
