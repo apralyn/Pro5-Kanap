@@ -111,7 +111,6 @@ function parentArticle(cartItem) {
 }
 /* End of item cards */
 
-
 function displayQtyTotal(cart = []) {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
@@ -192,7 +191,7 @@ function deleteCartItem(event) {
   const color = articleElement.dataset.color;
   const selectedItem = id;
   const selectedColor = color;
-  
+
   const quantity = parseInt(
     articleElement.querySelector(".itemQuantity").value
   );
@@ -220,7 +219,20 @@ function updateTotalPrice(quantity) {
   const totalPrice = parseInt(totalPriceEl.innerText);
   totalPriceEl.innerText = totalPrice - quantity;
   location.reload();
-}. 
+}
+/**
+ * form validation
+ */
+// email
+const emailEl = document.getElementById("email");
+emailEl.addEventListener("change", isEmailValid);
+
+// name
+const firstEl = document.getElementById("firstName");
+const lastEl = document.getElementById("lastName");
+firstEl.addEventListener("change", isNameValid);
+lastEl.addEventListener("change", isNameValid);
+
 /* ---input form validation--- */
 // Milestone 10
 // First and Last name  can have letters
@@ -230,25 +242,13 @@ function updateTotalPrice(quantity) {
 //first/last name: a-z, A-Z
 //TODO addEventListener change to check for numbers on the name.
 const nameRegex = new RegExp(/^[a-zA-Z]+ [a-zA-Z]+$/);
-const isNameValid = nameRegex.test("apralyn eribal");
-console.log(isNameValid);
+const isNameValid = nameRegex.test();
 
 //adress: a-z, A-Z, 0-9
 const addressRegex = new RegExp(
   /^[ \w]{3,}([A-Za-z]\.)?([ \w]*\#\d+)?(\r\n| )[ \w]{3,},\x20[A-Za-z]{2}\x20\d{5}(-\d{4})?$/
 );
-const isAddressValid = addressRegex.test(
-  "5358 Java St. Las Vegas, Nevada 89148"
-);
-console.log(isAddressValid);
-
-//email: a-z, A-Z, 0-9, characters(@, ., -, _, )
-//TODO add a change eventListener to the email field that tests the.
-// if test fails put a message in the email id="emailErrorMsg". use innerText value with a regex email expression
-// email is an input element which has value.
-
-const emailEl = document.getElementById("email");
-emailEl.addEventListener("change", isEmailValid);
+const isAddressValid = addressRegex.test();
 
 function isEmailValid(event) {
   const emailRegex = new RegExp(
@@ -257,6 +257,7 @@ function isEmailValid(event) {
   );
   const checkEmail = emailRegex.test(event.target.value);
   console.log(checkEmail);
+
   //TODO if checkEmail is false add error message in the email id="emailErrorMsg". use innerText
 }
 
