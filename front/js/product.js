@@ -1,6 +1,6 @@
-const productUrl = window.location.href; //URL object to access search params
+//URL object to access search params
+const productUrl = window.location.href;
 const newProductUrl = new URL(productUrl);
-//cart is from localStorage
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 //product ID
 const productId = newProductUrl.searchParams.get("id");
@@ -30,7 +30,7 @@ function displaySingleProduct(products) {
   productImg.setAttribute("alt", products.altTxt);
   productItem.appendChild(productImg);
 
-  //loop for the color options
+  //loop for each color options
   for (let color of products.colors) {
     const productColor = document.querySelector("#colors");
     const colorOption = document.createElement("option");

@@ -1,7 +1,6 @@
 // >>>>>>>> CART <<<<<<<<<<
 const cart = JSON.parse(localStorage.getItem("cart"));
 let allProductsData = [];
-console.log(cart);
 
 // will check if isCartEmpty or NOT.
 let isCartEmpty = cart === null; // always "null" when localStorage is empty/emptied.
@@ -14,7 +13,7 @@ if (isCartEmpty) {
 // >>>>>>>>  All PRODUCTS data  <<<<<<<<<<
 fetch("http://localhost:3000/api/products/")
   .then((data) => {
-    return data.json(); // all products data is returned as json format
+    return data.json();
   })
   .then((products) => {
     allProductsData = products;
@@ -25,6 +24,7 @@ fetch("http://localhost:3000/api/products/")
     addChangeItemQtyListeners();
     addDeleteItemListeners();
   });
+
 /* Item card Start here */
 function createEachItemCard(allProductsData) {
   for (let cartItem of cart) {
@@ -109,7 +109,7 @@ function parentArticle(cartItem) {
   cartItems.appendChild(itemArticle);
   return itemArticle;
 }
-/* End of item cards */
+/* End of each item cards */
 
 function displayQtyTotal(cart = []) {
   const totalQty = document.getElementById("totalQuantity");
@@ -233,11 +233,10 @@ function validateFirstName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
   const checkFirstName = nameRegex.test(event.target.value);
   console.log(checkFirstName);
-  if (checkFirstName == false) {
+  if (checkFirstName === false) {
     document.getElementById("firstNameErrorMsg").innerText =
       "First name is not valid";
   } else {
-    // TODO clear out error message field.
     document.getElementById("firstNameErrorMsg").innerText = "";
   }
 }
@@ -250,46 +249,11 @@ function validateLastName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
   const checkLastName = nameRegex.test(event.target.value);
   console.log(checkLastName);
-  if (checkLastName == false) {
+  if (checkLastName === false) {
     document.getElementById("lastNameErrorMsg").innerText =
       "Last name is not valid";
   } else {
-    // TODO clear out error message field.
-    document.getElementById("lastNameErrorMsg").innerText ="";
-    
-  }
-}
-
-// address
-const addressEl = document.getElementById("address");
-addressEl.addEventListener("change", validateAddress);
-
-function validateAddress(event) {
-  const addressRegex = new RegExp(
-    /([A-Z][a-z]+\s?)+,\s[A-Z]{2}\s\d{5}-?\d{4}?/
-  );
-  const checkAddress = addressRegex.test(event.target.value);
-  console.log(checkAddress);
-  if (checkAddress == false) {
-    document.getElementById("addressErrorMsg").innerText =
-      "Address is not valid";
-  } else {
-    document.getElementById("addressErrorMsg").innerText = "";
-  }
-}
-
-// city
-const cityElement = document.getElementById("city");
-cityElement.addEventListener("change", validateCity);
-
-function validateCity(event) {
-  const cityRegex = new RegExp(/^[a-zA-Z]+ [a-zA-Z]+$/);
-  const checkCity = cityRegex.test(event.target.value);
-  console.log(checkCity);
-  if (checkCity == false) {
-    document.getElementById("cityErrorMsg").innerText = "City is not valid";
-  } else {
-    document.getElementById("cityErrorMsg").innerText ="";
+    document.getElementById("lastNameErrorMsg").innerText = "";
   }
 }
 
@@ -304,16 +268,14 @@ function validateEmail(event) {
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
   );
   const checkEmail = emailRegex.test(event.target.value);
-  if (!checkEmail) {
+  if (checkEmail === false) {
     document.getElementById("emailErrorMsg").innerText = "Incorrect Email";
   } else {
-    // TODO clear out error message field.
-    document.getElementById("emailErrorMsg").innerText ="";
+    document.getElementById("emailErrorMsg").innerText = "";
   }
 }
 
 // order button
-// TODO add a click event to the order button
 const orderEl = document.getElementById("order");
 orderEl.addEventListener("click", validateOrderForm);
 
@@ -322,15 +284,26 @@ function validateOrderForm(event) {
   const cart = JSON.parse(localStorage.getItem("cart"));
   const products = cart.map((item) => item.id);
   console.log(products);
+  
+  const firstName = document.getElementById("firstName");
+  const lastName = document.getElementById("lastName");
+  const address = document.getElementById("address");
+  const city = document.getElementById("city");
+  const email = document.getElementById("email");
+
+  //check values cannot be empty
+  if (firstName === ""){
+    alert("Please provide your first name");
+  }
+
   //POST API
   const order = {
     contact: {
-      // TODO replace hard coded values with user input value from the order form
-      firstName: "Jane",
-      lastName: "Doe",
-      address: "123 Java St",
-      city: "Las Vegas,",
-      email: "janeDoe@gmail.com",
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
     },
     // TODO get the id's from the cart inside the localStorage
     products,
