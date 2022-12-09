@@ -32,7 +32,13 @@ function createEachItemCard(allProductsData) {
       (product) => cartItem.id === product._id
     );
     //parent Article
-    const itemArticle = parentArticle(cartItem);
+    //const itemArticle = parentArticle(cartItem);
+    const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
+    const itemArticle = document.createElement("article");
+    itemArticle.classList.add("cart__item");
+    itemArticle.dataset.id = cartItem.id;
+    itemArticle.dataset.color = cartItem.color;
+    cartItems.appendChild(itemArticle);
 
     // Article child no.1 div for cart item img
     const cartItemImg = document.createElement("div");
@@ -50,7 +56,19 @@ function createEachItemCard(allProductsData) {
     cartItemContent.classList.add("cart__item__content");
     itemArticle.appendChild(cartItemContent);
 
-    cartItemInfo(cartItemContent, cartItemProdInfo, cartItem);
+    //cart item
+    const cartItemDescription = document.createElement("div");
+    const cartItemProdName = document.createElement("h2");
+    const cartItemProdColor = document.createElement("p");
+    const cartItemProdPrice = document.createElement("p");
+    cartItemContent.appendChild(cartItemDescription);
+    cartItemDescription.appendChild(cartItemProdName).innerText =
+      cartItemProdInfo.name;
+    cartItemDescription.appendChild(cartItemProdColor).innerText =
+      cartItem.color;
+    cartItemDescription.appendChild(
+      cartItemProdPrice
+    ).innerText = `€${cartItemProdInfo.price}`;
 
     const cartContentSettings = document.createElement("div");
     cartContentSettings.classList.add("cart__item__content__settings");
@@ -60,54 +78,26 @@ function createEachItemCard(allProductsData) {
     cartContentQty.classList.add("cart__item__content__settings__quantity");
     cartContentSettings.appendChild(cartContentQty);
 
-    itemQty(cartItem, cartContentQty);
-    deleteBtn(cartContentSettings);
+    //itemQty
+    const cartItemQty = document.createElement("p");
+    const cartQtyInput = document.createElement("input");
+    cartQtyInput.setAttribute("type", "number");
+    cartQtyInput.classList.add("itemQuantity");
+    cartQtyInput.setAttribute("name", "itemQuantity");
+    cartQtyInput.setAttribute("min", "1");
+    cartQtyInput.setAttribute("max", "100");
+    cartQtyInput.setAttribute("value", cartItem.qty);
+    cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
+    cartContentQty.appendChild(cartQtyInput);
+
+    //delete btn
+    const cartItemDeleteBtn = document.createElement("div");
+    cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
+    cartContentSettings.appendChild(cartItemDeleteBtn);
+    const deleteItem = document.createElement("p");
+    deleteItem.classList.add("deleteItem");
+    cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
   }
-}
-function cartItemInfo(cartItemContent, cartItemProdInfo, cartItem) {
-  const cartItemDescription = document.createElement("div");
-  const cartItemProdName = document.createElement("h2");
-  const cartItemProdColor = document.createElement("p");
-  const cartItemProdPrice = document.createElement("p");
-  cartItemContent.appendChild(cartItemDescription);
-  cartItemDescription.appendChild(cartItemProdName).innerText =
-    cartItemProdInfo.name;
-  cartItemDescription.appendChild(cartItemProdColor).innerText = cartItem.color;
-  cartItemDescription.appendChild(
-    cartItemProdPrice
-  ).innerText = `€${cartItemProdInfo.price}`;
-}
-
-function itemQty(cartItem, cartContentQty) {
-  const cartItemQty = document.createElement("p");
-  const cartQtyInput = document.createElement("input");
-  cartQtyInput.setAttribute("type", "number");
-  cartQtyInput.classList.add("itemQuantity");
-  cartQtyInput.setAttribute("name", "itemQuantity");
-  cartQtyInput.setAttribute("min", "1");
-  cartQtyInput.setAttribute("max", "100");
-  cartQtyInput.setAttribute("value", cartItem.qty);
-  cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
-  cartContentQty.appendChild(cartQtyInput);
-}
-
-function deleteBtn(cartContentSettings) {
-  const cartItemDeleteBtn = document.createElement("div");
-  cartItemDeleteBtn.classList.add("cart__item__content__settings__delete");
-  cartContentSettings.appendChild(cartItemDeleteBtn);
-  const deleteItem = document.createElement("p");
-  deleteItem.classList.add("deleteItem");
-  cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
-}
-
-function parentArticle(cartItem) {
-  const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
-  const itemArticle = document.createElement("article");
-  itemArticle.classList.add("cart__item");
-  itemArticle.dataset.id = cartItem.id;
-  itemArticle.dataset.color = cartItem.color;
-  cartItems.appendChild(itemArticle);
-  return itemArticle;
 }
 /* End of each item cards */
 
@@ -176,14 +166,14 @@ function changeItemQty(event) {
   //console.log(cart);
 }
 
-/* when user deletes an item from the cart page */
+// delete an item from the cart
 function addDeleteItemListeners() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let deleteBtn of deleteItemBtn) {
     deleteBtn.addEventListener("click", deleteCartItem);
   }
 }
-// removes the card from the cart page
+// remove item card from the cart
 function deleteCartItem(event) {
   const cart = JSON.parse(localStorage.getItem("cart"));
   const articleElement = event.target.closest("article");
@@ -228,6 +218,17 @@ function updateTotalPrice(quantity) {
 // first name
 const firstNameEl = document.getElementById("firstName");
 firstNameEl.addEventListener("change", validateFirstName);
+// last name
+const lastNameEl = document.getElementById("lastName");
+lastNameEl.addEventListener("change", validateLastName);
+// email
+const emailElement = document.getElementById("email");
+emailElement.addEventListener("change", validateEmail);
+const form = document.getElementsByClassName("cart__order__form__question");
+console.log(form);
+// order button
+const orderEl = document.getElementById("order");
+orderEl.addEventListener("click", validateOrderForm);
 
 function validateFirstName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
@@ -241,10 +242,6 @@ function validateFirstName(event) {
   }
 }
 
-// last name
-const lastNameEl = document.getElementById("lastName");
-lastNameEl.addEventListener("change", validateLastName);
-
 function validateLastName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
   const checkLastName = nameRegex.test(event.target.value);
@@ -256,12 +253,6 @@ function validateLastName(event) {
     document.getElementById("lastNameErrorMsg").innerText = "";
   }
 }
-
-// email
-const emailElement = document.getElementById("email");
-emailElement.addEventListener("change", validateEmail);
-const form = document.getElementsByClassName("cart__order__form__question");
-console.log(form);
 
 function validateEmail(event) {
   const emailRegex = new RegExp(
@@ -275,16 +266,12 @@ function validateEmail(event) {
   }
 }
 
-// order button
-const orderEl = document.getElementById("order");
-orderEl.addEventListener("click", validateOrderForm);
-
 function validateOrderForm(event) {
   event.preventDefault();
   const cart = JSON.parse(localStorage.getItem("cart"));
   const products = cart.map((item) => item.id);
   console.log(products);
-  
+
   const firstName = document.getElementById("firstName");
   const lastName = document.getElementById("lastName");
   const address = document.getElementById("address");
@@ -292,7 +279,7 @@ function validateOrderForm(event) {
   const email = document.getElementById("email");
 
   //check values cannot be empty
-  if (firstName === ""){
+  if (firstName === "") {
     alert("Please provide your first name");
   }
 
