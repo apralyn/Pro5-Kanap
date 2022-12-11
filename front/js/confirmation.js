@@ -1,9 +1,11 @@
 //Milestone 11
-//TODO grab ID from URL using search params. (check product.js for reference)
-const url = window.location.href;
-const newUrl = new URL(url);
-const grabId = newUrl.searchParams.get("id");
-console.log(url, newUrl, grabId);
+//TODO grab the orderId from URL using search params. (check product.js for reference)
+ const confirmationUrl = window.location.href;
+ const newUrl = new URL(confirmationUrl);
+ const orderId = newUrl.searchParams.get("orderId");
+ console.log(confirmationUrl, newUrl, orderId);
+
 //TODO line 49 put order ID
-const hello = (document.getElementById("orderID").innerText = grabId);
-console.log(hello);
+document.getElementById("orderId").innerText = orderId;
+
+

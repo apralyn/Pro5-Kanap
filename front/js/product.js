@@ -4,6 +4,7 @@ const newProductUrl = new URL(productUrl);
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 //product ID
 const productId = newProductUrl.searchParams.get("id");
+console.log(productUrl, newProductUrl, productId);
 
 //Fetch API + productId
 fetch("http://localhost:3000/api/products/" + productId)

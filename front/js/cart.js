@@ -214,7 +214,6 @@ function updateTotalPrice(quantity) {
 /**
  * form validation
  */
-
 // first name
 const firstName = document.getElementById("firstName");
 firstName.addEventListener("change", validateFirstName);
@@ -227,8 +226,6 @@ const city = document.getElementById("city");
 // email
 const email = document.getElementById("email");
 email.addEventListener("change", validateEmail);
-const form = document.getElementsByClassName("cart__order__form__question");
-console.log(form);
 // order button
 const order = document.getElementById("order");
 order.addEventListener("click", validateOrderForm);
@@ -287,9 +284,11 @@ function validateAddressAndCity(address, city) {
 function validateOrderForm(event) {
   event.preventDefault();
   validateAddressAndCity(address, city);
+
   const cart = JSON.parse(localStorage.getItem("cart"));
+  //map itirate each items in the cart and will get the IDs of each item.
   const products = cart.map((item) => item.id);
-  console.log(products);
+  // console.log(products);
 
   //POST API
   const order = {
@@ -300,7 +299,6 @@ function validateOrderForm(event) {
       city: city.value,
       email: email.value,
     },
-    // TODO get the id's from the cart inside the localStorage
     products,
   };
 
@@ -317,16 +315,13 @@ function validateOrderForm(event) {
       return data.json();
     })
     .then((confirmation) => {
-      //TODO redirect to confirmation page with order ID (refer to the product.js for search params)
-     
-
+     //console.log(confirmation);
+     console.log(confirmation.orderId);
+      
       //TODO Clear out the local storage
       window.localStorage.clear();
       //TODO use location.assign("(it will be confirmation html)") (refer to line 20 on script)
-
-      console.log(confirmation);
-      console.log(confirmation.orderId);
-      window.location.href =
-          "./confirmation.html?id=" + confirmation.orderId;
+      //window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
+      window.location.assign("./confirmation.html?orderId=" + confirmation.orderId);
     });
 }
