@@ -3,8 +3,8 @@ const cart = JSON.parse(localStorage.getItem("cart"));
 let allProductsData = [];
 
 // will check if isCartEmpty or NOT.
-let isCartEmpty = cart === null; // always "null" when localStorage is empty/emptied.
-if (isCartEmpty) {
+// "null" when localStorage is empty/emptied.
+if (cart === null) {
   alert("Your CART is currently empty.");
 } else {
   displayQtyTotal();
@@ -216,19 +216,22 @@ function updateTotalPrice(quantity) {
  */
 
 // first name
-const firstNameEl = document.getElementById("firstName");
-firstNameEl.addEventListener("change", validateFirstName);
+const firstName = document.getElementById("firstName");
+firstName.addEventListener("change", validateFirstName);
 // last name
-const lastNameEl = document.getElementById("lastName");
-lastNameEl.addEventListener("change", validateLastName);
+const lastName = document.getElementById("lastName");
+lastName.addEventListener("change", validateLastName);
+//address
+const address = document.getElementById("address");
+const city = document.getElementById("city");
 // email
-const emailElement = document.getElementById("email");
-emailElement.addEventListener("change", validateEmail);
+const email = document.getElementById("email");
+email.addEventListener("change", validateEmail);
 const form = document.getElementsByClassName("cart__order__form__question");
 console.log(form);
 // order button
-const orderEl = document.getElementById("order");
-orderEl.addEventListener("click", validateOrderForm);
+const order = document.getElementById("order");
+order.addEventListener("click", validateOrderForm);
 
 function validateFirstName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
@@ -265,23 +268,28 @@ function validateEmail(event) {
     document.getElementById("emailErrorMsg").innerText = "";
   }
 }
+function validateAddressAndCity(address, city) {
+  const emptyAddress = address.value;
+  const emptyCity = city.value;
+
+  if (emptyAddress === 0 || emptyAddress === "") {
+    document.getElementById("addressErrorMsg").innerText = "Address is empty";
+  } else {
+    document.getElementById("addressErrorMsg").innerText = "";
+  }
+  if (emptyCity === 0 || emptyCity === "") {
+    document.getElementById("cityErrorMsg").innerText = "City is empty";
+  } else {
+    document.getElementById("cityErrorMsg").innerText = "";
+  }
+}
 
 function validateOrderForm(event) {
   event.preventDefault();
+  validateAddressAndCity(address, city);
   const cart = JSON.parse(localStorage.getItem("cart"));
   const products = cart.map((item) => item.id);
   console.log(products);
-
-  const firstName = document.getElementById("firstName");
-  const lastName = document.getElementById("lastName");
-  const address = document.getElementById("address");
-  const city = document.getElementById("city");
-  const email = document.getElementById("email");
-
-  //check values cannot be empty
-  if (firstName === "") {
-    alert("Please provide your first name");
-  }
 
   //POST API
   const order = {
@@ -309,10 +317,16 @@ function validateOrderForm(event) {
       return data.json();
     })
     .then((confirmation) => {
-      //TODO after verifying all correct user input, use fetch API to POST the order to the backend server.
       //TODO redirect to confirmation page with order ID (refer to the product.js for search params)
+     
+
       //TODO Clear out the local storage
+      window.localStorage.clear();
       //TODO use location.assign("(it will be confirmation html)") (refer to line 20 on script)
+
+      console.log(confirmation);
       console.log(confirmation.orderId);
+      window.location.href =
+          "./confirmation.html?id=" + confirmation.orderId;
     });
 }
