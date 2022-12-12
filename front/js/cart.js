@@ -1,14 +1,6 @@
 // >>>>>>>> CART <<<<<<<<<<
-const cart = JSON.parse(localStorage.getItem("cart"));
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
 let allProductsData = [];
-
-// will check if isCartEmpty or NOT.
-// "null" when localStorage is empty/emptied.
-if (cart === null) {
-  alert("Your CART is currently empty.");
-} else {
-  displayQtyTotal();
-}
 
 // >>>>>>>>  All PRODUCTS data  <<<<<<<<<<
 fetch("http://localhost:3000/api/products/")
@@ -25,7 +17,11 @@ fetch("http://localhost:3000/api/products/")
     addDeleteItemListeners();
   });
 
-/* Item card Start here */
+/**
+ * Item card Start here
+ *
+ * @param {Object[]} allProductsData - product info
+ */
 function createEachItemCard(allProductsData) {
   for (let cartItem of cart) {
     let cartItemProdInfo = allProductsData.find(
@@ -87,7 +83,7 @@ function createEachItemCard(allProductsData) {
     cartQtyInput.setAttribute("min", "1");
     cartQtyInput.setAttribute("max", "100");
     cartQtyInput.setAttribute("value", cartItem.qty);
-    cartContentQty.appendChild(cartItemQty).innerHTML = "<p>Qté : </p>";
+    cartContentQty.appendChild(cartItemQty).innerText = "Qté : ";
     cartContentQty.appendChild(cartQtyInput);
 
     //delete btn
@@ -204,6 +200,7 @@ function updateTotalQty(quantity) {
   totalQtyEl.innerText = totalQty - quantity;
   location.reload();
 }
+
 function updateTotalPrice(quantity) {
   const totalPriceEl = document.getElementById("totalPrice");
   const totalPrice = parseInt(totalPriceEl.innerText);
@@ -255,9 +252,8 @@ function validateLastName(event) {
 }
 
 function validateEmail(event) {
-  const emailRegex = new RegExp(
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-  );
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const checkEmail = emailRegex.test(event.target.value);
   if (checkEmail === false) {
     document.getElementById("emailErrorMsg").innerText = "Incorrect Email";
@@ -265,63 +261,108 @@ function validateEmail(event) {
     document.getElementById("emailErrorMsg").innerText = "";
   }
 }
-function validateAddressAndCity(address, city) {
+/**
+ * Check to see if given fields are not empty
+ *
+ * @param {HTMLElement} firstName
+ * @param {*} lastName
+ * @param {*} address
+ * @param {*} city
+ * @param {*} email
+ * @returns {boolean} true if all fields are valid
+ */
+function checkAllValidInput(firstName, lastName, address, city, email) {
+  const emptyFirstName = firstName.value;
+  const emptyLastName = lastName.value;
   const emptyAddress = address.value;
   const emptyCity = city.value;
+  const emptyEmail = email.value;
+  let isValid = true;
 
-  if (emptyAddress === 0 || emptyAddress === "") {
-    document.getElementById("addressErrorMsg").innerText = "Address is empty";
+  isValid = checkInputField(
+    emptyFirstName,
+    isValid,
+    "firstNameErrorMsg",
+    "First name is empty"
+  );
+  isValid = checkInputField(
+    emptyLastName,
+    isValid,
+    "lastNameErrorMsg",
+    "Last name is empty"
+  );
+  isValid = checkInputField(
+    emptyAddress,
+    isValid,
+    "addressErrorMsg",
+    "Address is empty"
+  );
+  isValid = checkInputField(
+    emptyCity,
+    isValid,
+    "cityErrorMsg",
+    "City is empty"
+  );
+  isValid = checkInputField(
+    emptyEmpty,
+    isValid,
+    "emailErrorMsg",
+    "Email is empty"
+  );
+  return isValid;
+}
+
+function checkInputField(emptyFirstName, isValid, id, errorMessage) {
+  if (!emptyFirstName) {
+    document.getElementById(id).innerText = errorMessage;
+    isValid = isValid && false;
   } else {
-    document.getElementById("addressErrorMsg").innerText = "";
+    document.getElementById(id).innerText = "";
   }
-  if (emptyCity === 0 || emptyCity === "") {
-    document.getElementById("cityErrorMsg").innerText = "City is empty";
-  } else {
-    document.getElementById("cityErrorMsg").innerText = "";
-  }
+  return isValid;
 }
 
 function validateOrderForm(event) {
   event.preventDefault();
-  validateAddressAndCity(address, city);
-
   const cart = JSON.parse(localStorage.getItem("cart"));
-  //map itirate each items in the cart and will get the IDs of each item.
-  const products = cart.map((item) => item.id);
-  // console.log(products);
+  if (checkAllValidInput(firstName, lastName, address, city, email) && cart) {
+    //map itirate each items in the cart and will get the IDs of each item.
+    const products = cart.map((item) => item.id);
 
-  //POST API
-  const order = {
-    contact: {
-      firstName: firstName.value,
-      lastName: lastName.value,
-      address: address.value,
-      city: city.value,
-      email: email.value,
-    },
-    products,
-  };
+    //POST API
+    const order = {
+      contact: {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value,
+      },
+      products,
+    };
 
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(order),
-  };
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    };
 
-  fetch("http://localhost:3000/api/products/order", options)
-    .then((data) => {
-      return data.json();
-    })
-    .then((confirmation) => {
-     //console.log(confirmation);
-     console.log(confirmation.orderId);
-      
-      //TODO Clear out the local storage
-      window.localStorage.clear();
-      //TODO use location.assign("(it will be confirmation html)") (refer to line 20 on script)
-      //window.location.href = "./confirmation.html?orderId=" + confirmation.orderId;
-      window.location.assign("./confirmation.html?orderId=" + confirmation.orderId);
-    });
+    fetch("http://localhost:3000/api/products/order", options)
+      .then((data) => {
+        return data.json();
+      })
+      .then((confirmation) => {
+
+        
+        console.log(confirmation.orderId);
+        localStorage.removeItem("cart");
+
+        location.assign(`./confirmation.html?orderId=${confirmation.orderId}`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
