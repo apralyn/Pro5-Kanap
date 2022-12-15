@@ -362,11 +362,13 @@ function checkAllValidInput(firstName, lastName, address, city, email) {
  */
 function checkInputField(value, isValid, id, errorMessage) {
   const messageElement = document.getElementById(id);
+  console.log(messageElement.innerText);
+  console.log(value); // is the information added by the user
   if (
     !value ||
     (messageElement.innerText && messageElement.innerText !== errorMessage)
   ) {
-    messageElement.innerText == messageElement.innerText || errorMessage;
+    messageElement.innerText = messageElement.innerText || errorMessage;
     isValid = isValid && false;
   } else {
     messageElement.innerText = "";
