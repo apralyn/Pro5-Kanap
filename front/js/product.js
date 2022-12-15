@@ -1,38 +1,39 @@
-//URL object to access search params
+
 const productUrl = window.location.href;
 const newProductUrl = new URL(productUrl);
-const cart = JSON.parse(localStorage.getItem("cart")) || [];
-//product ID
 const productId = newProductUrl.searchParams.get("id");
-console.log(productUrl, newProductUrl, productId);
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-//Fetch API + productId
 fetch("http://localhost:3000/api/products/" + productId)
   .then((data) => {
     return data.json();
   })
-  .then((products) => {
-    displaySingleProduct(products);
+  .then((product) => {
+    displaySingleProduct(product);
   });
-
-function displaySingleProduct(products) {
+/**
+ * Display product with data, color choices, and quantity
+ * 
+ * @param {*} product 
+ */
+function displaySingleProduct(product) {
   let productTitle = document.getElementById("title");
-  productTitle.innerHTML = products.name;
+  productTitle.innerHTML = product.name;
 
   let productPrice = document.getElementById("price");
-  productPrice.innerHTML = products.price;
+  productPrice.innerHTML = product.price;
 
   let productDescription = document.getElementById("description");
-  productDescription.innerHTML = products.description;
+  productDescription.innerHTML = product.description;
 
   let productItem = document.querySelector(".item__img");
   let productImg = document.createElement("img");
-  productImg.setAttribute("src", products.imageUrl);
-  productImg.setAttribute("alt", products.altTxt);
+  productImg.setAttribute("src", product.imageUrl);
+  productImg.setAttribute("alt", product.altTxt);
   productItem.appendChild(productImg);
 
-  //loop for each color options
-  for (let color of products.colors) {
+  //color options
+  for (let color of product.colors) {
     const productColor = document.querySelector("#colors");
     const colorOption = document.createElement("option");
     colorOption.setAttribute("value", color);
@@ -41,11 +42,15 @@ function displaySingleProduct(products) {
   }
 }
 
-//add to cart button click event
+
 const addToCartButton = document.getElementById("addToCart");
 addToCartButton.addEventListener("click", addItemToCart);
-
-function addItemToCart() {
+/**
+ * User cannot add item to the cart without choosing a color or quantity.
+ * 
+ * @returns 
+ */
+function addItemToCart() { 
   let colorChoice = document.getElementById("colors");
   let qtyChoice = document.getElementById("quantity");
   let colorValue = colorChoice.value;
@@ -56,7 +61,9 @@ function addItemToCart() {
     color: colorValue,
     qty: qtyValue,
   };
-
+  if (itemToAdd.color == "" || itemToAdd.qty == 0) {
+    return;
+  }
   let isCartEmpty = cart == 0;
   if (isCartEmpty) {
     cart.push(itemToAdd); //add to cart
