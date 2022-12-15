@@ -295,8 +295,7 @@ function validateEmail(event) {
   );
   const checkEmail = emailRegex.test(event.target.value);
   if (checkEmail === false) {
-    return (document.getElementById("emailErrorMsg").innerText =
-      "Incorrect Email");
+    document.getElementById("emailErrorMsg").innerText = "Incorrect Email";
   } else {
     document.getElementById("emailErrorMsg").innerText = "";
   }
@@ -353,12 +352,16 @@ function checkAllValidInput(firstName, lastName, address, city, email) {
   return isValid;
 }
 
-function checkInputField(emptyFirstName, isValid, id, errorMessage) {
-  if (!emptyFirstName) {
-    document.getElementById(id).innerText = errorMessage;
+function checkInputField(value, isValid, id, errorMessage) {
+  const messageElement = document.getElementById(id);
+  if (
+    !value ||
+    (messageElement.innerText && messageElement.innerText !== errorMessage)
+  ) {
+    messageElement.innerText == messageElement.innerText || errorMessage;
     isValid = isValid && false;
   } else {
-    document.getElementById(id).innerText = "";
+    messageElement.innerText = "";
   }
   return isValid;
 }
@@ -371,7 +374,7 @@ function validateOrderForm(event) {
   event.preventDefault();
   const cart = JSON.parse(localStorage.getItem("cart"));
   if (checkAllValidInput(firstName, lastName, address, city, email) && cart) {
-    //map itirate each items in the cart and will get the IDs of each item.
+    //get the IDs of each item using map
     const products = cart.map((item) => item.id);
 
     //POST API
