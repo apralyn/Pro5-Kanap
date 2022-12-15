@@ -1,7 +1,6 @@
 // cart from localStorage
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 let allProductsData = [];
-console.log(typeof cart);
 
 // products data
 fetch("http://localhost:3000/api/products/")
@@ -291,8 +290,9 @@ function validateLastName(event) {
  * @param {string} event
  */
 function validateEmail(event) {
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const emailRegex = new RegExp(
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  );
   const checkEmail = emailRegex.test(event.target.value);
   if (checkEmail === false) {
     document.getElementById("emailErrorMsg").innerText = "Incorrect Email";
@@ -300,6 +300,7 @@ function validateEmail(event) {
     document.getElementById("emailErrorMsg").innerText = "";
   }
 }
+
 /**
  * Check to see if given fields are not empty
  *
@@ -343,11 +344,22 @@ function checkAllValidInput(firstName, lastName, address, city, email) {
     "City is empty"
   );
   isValid = checkInputField(
-    emptyEmpty,
+    emptyEmail,
     isValid,
     "emailErrorMsg",
     "Email is empty"
   );
+  return isValid;
+}
+
+function checkInputField(emptyFirstName, isValid, id, errorMessage) {
+  if (!emptyFirstName) {
+    document.getElementById(id).innerText = errorMessage;
+    isValid = isValid && false;
+  } else {
+    document.getElementById("cityErrorMsg").innerText = "";
+    document.getElementById(id).innerText = "";
+  }
   return isValid;
 }
 /**
