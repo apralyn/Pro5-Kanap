@@ -1,4 +1,3 @@
-
 const productUrl = window.location.href;
 const newProductUrl = new URL(productUrl);
 const productId = newProductUrl.searchParams.get("id");
@@ -9,12 +8,13 @@ fetch("http://localhost:3000/api/products/" + productId)
     return data.json();
   })
   .then((product) => {
+    console.log(typeof product, product);
     displaySingleProduct(product);
   });
 /**
- * Display product with data, color choices, and quantity
- * 
- * @param {*} product 
+ * Display each product with data, color and quantity choices
+ *
+ * @param {object} product Data of each product
  */
 function displaySingleProduct(product) {
   let productTitle = document.getElementById("title");
@@ -42,15 +42,14 @@ function displaySingleProduct(product) {
   }
 }
 
-
 const addToCartButton = document.getElementById("addToCart");
 addToCartButton.addEventListener("click", addItemToCart);
 /**
  * User cannot add item to the cart without choosing a color or quantity.
- * 
- * @returns 
+ *
+ * @returns {boolean} false if color or quantity value is missing
  */
-function addItemToCart() { 
+function addItemToCart() {
   let colorChoice = document.getElementById("colors");
   let qtyChoice = document.getElementById("quantity");
   let colorValue = colorChoice.value;
@@ -66,22 +65,20 @@ function addItemToCart() {
   }
   let isCartEmpty = cart == 0;
   if (isCartEmpty) {
-    cart.push(itemToAdd); //add to cart
-    window.localStorage.setItem("cart", JSON.stringify(cart)); //save to cart
+    cart.push(itemToAdd);
+    window.localStorage.setItem("cart", JSON.stringify(cart));
   } else {
-    // if cart is not empty update the item qty in cart
+    // check for similar products
     let foundExactItem = false; // boolean flag
     for (let i = 0; i < cart.length; i++) {
       const sameExactItem =
         cart[i].id === itemToAdd.id && cart[i].color === itemToAdd.color;
       if (sameExactItem) {
         foundExactItem = true;
-        cart[i].qty++; // update and add from user input qty.
+        cart[i].qty++; // update qty of similar product
         window.localStorage.setItem("cart", JSON.stringify(cart));
       }
     }
-    //if i didnt find the same exact item
-    //push item to add to cart
     if (!foundExactItem) {
       cart.push(itemToAdd);
       window.localStorage.setItem("cart", JSON.stringify(cart));

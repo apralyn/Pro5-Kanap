@@ -1,8 +1,9 @@
-// >>>>>>>> CART <<<<<<<<<<
+// cart from localStorage
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 let allProductsData = [];
+console.log(typeof cart);
 
-// >>>>>>>>  All PRODUCTS data  <<<<<<<<<<
+// products data
 fetch("http://localhost:3000/api/products/")
   .then((data) => {
     return data.json();
@@ -18,7 +19,7 @@ fetch("http://localhost:3000/api/products/")
   });
 
 /**
- * Item card Start here
+ * Generate each product card added by user.
  *
  * @param {Object[]} allProductsData - product info
  */
@@ -28,8 +29,7 @@ function createEachItemCard(allProductsData) {
       (product) => cartItem.id === product._id
     );
     //parent Article
-    //const itemArticle = parentArticle(cartItem);
-    const cartItems = document.getElementById("cart__items"); // not sure why document.querySeletor was not working
+    const cartItems = document.getElementById("cart__items");
     const itemArticle = document.createElement("article");
     itemArticle.classList.add("cart__item");
     itemArticle.dataset.id = cartItem.id;
@@ -95,8 +95,11 @@ function createEachItemCard(allProductsData) {
     cartItemDeleteBtn.appendChild(deleteItem).innerText = "Delete";
   }
 }
-/* End of each item cards */
-
+/**
+ * Calculate the current total number of items
+ *
+ * @param {object} cart items added by user
+ */
 function displayQtyTotal(cart = []) {
   const totalQty = document.getElementById("totalQuantity");
   const quantities = cart.map((item) => item.qty);
@@ -107,6 +110,11 @@ function displayQtyTotal(cart = []) {
   totalQty.innerText = newQtyTotal;
 }
 
+/**
+ * Calcualte the current total amount of all items
+ *
+ * @param {object} cart items added by user
+ */
 function cartTotal(cart) {
   let total = 0;
   for (let cartItem of cart) {
@@ -121,6 +129,9 @@ function cartTotal(cart) {
   totalPrice.innerText = total;
 }
 
+/**
+ * use can change all item quantities in the cart
+ */
 function addChangeItemQtyListeners() {
   let qtyItemChange = document.getElementsByClassName("itemQuantity");
   for (let change of qtyItemChange) {
@@ -128,6 +139,11 @@ function addChangeItemQtyListeners() {
   }
 }
 
+/**
+ * Calculate total price when use changes the quantity of each item.
+ *
+ * @param {string} event quantity value change by user
+ */
 function changeItemQty(event) {
   const cart = JSON.parse(localStorage.getItem("cart"));
   const articleElement = event.target.closest("article");
@@ -135,7 +151,6 @@ function changeItemQty(event) {
   const color = articleElement.dataset.color;
   let quantity = event.target.value;
 
-  //recalculation when user change item qty from cart page.
   let totalPriceChange = 0;
   allProductsData.forEach((itemData) => {
     let itemDataPrice = itemData.price;
@@ -144,7 +159,7 @@ function changeItemQty(event) {
     }
   });
 
-  //targets the specific item using id & color when user changes the item qty.
+  //user selected item for id & color .
   const selectedItem = id;
   const selectedColor = color;
   const search = cart.find(
@@ -159,17 +174,23 @@ function changeItemQty(event) {
   displayQtyTotal(cart);
   cartTotal(cart);
   localStorage.setItem("cart", JSON.stringify(cart));
-  //console.log(cart);
 }
 
-// delete an item from the cart
+/**
+ *  Delete button for each item
+ */
 function addDeleteItemListeners() {
   let deleteItemBtn = document.getElementsByClassName("deleteItem");
   for (let deleteBtn of deleteItemBtn) {
     deleteBtn.addEventListener("click", deleteCartItem);
   }
 }
-// remove item card from the cart
+
+/**
+ * Calculate total article and price for when user deletes an item.
+ *
+ * @param {HTMLElement} event each item card
+ */
 function deleteCartItem(event) {
   const cart = JSON.parse(localStorage.getItem("cart"));
   const articleElement = event.target.closest("article");
@@ -200,7 +221,11 @@ function updateTotalQty(quantity) {
   totalQtyEl.innerText = totalQty - quantity;
   location.reload();
 }
-
+/**
+ * Update the total price of all items in the cart
+ *
+ * @param {number} quantity
+ */
 function updateTotalPrice(quantity) {
   const totalPriceEl = document.getElementById("totalPrice");
   const totalPrice = parseInt(totalPriceEl.innerText);
@@ -354,8 +379,6 @@ function validateOrderForm(event) {
         return data.json();
       })
       .then((confirmation) => {
-
-        
         console.log(confirmation.orderId);
         localStorage.removeItem("cart");
 

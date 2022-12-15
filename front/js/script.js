@@ -6,8 +6,6 @@ fetch("http://localhost:3000/api/products")
     return data.json();
   })
   .then((products) => {
-    console.log(products);
-
     //array of products (use for of)
     for (let product of products) {
       createCard(product);
@@ -15,9 +13,9 @@ fetch("http://localhost:3000/api/products")
   });
 
 /**
- * Display all items in each card.
- * 
- * @param {*} product 
+ * Generate all items in each card.
+ *
+ * @param {object} product Display card of each product
  */
 function createCard(product) {
   //<a> element
