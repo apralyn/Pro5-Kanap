@@ -1,4 +1,6 @@
-// all products data from API
+/**
+ * Collect all products data from API
+ */
 fetch("http://localhost:3000/api/products")
   .then((data) => {
     return data.json();
@@ -6,19 +8,23 @@ fetch("http://localhost:3000/api/products")
   .then((products) => {
     console.log(products);
 
-    //loop to show each of the product cards
+    //array of products (use for of)
     for (let product of products) {
       createCard(product);
     }
   });
 
-
+/**
+ * Display all items in each card.
+ * 
+ * @param {*} product 
+ */
 function createCard(product) {
   //<a> element
   const productSection = document.querySelector("#items");
   const productCardLink = document.createElement("a");
   productCardLink.setAttribute("href", "./product.html?id=" + product._id);
-  items.appendChild(productCardLink);
+  productSection.appendChild(productCardLink);
 
   //<article> element
   const productCard = document.createElement("article");
@@ -27,6 +33,7 @@ function createCard(product) {
   //<img> element
   const productImg = document.createElement("img");
   productImg.setAttribute("src", product.imageUrl);
+  productImg.setAttribute("alt", product.altTxt);
   productCard.appendChild(productImg);
 
   //<h3> element
