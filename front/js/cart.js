@@ -251,7 +251,11 @@ email.addEventListener("change", validateEmail);
 // order button
 const order = document.getElementById("order");
 order.addEventListener("click", validateOrderForm);
-
+/**
+ * No numbers on first name
+ *
+ * @param {string} event user adds first name
+ */
 function validateFirstName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
   const checkFirstName = nameRegex.test(event.target.value);
@@ -264,6 +268,11 @@ function validateFirstName(event) {
   }
 }
 
+/**
+ * No numbers on last name.
+ *
+ * @param {string} event
+ */
 function validateLastName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
   const checkLastName = nameRegex.test(event.target.value);
@@ -276,6 +285,11 @@ function validateLastName(event) {
   }
 }
 
+/**
+ * Email must have @
+ *
+ * @param {string} event
+ */
 function validateEmail(event) {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -289,11 +303,11 @@ function validateEmail(event) {
 /**
  * Check to see if given fields are not empty
  *
- * @param {HTMLElement} firstName
- * @param {*} lastName
- * @param {*} address
- * @param {*} city
- * @param {*} email
+ * @param {HTMLElement} firstName users first name
+ * @param {HTMLElement} lastName user last name
+ * @param {HTMLElement} address user address
+ * @param {HTMLElement} city user city
+ * @param {HTMLElement} email user email
  * @returns {boolean} true if all fields are valid
  */
 function checkAllValidInput(firstName, lastName, address, city, email) {
@@ -336,17 +350,11 @@ function checkAllValidInput(firstName, lastName, address, city, email) {
   );
   return isValid;
 }
-
-function checkInputField(emptyFirstName, isValid, id, errorMessage) {
-  if (!emptyFirstName) {
-    document.getElementById(id).innerText = errorMessage;
-    isValid = isValid && false;
-  } else {
-    document.getElementById(id).innerText = "";
-  }
-  return isValid;
-}
-
+/**
+ * Generate order number after all user input fields are valid.
+ *
+ * @param {string} event
+ */
 function validateOrderForm(event) {
   event.preventDefault();
   const cart = JSON.parse(localStorage.getItem("cart"));

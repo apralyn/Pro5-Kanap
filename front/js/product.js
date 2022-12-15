@@ -8,7 +8,6 @@ fetch("http://localhost:3000/api/products/" + productId)
     return data.json();
   })
   .then((product) => {
-    console.log(typeof product, product);
     displaySingleProduct(product);
   });
 /**
@@ -60,9 +59,6 @@ function addItemToCart() {
     color: colorValue,
     qty: qtyValue,
   };
-  if (itemToAdd.color == "" || itemToAdd.qty == 0) {
-    return;
-  }
   let isCartEmpty = cart == 0;
   if (isCartEmpty) {
     cart.push(itemToAdd);
