@@ -258,7 +258,7 @@ order.addEventListener("click", validateOrderForm);
 function validateFirstName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
   const checkFirstName = nameRegex.test(event.target.value);
-  console.log(checkFirstName);
+
   if (checkFirstName === false) {
     document.getElementById("firstNameErrorMsg").innerText =
       "First name is not valid";
@@ -275,7 +275,7 @@ function validateFirstName(event) {
 function validateLastName(event) {
   const nameRegex = new RegExp(/^[a-zA-Z '.-]*$/);
   const checkLastName = nameRegex.test(event.target.value);
-  console.log(checkLastName);
+
   if (checkLastName === false) {
     document.getElementById("lastNameErrorMsg").innerText =
       "Last name is not valid";
@@ -295,7 +295,8 @@ function validateEmail(event) {
   );
   const checkEmail = emailRegex.test(event.target.value);
   if (checkEmail === false) {
-    document.getElementById("emailErrorMsg").innerText = "Incorrect Email";
+    return (document.getElementById("emailErrorMsg").innerText =
+      "Incorrect Email");
   } else {
     document.getElementById("emailErrorMsg").innerText = "";
   }
@@ -357,7 +358,6 @@ function checkInputField(emptyFirstName, isValid, id, errorMessage) {
     document.getElementById(id).innerText = errorMessage;
     isValid = isValid && false;
   } else {
-    document.getElementById("cityErrorMsg").innerText = "";
     document.getElementById(id).innerText = "";
   }
   return isValid;
