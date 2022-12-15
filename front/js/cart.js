@@ -351,7 +351,15 @@ function checkAllValidInput(firstName, lastName, address, city, email) {
   );
   return isValid;
 }
-
+/**
+ * Check if all fields are empty.
+ * 
+ * @param {string} value all fields of the form
+ * @param {boolean} isValid Check if fields are empty or not 
+ * @param {string} id specific empty field left empty
+ * @param {string} errorMessage if any field is empty
+ * @returns 
+ */
 function checkInputField(value, isValid, id, errorMessage) {
   const messageElement = document.getElementById(id);
   if (
